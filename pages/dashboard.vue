@@ -1,9 +1,7 @@
 <template>
     <BreezeAuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
-            </h2>
+            <MyHeader :name="title"/>
         </template>
 
         <div class="py-12">
@@ -20,15 +18,25 @@
 
 <script>
 import BreezeAuthenticatedLayout from '@/layouts/authenticated.vue'
+import MyHeader from '@/components/header.vue'
 export default {
-    head: {
-        title: 'Dashboard',
+    data() {
+      return {
+        title: 'Dashboard'
+      }
+    },
+    head() {
+        return{
+            title: this.title,
+        }
     },
 
     middleware: 'authenticated',
 
     components: {
         BreezeAuthenticatedLayout,
+        MyHeader
+
     }
 }
 </script>
