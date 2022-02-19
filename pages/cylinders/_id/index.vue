@@ -4,7 +4,7 @@
       <MyHeader :name="title" />
     </template>
     <div class="h-screen">
-        <viewport />
+        <viewport :id="id"/>
     </div>
     
   </BreezeAuthenticatedLayout>
@@ -24,6 +24,11 @@ export default {
         return{
             title: this.title,
         }
+    },
+    computed:{
+      id(){
+        return this.$route.params.id
+      }
     },
 
     middleware: 'authenticated',

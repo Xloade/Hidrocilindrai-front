@@ -6,6 +6,7 @@
 import * as THREE from "three-full";
 
 export default {
+  props:["id"],
   data() {
     return {
       camera: null,
@@ -15,7 +16,8 @@ export default {
       element: null,
       textureLoader: null,
       objLoader: null,
-      mtlLoader: null
+      mtlLoader: null,
+      cylinder: Array()
     };
   },
   methods: {
@@ -71,26 +73,8 @@ export default {
 
       this.mtlLoader.load("/parts/textures/materials.mtl", function(material){
         material.preload();
-        console.log(material.materials["Powder_Coat_(White)"])
-        console.log(material)
         component.objLoader.setMaterials(material);
       });
-      this.objLoader.load("/parts/cilindras.obj", function (object) {
-        component.scene.add(object);
-        object.rotateX(Math.PI/2);
-        object.rotateY(Math.PI/2);
-      });
-      // for ( let i = 0; i < 500; i ++ ) {
-
-      // 	const mesh = new THREE.Mesh( geometry, material );
-      // 	mesh.position.x = Math.random() * 1600 - 800;
-      // 	mesh.position.y = 0;
-      // 	mesh.position.z = Math.random() * 1600 - 800;
-      // 	mesh.updateMatrix();
-      // 	mesh.matrixAutoUpdate = false;
-      // 	this.scene.add( mesh );
-
-      // }
 
       // lights
 
@@ -134,10 +118,32 @@ export default {
     render() {
       this.renderer.render(this.scene, this.camera);
     },
+    loadObjects(){
+      let component = this;
+      this.cylinder.forEach(element => {
+        component.objLoader.load("/parts/"+element['part']['id']+".obj", function (object) {
+          component.scene.add(object);
+          object.rotateX(Math.PI/2);
+          object.rotateY(Math.PI/2);
+
+          object.translateX(element['finnalOffset']['x_offset']);
+          object.translateY(element['finnalOffset']['y_offset']);
+          object.translateZ(element['finnalOffset']['z_offset']);
+          object.rotateX(element['finnalOffset']['x_angle_offset']*(Math.PI/180));
+          object.rotateY(element['finnalOffset']['y_angle_offset']*(Math.PI/180));
+          object.rotateZ(element['finnalOffset']['z_angle_offset']*(Math.PI/180));
+        });
+      });
+    },
+    async getCylinder(){
+      await this.$axios.get("/api/cylinders/"+this.id).then(response => (this.cylinder = response.data));
+      this.loadObjects();
+    }
   },
   mounted() {
     this.element = document.getElementById("viewport");
     this.init();
+    this.getCylinder();
     this.animate();
   },
 };
