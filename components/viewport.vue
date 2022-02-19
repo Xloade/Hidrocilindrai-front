@@ -1,5 +1,7 @@
 <template>
-  <div class="viewport" id="viewport"></div>
+  <div class="d-flex viewportInner">
+    <div class="viewport col-6 h-100 m-2" id="viewport"></div>
+  </div>
 </template>
 
 <script>
@@ -45,7 +47,7 @@ export default {
       // );
       this.camera = new THREE.OrthographicCamera(-this.element.clientWidth/2,this.element.clientWidth/2,this.element.clientHeight/2,-this.element.clientHeight/2,0.01,1000)
       this.camera.position.set(200, 150, 0);
-      this.camera.zoom = this.element.clientHeight / 1000 * 3
+      this.camera.zoom = this.element.clientWidth / 1000 * 1.5
       this.camera.updateProjectionMatrix();
 
       // controls
@@ -150,8 +152,8 @@ export default {
 </script>
 
 <style>
-.viewport {
-  height: 100%;
-  width: 100%;
+.viewportInner{
+  height: calc(100% - 138px);
 }
+
 </style>

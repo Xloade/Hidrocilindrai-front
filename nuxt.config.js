@@ -55,6 +55,7 @@ export default {
   },
   proxy: {
     '/parts': 'http://localhost:8000',
+    '/images': 'http://localhost:8000',
     '/api': 'http://localhost:8000',
   },
 

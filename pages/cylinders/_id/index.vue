@@ -17,7 +17,6 @@ import Viewport from '@/components/viewport.vue'
 export default {
     data() {
       return {
-        title: 'My cilinders'
       }
     },
     head() {
@@ -28,6 +27,9 @@ export default {
     computed:{
       id(){
         return this.$route.params.id
+      },
+      title(){
+        return 'Cylinder: '+this.id
       }
     },
 
