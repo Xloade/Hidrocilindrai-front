@@ -4,9 +4,11 @@
       <MyHeader :name="title" />
     </template>
     <div class="h-screen">
-        <viewport :id="id"/>
+        <div class="d-flex viewportInner p-3">
+          <viewport :id="id"/>
+          <CylinderPannel :id="id" />
+        </div>
     </div>
-    
   </BreezeAuthenticatedLayout>
 </template>
 
@@ -14,6 +16,7 @@
 import BreezeAuthenticatedLayout from '@/layouts/authenticated.vue'
 import MyHeader from '@/components/header.vue'
 import Viewport from '@/components/viewport.vue'
+import CylinderPannel from "@/components/cylinderPannel.vue"
 export default {
     data() {
       return {
@@ -38,7 +41,14 @@ export default {
     components: {
         BreezeAuthenticatedLayout,
         MyHeader,
-        Viewport
+        Viewport,
+        CylinderPannel
     }
 }
 </script>
+
+<style scoped>
+  .viewportInner{
+    height: calc(100% - 138px);
+  }
+</style>

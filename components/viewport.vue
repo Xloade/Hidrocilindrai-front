@@ -1,7 +1,5 @@
 <template>
-  <div class="d-flex viewportInner">
-    <div class="viewport col-6 h-100 m-2" id="viewport"></div>
-  </div>
+  <div class="viewport col-lg-6 col-12 h-100" id="viewport"></div>
 </template>
 
 <script>
@@ -101,7 +99,7 @@ export default {
       this.camera.right  = this.element.clientWidth / 2
       this.camera.top    = this.element.clientHeight / 2
       this.camera.bottom = this.element.clientHeight / -2
-      this.camera.zoom = this.element.clientHeight / 1000 * 3
+      this.camera.zoom = this.element.clientWidth / 1000 * 1.5
 
       this.camera.updateProjectionMatrix();
 
@@ -138,9 +136,9 @@ export default {
       });
     },
     async getCylinder(){
-      await this.$axios.get("/api/cylinders/"+this.id).then(response => (this.cylinder = response.data));
+      await this.$axios.get("/api/cylinder/"+this.id).then(response => (this.cylinder = response.data));
       this.loadObjects();
-    }
+    },
   },
   mounted() {
     this.element = document.getElementById("viewport");
@@ -150,10 +148,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.viewportInner{
-  height: calc(100% - 138px);
-}
-
-</style>
