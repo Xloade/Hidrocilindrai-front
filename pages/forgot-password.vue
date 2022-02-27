@@ -1,46 +1,42 @@
 <template>
     <div>
-        <div class="mb-4 text-sm text-gray-600">
+        <b-alert variant="info">
             Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.
-        </div>
+        </b-alert>
 
         <!-- Validation Errors -->
-        <BreezeValidationErrors :errors="form.errors" class="mb-4" />
+        <ValidationErrors :errors="form.errors" class="mb-4" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <BreezeLabel for="email" value="Email" />
-                <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus autocomplete="username" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <BreezeButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Email Password Reset Link
-                </BreezeButton>
-            </div>
-        </form>
+        <b-form @submit.prevent="submit">
+            <b-form-group
+                id="input-group-1"
+                label="Email address:"
+                label-for="input-1"
+                description="We'll never share your email with anyone else."
+            >
+                <b-form-input
+                id="input-1"
+                v-model="form.email"
+                type="email"
+                placeholder="Enter email"
+                required
+                ></b-form-input>
+            </b-form-group>
+            <b-button type="submit" variant="primary">Submit</b-button>
+        </b-form>
     </div>
 </template>
 
 <script>
-import BreezeValidationErrors from '@/components/validation-errors.vue'
-import BreezeButton from '@/components/button.vue'
-import BreezeInput from '@/components/input.vue'
-import BreezeLabel from '@/components/label.vue'
+import ValidationErrors from '~/components/ValidationErrors.vue'
 export default {
     head: {
         title: 'Forgot Password',
     },
-
     layout: 'guest',
-
     components: {
-        BreezeValidationErrors,
-        BreezeButton,
-        BreezeInput,
-        BreezeLabel,
+        ValidationErrors
     },
-
     data() {
         return {
             form: {
@@ -50,14 +46,13 @@ export default {
             }
         }
     },
-
     methods: {
         async submit() {
             this.processing = true
             this.form.errors = []
 
             try {
-                await this.$axios.post('/forgot-password', this.form)
+                await this.$axios.post('/auth/forgot-password', this.form)
 
                 this.processing = false
             } catch (e) {

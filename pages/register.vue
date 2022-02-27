@@ -1,61 +1,67 @@
 <template>
     <div>
         <!-- Validation Errors -->
-        <BreezeValidationErrors :errors="form.errors" class="mb-4" />
+        <ValidationErrors :errors="form.errors" class="mb-4" />
+        <b-form @submit.prevent="submit">
+            <b-form-group
+                id="input-group-1"
+                label="Email address:"
+                label-for="input-1"
+            >
+                <b-form-input
+                id="input-1"
+                v-model="form.email"
+                type="email"
+                placeholder="Enter email"
+                required
+                ></b-form-input>
+            </b-form-group>
 
-        <form @submit.prevent="submit">
-            <div>
-                <BreezeLabel for="name" value="Name" />
-                <BreezeInput id="name" type="text" class="input mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
-            </div>
+            <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+                <b-form-input
+                id="input-2"
+                v-model="form.name"
+                placeholder="Enter name"
+                required
+                ></b-form-input>
+            </b-form-group>
 
-            <div class="mt-4">
-                <BreezeLabel for="email" value="Email" />
-                <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username" />
-            </div>
+            <b-form-group id="input-group-3" label="Your Password:" label-for="input-3">
+                <b-form-input
+                id="input-3"
+                v-model="form.password"
+                type="password"
+                placeholder="Enter password"
+                required
+                ></b-form-input>
+            </b-form-group>
 
-            <div class="mt-4">
-                <BreezeLabel for="password" value="Password" />
-                <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
-            </div>
+            <b-form-group id="input-group-4" label="Repeat Password:" label-for="input-4">
+                <b-form-input
+                id="input-4"
+                v-model="form.password_confirmation"
+                type="password"
+                placeholder="Repeat password"
+                required
+                ></b-form-input>
+            </b-form-group>
 
-            <div class="mt-4">
-                <BreezeLabel for="password_confirmation" value="Confirm Password" />
-                <BreezeInput id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
-            </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <NuxtLink to="/login" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Already registered?
-                </NuxtLink>
-
-                <BreezeButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </BreezeButton>
-            </div>
-        </form>
+            <b-button type="submit" variant="primary" :active="form.processing">Register</b-button>
+        </b-form>
     </div>
 </template>
 
 <script>
-import BreezeValidationErrors from '@/components/validation-errors.vue'
-import BreezeButton from '@/components/button.vue'
-import BreezeInput from '@/components/input.vue'
-import BreezeLabel from '@/components/label.vue'
+import ValidationErrors from '~/components/ValidationErrors.vue'
 export default {
     head: {
         title: 'Register',
     },
-
     layout: 'guest',
-
     components: {
-        BreezeValidationErrors,
-        BreezeButton,
-        BreezeInput,
-        BreezeLabel,
+        ValidationErrors
     },
-
     data() {
         return {
             form: {
@@ -76,7 +82,7 @@ export default {
             this.form.errors = []
 
             try {
-                await this.$axios.post('register', this.form)
+                await this.$axios.post('/auth/register', this.form)
 
                 await this.$auth.loginWith('laravelSanctum', { data: this.form })
 

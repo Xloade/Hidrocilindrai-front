@@ -1,38 +1,43 @@
 <template>
     <div>
-        <div class="mb-4 text-sm text-gray-600">
-            Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
-        </div>
+        <b-alert v-model="showDismissibleAlert" variant="info" >
+             Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
+        </b-alert>
 
-        <div class="mb-4 font-medium text-sm text-green-600" v-if="verificationLinkSent">
+        <div variant="success" v-model="verificationLinkSent">
             A new verification link has been sent to the email address you provided during registration.
         </div>
 
-        <form @submit.prevent="submit">
-            <div class="mt-4 flex items-center justify-between">
-                <BreezeButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Resend Verification Email
-                </BreezeButton>
+        <b-form @submit.prevent="submit">
+            <b-form-group
+                id="input-group-1"
+                label="Email address:"
+                label-for="input-1"
+                description="We'll never share your email with anyone else."
+            >
+                <b-form-input
+                id="input-1"
+                v-model="form.email"
+                type="email"
+                placeholder="Enter email"
+                required
+                ></b-form-input>
+            </b-form-group>
 
-                <button @click="logout()" class="underline text-sm text-gray-600 hover:text-gray-900">Log Out</button>
-            </div>
-        </form>
+            <b-button type="submit" variant="primary" :disabled="form.processing">
+                Resend Verification Email
+            </b-button>
+            <b-button @click="logout()" variant="secondary">Log Out</b-button>
+        </b-form>
     </div>
 </template>
 
 <script>
-import BreezeButton from '@/components/button.vue'
 export default {
     head: {
         title: 'Verify Email',
     },
-
     layout: 'guest',
-
-    components: {
-        BreezeButton,
-    },
-
     data() {
         return {
             form: {
@@ -52,7 +57,7 @@ export default {
         async submit() {
             this.processing = true
 
-            await this.$axios.post('/email/verification-notification')
+            await this.$axios.post('/auth/email/verification-notification')
             
             this.status = 'verification-link-sent'
             this.processing = false

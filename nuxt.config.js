@@ -33,11 +33,6 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-    '@nuxtjs/tailwindcss'
-  ],
-
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
@@ -57,6 +52,7 @@ export default {
     '/parts': 'http://localhost:8000',
     '/images': 'http://localhost:8000',
     '/api': 'http://localhost:8000',
+    '/auth': 'http://localhost:8000',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

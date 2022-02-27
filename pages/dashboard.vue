@@ -36,7 +36,6 @@ export default {
     components: {
         BreezeAuthenticatedLayout,
         MyHeader
-
     }
 }
 </script>

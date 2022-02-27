@@ -1,60 +1,56 @@
 <template>
     <div>
         <!-- Validation Errors -->
-        <BreezeValidationErrors :errors="form.errors" class="mb-4" />
-        
-        <form @submit.prevent="submit">
-            <div>
-                <BreezeLabel for="email" value="Email" />
-                <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus autocomplete="username" />
-            </div>
+        <ValidationErrors :errors="form.errors" class="mb-4" />
 
-            <div class="mt-4">
-                <BreezeLabel for="password" value="Password" />
-                <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
-            </div>
+        <b-form @submit.prevent="submit">
+            <b-form-group
+                id="input-group-1"
+                label="Email address:"
+                label-for="input-1"
+                description="We'll never share your email with anyone else."
+            >
+                <b-form-input
+                id="input-1"
+                v-model="form.email"
+                type="email"
+                placeholder="Enter email"
+                required
+                ></b-form-input>
+            </b-form-group>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <BreezeCheckbox name="remember" :checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
+            <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+                <b-form-input
+                id="input-2"
+                v-model="form.password"
+                type="password"
+                placeholder="Enter password"
+                required
+                ></b-form-input>
+            </b-form-group>
 
-            <div class="flex items-center justify-end mt-4">
-                <NuxtLink to="/forgot-password" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Forgot your password?
-                </NuxtLink>
+            <b-form-group id="input-group-4">
+                <b-form-checkbox v-model="form.remember">Remember me</b-form-checkbox>
+            </b-form-group>
 
-                <BreezeButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </BreezeButton>
-            </div>
-        </form>
+            <b-button type="submit" variant="primary" :active="form.processing">Login</b-button>
+            <b-link to="/forgot-password" class="btn btn-secondary">
+                Forgot your password?
+            </b-link>
+        </b-form>
     </div>
 </template>
 
 <script>
-import BreezeValidationErrors from '@/components/validation-errors.vue'
-import BreezeCheckbox from '@/components/checkbox.vue'
-import BreezeButton from '@/components/button.vue'
-import BreezeInput from '@/components/input.vue'
-import BreezeLabel from '@/components/label.vue'
+import ValidationErrors from '~/components/ValidationErrors.vue'
 export default {
     head: {
         title: 'Login',
     },
-
     layout: 'guest',
-
     components: {
-        BreezeValidationErrors,
-        BreezeCheckbox,
-        BreezeButton,
-        BreezeInput,
-        BreezeLabel,
+        ValidationErrors
     },
-
     data() {
         return {
             form: {

@@ -1,5 +1,7 @@
 <template>
-  <div class="viewport col-lg-6 col-12 h-100" id="viewport"></div>
+  <div class="outter col-lg-6 col-12">
+    <div class="viewport" id="viewport"></div>
+  </div>
 </template>
 
 <script>
@@ -148,3 +150,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .viewport{
+    height: calc(100% - 2px);
+    box-shadow: 5px 5px 5px grey;
+    border-radius: 5px;
+  }
+  .outter{
+    height: calc(100vh - 230px);
+  }
+</style>

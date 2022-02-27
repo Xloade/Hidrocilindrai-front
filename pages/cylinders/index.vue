@@ -41,7 +41,7 @@ export default {
         }
     },
     asyncData ({ $axios }, callback) {
-        $axios.get('/api/cylinders')
+        $axios.get('/api/cylinder')
         .then((res) => {
             callback(null, { cylinders: res.data })
         })

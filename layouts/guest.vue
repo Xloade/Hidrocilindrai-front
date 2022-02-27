@@ -1,13 +1,28 @@
 <template>
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+    <div>
         <div>
-            <NuxtLink to="/">
-                <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
-            </NuxtLink>
-        </div>
+            <b-navbar toggleable="lg" type="dark" variant="success">
+                <b-navbar-brand to="/dashboard">
+                    X Cylinder's
+                </b-navbar-brand>
 
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-            <Nuxt />
+                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+                <b-collapse id="nav-collapse" is-nav>
+
+                <!-- Right aligned nav items -->
+                    <b-navbar-nav class="ml-auto">
+                        <b-nav-item to="/login">Log in</b-nav-item>
+                        <b-nav-item to="/register">Register</b-nav-item>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-navbar>
+        </div>    
+        <!-- Page Content -->
+        <div class="container">
+            <div class="col-lg-6 col-md-8 col-12 mx-auto my-4">
+                <Nuxt />
+            </div>
         </div>
     </div>
 </template>
