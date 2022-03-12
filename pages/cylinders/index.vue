@@ -4,7 +4,6 @@
       <MyHeader :name="title" />
     </template>
         <div class="d-flex m-6 gap-2">
-
             <b-card
                 v-for="cylinder in cylinders"
                 :key="cylinder.id"

@@ -1,12 +1,12 @@
 <template>
   <BreezeAuthenticatedLayout>
     <template #header>
-      <MyHeader :name="title" />
+      <MyHeader :name="title"/>
     </template>
     <div class="h-screen">
         <div class="d-flex viewportInner p-3">
-          <viewport :id="id"/>
-          <CylinderPannel :id="id" />
+          <Viewport :id="id" ref="viewport"/>
+          <CylinderPannel :id="id" @changed="$refs.viewport.getCylinder()"/>
         </div>
     </div>
   </BreezeAuthenticatedLayout>
