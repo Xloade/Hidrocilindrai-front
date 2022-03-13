@@ -1,5 +1,5 @@
 <template>
-  <div class="outter col-lg-6 col-12">
+  <div class="outter">
     <div class="viewport" id="viewport"></div>
   </div>
 </template>

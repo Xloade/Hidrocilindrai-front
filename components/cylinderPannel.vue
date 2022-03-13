@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="component">
         <div class="mt-3">
             <b-alert 
                 :variant="alert.variant" 
@@ -112,5 +112,8 @@ export default {
 <style>
     .part.selected{
         color:red;
+    }
+    .component{
+        min-height: 400px;
     }
 </style>

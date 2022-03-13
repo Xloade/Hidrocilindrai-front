@@ -4,9 +4,9 @@
       <MyHeader :name="title"/>
     </template>
     <div class="h-screen">
-        <div class="d-flex viewportInner p-3">
-          <Viewport :id="id" ref="viewport"/>
-          <CylinderPannel :id="id" @changed="$refs.viewport.getCylinder()"/>
+        <div class="row p-3">
+          <Viewport class="col-lg-6 col-12" :id="id" ref="viewport"/>
+          <CylinderPannel class="col-lg-6 col-12" :id="id" @changed="$refs.viewport.getCylinder()"/>
         </div>
     </div>
   </BreezeAuthenticatedLayout>
@@ -48,7 +48,4 @@ export default {
 </script>
 
 <style scoped>
-  .viewportInner{
-    height: calc(100% - 138px);
-  }
 </style>
