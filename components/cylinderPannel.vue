@@ -20,15 +20,15 @@
                 <b-tab :title="partGroup[0].connection.part_type.name" :active="index==0" v-for="(partGroup, index) in partGroups" :key="getPartGroupKey(partGroup[0]) + 'tab-control'">
                     <table class="w-100">
                         <tbody class="table">
-                            <tr :class="['part', {'bg-success':part.selected}]" v-for="part in partGroup" :key="part.id">
+                            <tr :class="['part', {'bg-success':part.hasOwnProperty('selected_cylinder_part_connection')}]" v-for="part in partGroup" :key="part.id">
                                 <td>
                                     {{part.id}}
                                 </td>
                                 <td>
-                                    <b-button @click="addPart(part)" v-if="!part.selected" variant="success">
+                                    <b-button @click="addPart(part)" v-if="!part.hasOwnProperty('selected_cylinder_part_connection')" variant="success">
                                         Add
                                     </b-button>
-                                    <b-button @click="removePart(part)" v-if="part.selected" variant="danger">
+                                    <b-button @click="removePart(part)" v-else variant="danger">
                                         Remove
                                     </b-button>
                                 </td>
@@ -59,7 +59,7 @@ export default {
             return part.for_connection.id + '-' + part.cylinder_part_connection.id
         },
         async removePart(part){
-            await this.$axios.delete("/api/cylinder/"+this.id+"/parts")
+            await this.$axios.delete("/api/cylinder/"+this.id+"/parts/"+part.selected_cylinder_part_connection.id)
             .then(() => {
                 this.changed()
             })
@@ -74,7 +74,7 @@ export default {
         },
         async addPart(part){
             await this.$axios.post("/api/cylinder/"+this.id+"/parts", {
-                part_connection_id: part.connection_id,
+                part_connection_id: part.for_connection.id,
                 part_id: part.id,
                 cylinder_part_connection_id: part.cylinder_part_connection.id
             })

@@ -19,7 +19,8 @@ export default {
       textureLoader: null,
       objLoader: null,
       mtlLoader: null,
-      cylinder: Array()
+      cylinder: Array(),
+      current3dObjects: []
     };
   },
   methods: {
@@ -122,9 +123,13 @@ export default {
     },
     loadObjects(){
       let component = this;
+      // to remove objects if they were here from last time
+      this.current3dObjects.forEach(element => component.scene.remove(element))
+      this.current3dObjects = [];
       this.cylinder.forEach(element => {
         component.objLoader.load("/parts/"+element['part']['id']+".obj", function (object) {
           component.scene.add(object);
+          component.current3dObjects.push(object);
           object.rotateX(Math.PI/2);
           object.rotateY(Math.PI/2);
 
