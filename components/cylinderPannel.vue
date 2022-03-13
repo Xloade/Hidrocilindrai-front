@@ -16,7 +16,7 @@
                     height="4px"
                 />
                 </b-alert>
-            <b-tabs content-class="mt-3">
+            <b-tabs content-class="mt-3" v-model="activeTab" @input="tabChanged">
                 <b-tab :title="partGroup[0].connection.part_type.name" :active="index==0" v-for="(partGroup, index) in partGroups" :key="getPartGroupKey(partGroup[0]) + 'tab-control'">
                     <table class="w-100">
                         <tbody class="table">
@@ -47,10 +47,16 @@ export default {
     data(){
         return{
             partGroups:[],
-            alert : {text:'', showCount:'0', dismissSecs:'10', variant:''}
+            alert : {text:'', showCount:'0', dismissSecs:'10', variant:''},
+            activeTab: 0
         }
     },
     methods:{
+        tabChanged(){
+            if(this.partGroups[this.activeTab] === undefined) return
+            let part = this.partGroups[this.activeTab].find(element => element.hasOwnProperty('selected_cylinder_part_connection'))
+            this.$emit("selectedPart", part)
+        },
         async getParts(){
             await this.$axios.get("/api/cylinder/"+this.id+"/parts")
             .then(response => this.partGroups = response.data)

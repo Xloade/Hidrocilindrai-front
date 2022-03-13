@@ -5,8 +5,8 @@
     </template>
     <div class="h-screen">
         <div class="row p-3">
-          <Viewport class="col-lg-6 col-12" :id="id" ref="viewport"/>
-          <CylinderPannel class="col-lg-6 col-12" :id="id" @changed="$refs.viewport.getCylinder()"/>
+          <Viewport class="col-lg-6 col-12" :id="id" ref="viewport" :selectedPart="selectedPart"/>
+          <CylinderPannel class="col-lg-6 col-12" :id="id" @changed="$refs.viewport.getCylinder()" @selectedPart="(part) => selectedPart = part"/>
         </div>
     </div>
   </BreezeAuthenticatedLayout>
@@ -20,6 +20,7 @@ import CylinderPannel from "@/components/cylinderPannel.vue"
 export default {
     data() {
       return {
+        selectedPart: undefined
       }
     },
     head() {

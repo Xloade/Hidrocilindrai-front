@@ -8,7 +8,7 @@
 import * as THREE from "three-full";
 
 export default {
-  props:["id"],
+  props:["id", "selectedPart"],
   data() {
     return {
       camera: null,
@@ -130,6 +130,8 @@ export default {
         component.objLoader.load("/parts/"+element['part']['id']+".obj", function (object) {
           component.scene.add(object);
           component.current3dObjects.push(object);
+          object.name = element.id;
+
           object.rotateX(Math.PI/2);
           object.rotateY(Math.PI/2);
 
@@ -141,11 +143,50 @@ export default {
           object.rotateZ(element['finnalOffset']['z_angle_offset']*(Math.PI/180));
         });
       });
+      this.selectPart()
     },
     async getCylinder(){
       await this.$axios.get("/api/cylinder/"+this.id).then(response => (this.cylinder = response.data));
       this.loadObjects();
     },
+    selectPart(){
+      // quite uneficiant as it makes copies of material every time. But it would need more digging in three.js for more elegant soliution
+      let component = this;
+      this.current3dObjects.forEach((element)=>{
+        if(component.selectedPart === undefined || element.name !== component.selectedPart.selected_cylinder_part_connection.id){
+          element.traverse( function ( child ) {
+            if ( child instanceof THREE.Mesh ) {
+              let materialArray = child.material;
+              if(!Array.isArray(materialArray)){
+                materialArray = [materialArray] 
+              }
+              materialArray.forEach((material, index)=>{
+                materialArray[index] = new THREE.MeshPhongMaterial().copy( material )
+                materialArray[index].transparent = true;
+                materialArray[index].opacity =  0.2;
+              });
+              child.material = materialArray;
+            };
+          } );
+        }
+        else{
+          element.traverse( function ( child ) {
+            if ( child instanceof THREE.Mesh ) {
+              let materialArray = child.material;
+              if(!Array.isArray(materialArray)){
+                materialArray = [materialArray] 
+              }
+              materialArray.forEach((material, index)=>{
+                materialArray[index] = new THREE.MeshPhongMaterial().copy( material )
+                materialArray[index].transparent = false;
+                materialArray[index].opacity =  1;
+              });
+              child.material = materialArray;
+            }
+          } );
+        }
+      });
+    }
   },
   mounted() {
     this.element = document.getElementById("viewport");
@@ -153,6 +194,11 @@ export default {
     this.getCylinder();
     this.animate();
   },
+  watch:{
+    selectedPart(newVal){
+      this.selectPart();
+    }
+  }
 };
 </script>
 
