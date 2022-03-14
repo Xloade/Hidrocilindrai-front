@@ -114,19 +114,18 @@ export default {
           100,
           plane.color
         );
-        let d = "kedddkw";
         switch (plane.name) {
           case "x":
-            planeMesh.rotateY(90*(Math.PI/180));
-            arrow.rotateY(90*(Math.PI/180));
+            planeMesh.rotateZ(90*(Math.PI/180));
+            arrow.rotateZ(90*(Math.PI/180));
             break;
           case "y":
             planeMesh.rotateX(90*(Math.PI/180));
             arrow.rotateX(90*(Math.PI/180));
             break;
           case "z":
-            planeMesh.rotateZ(270*(Math.PI/180));
-            arrow.rotateZ(270*(Math.PI/180));
+            planeMesh.rotateY(270*(Math.PI/180));
+            arrow.rotateY(270*(Math.PI/180));
             break;
         
           default:
@@ -173,7 +172,8 @@ export default {
           object.name = element.id;
 
           object.rotateX(Math.PI/2);
-          object.rotateY(Math.PI/2);
+          object.rotateY(Math.PI);
+          // object.rotateZ(Math.PI/2);
 
           object.translateX(element['finnalOffset']['x_offset']);
           object.translateY(element['finnalOffset']['y_offset']);
