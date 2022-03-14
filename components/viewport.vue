@@ -235,9 +235,9 @@ export default {
     selectedPart(newVal){
       this.selectPart();
     },
-    // cylinder(){
-    //   this.loadObjects();
-    // }
+    cylinder(){
+      this.loadObjects();
+    }
   },
 };
 </script>
