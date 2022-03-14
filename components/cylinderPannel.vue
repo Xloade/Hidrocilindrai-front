@@ -1,21 +1,7 @@
 <template>
     <div class="component">
         <div class="mt-3">
-            <b-alert 
-                :variant="alert.variant" 
-                :show="alert.showCount" 
-                @dismissed="alert.showCount=0" 
-                @dismiss-count-down="countDownChanged" 
-                dismissible
-            >
-                <p>{{alert.text}}</p>
-                <b-progress
-                    :variant="alert.variant"
-                    :max="alert.dismissSecs"
-                    :value="alert.showCount"
-                    height="4px"
-                />
-                </b-alert>
+            <my-alert ref="alert"/>
             <b-tabs content-class="mt-3" v-model="activeTab" @input="tabChanged">
                 <b-tab :title="partGroup[0].connection.part_type.name" :active="index==0" v-for="(partGroup, index) in partGroups" :key="getPartGroupKey(partGroup[0]) + 'tab-control'">
                     <table class="w-100">
@@ -42,12 +28,13 @@
 </template>
 
 <script>
+import myAlert from './myAlert.vue'
 export default {
+    components: { myAlert },
     props:["id"],
     data(){
         return{
             partGroups:[],
-            alert : {text:'', showCount:'0', dismissSecs:'10', variant:''},
             activeTab: 0
         }
     },
@@ -71,10 +58,10 @@ export default {
             })
             .catch((error) => {
                 if( error.response.data.message ){
-                    this.setAlert(error.response.data.message, "danger")
+                    this.$refs.alert.setAlert(error.response.data.message, "danger")
                 }
                 else{
-                    this.setAlert(error.message, "danger")
+                    this.$refs.alert.setAlert(error.message, "danger")
                 }
             })
         },
@@ -89,20 +76,12 @@ export default {
             })
             .catch((error) => {
                 if( error.response.data.message ){
-                    this.setAlert(error.response.data.message, "danger")
+                    this.$refs.alert.setAlert(error.response.data.message, "danger")
                 }
                 else{
-                    this.setAlert(error.message, "danger")
+                    this.$refs.alert.setAlert(error.message, "danger")
                 }
             })
-        },
-        countDownChanged(dismissCountDown) {
-            this.alert.showCount = dismissCountDown
-        },
-        setAlert(text, variant){
-            this.alert.showCount = this.alert.dismissSecs
-            this.alert.text = text
-            this.alert.variant = variant
         },
         changed(){
             this.getParts();
