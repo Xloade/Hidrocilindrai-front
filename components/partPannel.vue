@@ -2,7 +2,17 @@
     <div class="component">
         <div class="mt-3">
             <my-alert ref="alert"/>
-            
+            <b-form>
+                <b-form-group label="OBJ file upload:" label-cols-sm="4">
+                    <b-form-file
+                        v-model="objFile"
+                        placeholder="Choose a file or drop it here..."
+                        drop-placeholder="Drop file here..."
+                        @input="submitFile"
+                        accept=".obj"
+                    />
+                </b-form-group>
+            </b-form>
         </div>
     </div>
 </template>
@@ -14,7 +24,8 @@ export default {
     props:["id"],
     data(){
         return{
-            part: null
+            part: null,
+            objFile: null
         }
     },
     methods:{
@@ -30,6 +41,26 @@ export default {
         },
         changed(){
             this.$emit("changed", this.part)
+        },
+        async submitFile(){
+            let formData = new FormData();
+            formData.append("objFile", this.objFile);
+            await this.$axios.post("/api/part/"+this.id+"/objFile", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(_ => {
+                this.changed()
+            })
+            .catch((error) => {
+                if( error.response.data.message ){
+                    this.$refs.alert.setAlert(error.response.data.message, "danger")
+                }
+                else{
+                    this.$refs.alert.setAlert(error.message, "danger")
+                }
+            })
         }
     },
     created(){

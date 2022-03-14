@@ -49,8 +49,8 @@ export default {
     proxy:true
   },
   proxy: {
-    '/partFiles': { target: 'http://localhost:8000', pathRewrite: { '^/partFiles/': '/parts/' } },
-    '/images': 'http://localhost:8000',
+    '/partFiles': { target: 'http://localhost:8000', pathRewrite: { '^/partFiles/': 'storage/parts/' } },
+    '/images': { target: 'http://localhost:8000', pathRewrite: { '^/images/': 'storage/images/' }},
     '/api': 'http://localhost:8000',
     '/auth': 'http://localhost:8000',
   },
