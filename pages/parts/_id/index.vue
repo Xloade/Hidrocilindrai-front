@@ -5,8 +5,8 @@
     </template>
     <div class="h-screen">
         <div class="row p-3">
-          <Viewport class="col-lg-6 col-12" :id="id" ref="viewport" :selectedPart="selectedPart" :cylinder="cylinder"/>
-          <CylinderPannel class="col-lg-6 col-12" :id="id" @changed="getCylinder()" @selectedPart="(part) => selectedPart = part"/>
+          <Viewport class="col-lg-6 col-12" :id="id" ref="viewport" :cylinder="part" originPlanes/>
+          <part-pannel class="col-lg-6 col-12" :id="id" @changed="newPart => {part[0]=newPart; $refs.viewport.loadObjects()}"/>
         </div>
     </div>
   </BreezeAuthenticatedLayout>
@@ -16,21 +16,12 @@
 import BreezeAuthenticatedLayout from '@/layouts/authenticated.vue'
 import MyHeader from '@/components/header.vue'
 import Viewport from '@/components/viewport.vue'
-import CylinderPannel from "@/components/cylinderPannel.vue"
+import PartPannel from "@/components/partPannel.vue"
 export default {
     data() {
       return {
-        selectedPart: undefined,
-        cylinder: []
+        part: []
       }
-    },
-    methods:{
-      async getCylinder(){
-        this.$axios.get("/api/cylinder/"+this.id).then(response => (this.cylinder = response.data));
-      }
-    },
-    created(){
-      this.getCylinder();
     },
     head() {
         return{
@@ -42,7 +33,7 @@ export default {
         return this.$route.params.id
       },
       title(){
-        return 'Cylinder: '+this.id
+        return 'Part: '+this.id
       }
     },
 
@@ -52,7 +43,7 @@ export default {
         BreezeAuthenticatedLayout,
         MyHeader,
         Viewport,
-        CylinderPannel
+        PartPannel
     }
 }
 </script>

@@ -8,7 +8,7 @@
 import * as THREE from "three-full";
 
 export default {
-  props:["id", "selectedPart"],
+  props:["id", "selectedPart", "cylinder", "originPlanes"],
   data() {
     return {
       camera: null,
@@ -19,7 +19,6 @@ export default {
       textureLoader: null,
       objLoader: null,
       mtlLoader: null,
-      cylinder: Array(),
       current3dObjects: []
     };
   },
@@ -95,6 +94,47 @@ export default {
       //
 
       window.addEventListener("resize", this.onWindowResize);
+      if(this.originPlanes !== undefined)
+        this.addOridingPlanes();
+    },
+    addOridingPlanes(){
+      let planes = [{name:"x", color:0xff0000},{name:"y", color:0x00ff00},{name:"z", color:0x0000ff}]
+      planes.forEach((plane)=>{
+        let geo = new THREE.PlaneBufferGeometry(200, 200, 8, 8);
+        let mat = new THREE.MeshBasicMaterial({
+          color: plane.color,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.3
+        });
+        let planeMesh = new THREE.Mesh(geo, mat);
+        var arrow = new THREE.ArrowHelper(
+          new THREE.Vector3(0, 1, 0),
+          new THREE.Vector3(0, 0, 0),
+          100,
+          plane.color
+        );
+        let d = "kedddkw";
+        switch (plane.name) {
+          case "x":
+            planeMesh.rotateY(90*(Math.PI/180));
+            arrow.rotateY(90*(Math.PI/180));
+            break;
+          case "y":
+            planeMesh.rotateX(90*(Math.PI/180));
+            arrow.rotateX(90*(Math.PI/180));
+            break;
+          case "z":
+            planeMesh.rotateZ(270*(Math.PI/180));
+            arrow.rotateZ(270*(Math.PI/180));
+            break;
+        
+          default:
+            break;
+        }
+        this.scene.add(planeMesh);
+        this.scene.add(arrow);
+      });
     },
     onWindowResize() {
       // this.camera.aspect = this.element.clientWidth / this.element.clientHeight;
@@ -145,10 +185,6 @@ export default {
       });
       this.selectPart()
     },
-    async getCylinder(){
-      await this.$axios.get("/api/cylinder/"+this.id).then(response => (this.cylinder = response.data));
-      this.loadObjects();
-    },
     selectPart(){
       // quite uneficiant as it makes copies of material every time. But it would need more digging in three.js for more elegant soliution
       let component = this;
@@ -191,14 +227,18 @@ export default {
   mounted() {
     this.element = document.getElementById("viewport");
     this.init();
-    this.getCylinder();
     this.animate();
+    // needed only for development when window refreshes with old data
+    this.loadObjects();
   },
   watch:{
     selectedPart(newVal){
       this.selectPart();
-    }
-  }
+    },
+    // cylinder(){
+    //   this.loadObjects();
+    // }
+  },
 };
 </script>
 

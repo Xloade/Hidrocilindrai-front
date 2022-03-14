@@ -3,50 +3,26 @@
     <template #header>
     <div class="d-flex">
         <MyHeader :name="title" />
-        <b-button variant="success" v-b-modal.modal-prevent-closing>Add</b-button>
+        <b-button variant="success" @click="add">Add</b-button>
     </div>
     </template>
         <div class="row">
-            <div class="col-6 p-2" v-for="cylinder in cylinders" :key="cylinder.id">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 p-2" v-for="part in parts" :key="part.id">
                 <b-card
-                    :title="cylinder.name"
-                    img-src="/images/cylinders/1.png"
-                    img-alt="Image"
+                    :title="part.name"
+                    :img-src="'/images/parts/'+part.part_type.name+'.png'"
                     img-top
                     tag="article"
                     style=""
                 >
-                    <b-link class="btn btn-primary" :to="`/cylinders/${cylinder.id}`">Edit</b-link>
-                    <b-button variant="danger">Button</b-button>
+                  <p>
+                    ID: {{part.id}}
+                  </p>
+                  <b-link class="btn btn-primary" :to="`/parts/${part.id}`">Edit</b-link>
+                  <b-button variant="danger">Button</b-button>
                 </b-card>
             </div>
         </div>
-
-         <b-modal
-            id="modal-prevent-closing"
-            ref="modal"
-            title="Create new cylinder"
-            ok-title="Create"
-            @show="resetModal"
-            @hidden="resetModal"
-            @ok="handleOk"
-        >
-            <form ref="form" @submit.stop.prevent="handleSubmit">
-                <b-form-group
-                label="Name"
-                label-for="name-input"
-                invalid-feedback="Name is required"
-                :state="nameState"
-                >
-                <b-form-input
-                    id="name-input"
-                    v-model="name"
-                    :state="nameState"
-                    required
-                ></b-form-input>
-                </b-form-group>
-            </form>
-        </b-modal>
   </BreezeAuthenticatedLayout>
 </template>
 
@@ -56,26 +32,26 @@ import MyHeader from '@/components/header.vue'
 export default {
     data() {
       return {
-        title: 'My cylinders',
-        cylinders: [],
-        name: '',
-        nameState: null,
+        title: 'Parts',
+        parts: []
       }
     },
     head() {
         return{
             title: this.title,
+            name: '',
+            nameState: null,
         }
     },
     asyncData ({ $axios }, callback) {
-        $axios.get('/api/cylinder')
+        $axios.get('/api/part')
         .then((res) => {
-            callback(null, { cylinders: res.data })
+            callback(null, { parts: res.data })
         })
     },
     methods:{
-        add(name){
-            this.$axios.post('/api/cylinder', {name: name})
+        add(){
+            this.$axios.post('/api/part')
             .then(() => {
                 this.$nuxt.refresh()
             })
@@ -117,3 +93,12 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.card img{
+  margin: auto;
+  width: 170px;
+  height: 170px;
+  padding: 5px;
+}
+</style>

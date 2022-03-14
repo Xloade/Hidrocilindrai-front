@@ -12,6 +12,7 @@
                 <b-navbar-nav>
                     <b-nav-item to="/dashboard">Dashboard</b-nav-item>
                     <b-nav-item to="/cylinders">My Cylinders</b-nav-item>
+                    <b-nav-item to="/parts">Parts</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
