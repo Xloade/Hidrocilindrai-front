@@ -153,39 +153,39 @@ export default {
       // quite uneficiant as it makes copies of material every time. But it would need more digging in three.js for more elegant soliution
       let component = this;
       this.current3dObjects.forEach((element)=>{
-        if(component.selectedPart === undefined || element.name !== component.selectedPart.selected_cylinder_part_connection.id){
           element.traverse( function ( child ) {
             if ( child instanceof THREE.Mesh ) {
               let materialArray = child.material;
+              // if object has one materials it's object not array
               if(!Array.isArray(materialArray)){
                 materialArray = [materialArray] 
               }
               materialArray.forEach((material, index)=>{
                 materialArray[index] = new THREE.MeshPhongMaterial().copy( material )
-                materialArray[index].transparent = true;
-                materialArray[index].opacity =  0.2;
+                if(component.selectedPart === undefined || element.name !== component.selectedPart.selected_cylinder_part_connection.id){
+                  materialArray[index].transparent = true;
+                  if(materialArray[index].name === "Rubber_-_Soft")
+                    materialArray[index].opacity =  0.15;
+                  else
+                    materialArray[index].opacity =  0.35;
+                  // materialArray[index].side = THREE.DoubleSide;
+                  materialArray[index].depthWrite = false
+                }
+                else{
+                  materialArray[index].transparent = false;
+                  materialArray[index].opacity =  1;
+                  materialArray[index].depthWrite = true
+                }
               });
-              child.material = materialArray;
+              if(Array.isArray(child.material)){
+                child.material = materialArray;
+              }
+              else{
+                child.material = materialArray[0];
+              }
             };
           } );
-        }
-        else{
-          element.traverse( function ( child ) {
-            if ( child instanceof THREE.Mesh ) {
-              let materialArray = child.material;
-              if(!Array.isArray(materialArray)){
-                materialArray = [materialArray] 
-              }
-              materialArray.forEach((material, index)=>{
-                materialArray[index] = new THREE.MeshPhongMaterial().copy( material )
-                materialArray[index].transparent = false;
-                materialArray[index].opacity =  1;
-              });
-              child.material = materialArray;
-            }
-          } );
-        }
-      });
+        });
     }
   },
   mounted() {
