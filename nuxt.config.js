@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'breeze-nuxt',
+    title: 'Hidro Cylinders',
     htmlAttrs: {
       lang: 'en'
     },
@@ -49,7 +49,7 @@ export default {
     proxy:true
   },
   proxy: {
-    '/parts': 'http://localhost:8000',
+    '/partFiles': { target: 'http://localhost:8000', pathRewrite: { '^/partFiles/': '/parts/' } },
     '/images': 'http://localhost:8000',
     '/api': 'http://localhost:8000',
     '/auth': 'http://localhost:8000',

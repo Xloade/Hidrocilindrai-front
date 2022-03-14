@@ -74,7 +74,7 @@ export default {
       let component = this;
 
 
-      this.mtlLoader.load("/parts/textures/materials.mtl", function(material){
+      this.mtlLoader.load("/partFiles/textures/materials.mtl", function(material){
         material.preload();
         component.objLoader.setMaterials(material);
       });
@@ -127,7 +127,7 @@ export default {
       this.current3dObjects.forEach(element => component.scene.remove(element))
       this.current3dObjects = [];
       this.cylinder.forEach(element => {
-        component.objLoader.load("/parts/"+element['part']['id']+".obj", function (object) {
+        component.objLoader.load("/partFiles/"+element['part']['id']+".obj", function (object) {
           component.scene.add(object);
           component.current3dObjects.push(object);
           object.name = element.id;
