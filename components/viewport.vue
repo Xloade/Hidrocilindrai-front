@@ -108,7 +108,6 @@ export default {
           opacity: 0.3
         });
         let planeMesh = new THREE.Mesh(geo, mat);
-<<<<<<< HEAD
         var arrow = new THREE.ArrowHelper(
           new THREE.Vector3(0, 1, 0),
           new THREE.Vector3(0, 0, 0),
@@ -128,27 +127,13 @@ export default {
           case "z":
             planeMesh.rotateZ(270*(Math.PI/180));
             arrow.rotateZ(270*(Math.PI/180));
-=======
-        switch (plane.name) {
-          case "x":
-            planeMesh.rotateX(90*(Math.PI/180));
-            break;
-          case "y":
-            planeMesh.rotateY(90*(Math.PI/180));
-            break;
-          case "z":
-            planeMesh.rotateZ(90*(Math.PI/180));
->>>>>>> 964278026780e0a4a4da2236b696c21b545c11d2
             break;
         
           default:
             break;
         }
         this.scene.add(planeMesh);
-<<<<<<< HEAD
         this.scene.add(arrow);
-=======
->>>>>>> 964278026780e0a4a4da2236b696c21b545c11d2
       });
     },
     onWindowResize() {
