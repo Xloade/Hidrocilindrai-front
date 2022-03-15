@@ -5,8 +5,12 @@
     </template>
     <div class="h-screen">
         <div class="row p-3">
-          <Viewport class="col-lg-6 col-12" :id="id" ref="viewport" :selectedPart="selectedPart" :cylinder="cylinder"/>
-          <CylinderPannel class="col-lg-6 col-12" :id="id" @changed="getCylinder()" @selectedPart="(part) => selectedPart = part"/>
+          <div class="viewport col-lg-6 col-12">
+            <Viewport :id="id" ref="viewport" :selectedPart="selectedPart" :cylinder="cylinder"/>
+          </div>
+          <div class="cylinderPannel col-lg-6 col-12">
+            <CylinderPannel :id="id" @changed="getCylinder()" @selectedPart="(part) => selectedPart = part"/>
+          </div>
         </div>
     </div>
   </BreezeAuthenticatedLayout>
@@ -58,4 +62,11 @@ export default {
 </script>
 
 <style scoped>
+  .viewport{
+    height: calc(100vh - 230px);
+  }
+  .cylinderPannel{
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+  }
 </style>

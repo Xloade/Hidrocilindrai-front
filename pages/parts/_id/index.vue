@@ -5,8 +5,12 @@
     </template>
     <div class="h-screen">
         <div class="row p-3">
-          <Viewport class="col-lg-6 col-12" :id="id" ref="viewport" :cylinder="part" originPlanes/>
-          <part-pannel class="col-lg-6 col-12" :id="id" @changed="newPart => {part[0]=newPart; $refs.viewport.loadObjects()}"/>
+          <div class="col-lg-6 col-12 viewport">
+            <Viewport :id="id" ref="viewport" :cylinder="part" originPlanes/>
+          </div>
+          <div class="col-lg-6 col-12 partPannel">
+            <part-pannel :id="id" @changed="newPart => {part[0]=newPart; $refs.viewport.loadObjects()}"/>
+          </div>
         </div>
     </div>
   </BreezeAuthenticatedLayout>
@@ -49,4 +53,11 @@ export default {
 </script>
 
 <style scoped>
+  .viewport{
+    height: calc(100vh - 230px);
+  }
+  .partPannel{
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+  }
 </style>

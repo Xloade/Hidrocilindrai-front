@@ -249,6 +249,6 @@ export default {
     border-radius: 5px;
   }
   .outter{
-    height: calc(100vh - 230px);
+    height: 100%;
   }
 </style>
