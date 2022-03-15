@@ -6,7 +6,7 @@
                 <b-form-group label="OBJ file upload:" label-cols-sm="4">
                     <b-form-file
                         v-model="objFile"
-                        placeholder="Choose a file or drop it here..."
+                        :placeholder="placeHolder"
                         drop-placeholder="Drop file here..."
                         @input="submitFile"
                         accept=".obj"
@@ -25,7 +25,8 @@ export default {
     data(){
         return{
             part: null,
-            objFile: null
+            objFile: null,
+            placeHolder: "Choose a file or drop it here..."
         }
     },
     methods:{
@@ -43,6 +44,8 @@ export default {
             this.$emit("changed", this.part)
         },
         async submitFile(){
+            if(this.objFile === null) return
+
             let formData = new FormData();
             formData.append("objFile", this.objFile);
             await this.$axios.post("/api/part/"+this.id+"/objFile", formData, {
@@ -61,6 +64,8 @@ export default {
                     this.$refs.alert.setAlert(error.message, "danger")
                 }
             })
+            this.placeHolder = this.objFile.name
+            this.objFile = null
         }
     },
     created(){
