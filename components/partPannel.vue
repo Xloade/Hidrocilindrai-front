@@ -43,14 +43,14 @@
                         </b-form-select-option>
                     </b-form-select >
                     <div class="my-2">
-                        <b-button variant="info">Add</b-button>
+                        <b-button variant="success">Add</b-button>
                         <b-button variant="info">Edit (Selected)</b-button>
                         <b-button variant="danger">Delete (Selected)</b-button>
                     </div>
                 </b-form-group>
             </b-form>
             <h2>Needed Connection edit</h2>
-            <part-connection-edit :id="id"/>
+            <part-connection-edit :id="id" :connectionTypes="connectionTypes"/>
         </div>
     </div>
 </template>
@@ -141,8 +141,5 @@ export default {
     }
     legend.z{
         background: lightblue;
-    }
-    .skuffed{
-        position: relative;
     }
 </style>
