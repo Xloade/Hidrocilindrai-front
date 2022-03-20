@@ -159,7 +159,7 @@ export default {
                     this.$refs.alert.setAlert(error.message, "danger")
                 }
             })
-        }
+        },
     },
     created(){
         this.getConnectionOptions()
@@ -176,7 +176,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .component{
         min-height: 400px;
     }
@@ -188,13 +188,5 @@ export default {
     }
     legend.z{
         background: lightblue;
-    }
-</style>
-
-<style scoped>
-    .stickyAlert{
-        position: sticky;
-        top: 10px;
-        z-index: 1020;
     }
 </style>

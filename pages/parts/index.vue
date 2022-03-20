@@ -6,6 +6,7 @@
         <b-button variant="success" @click="add">Add</b-button>
     </div>
     </template>
+        <my-alert ref="alert"/>
         <div class="row">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 p-2" v-for="part in parts" :key="part.id">
                 <b-card
@@ -19,7 +20,7 @@
                     ID: {{part.id}}
                   </p>
                   <b-link class="btn btn-primary" :to="`/parts/${part.id}`">Edit</b-link>
-                  <b-button variant="danger">Button</b-button>
+                  <b-button variant="danger" @click="removePart(part.id)">Delete</b-button>
                 </b-card>
             </div>
         </div>
@@ -29,6 +30,7 @@
 <script>
 import BreezeAuthenticatedLayout from '@/layouts/authenticated.vue'
 import MyHeader from '@/components/header.vue'
+import myAlert from '~/components/myAlert.vue'
 export default {
     data() {
       return {
@@ -50,13 +52,13 @@ export default {
         })
     },
     methods:{
-        add(){
-            this.$axios.post('/api/part')
-            .then(() => {
-                this.$nuxt.refresh()
-            })
-        },
-        checkFormValidity() {
+      add(){
+          this.$axios.post('/api/part')
+          .then((response) => {
+              this.$router.push("parts/"+response.data.id);
+          })
+      },
+      checkFormValidity() {
         const valid = this.$refs.form.checkValidity()
         this.nameState = valid
         return valid
@@ -82,6 +84,21 @@ export default {
         this.$nextTick(() => {
           this.$bvModal.hide('modal-prevent-closing')
         })
+      },
+      removePart(part_id){
+          this.$axios.delete("/api/part/"+part_id)
+          .then((message) => {
+              this.$refs.alert.setAlert(message.data.message, "success")
+              this.$nuxt.refresh()
+          })
+          .catch((error) => {
+              if( error.response.data.message ){
+                  this.$refs.alert.setAlert(error.response.data.message, "danger")
+              }
+              else{
+                  this.$refs.alert.setAlert(error.message, "danger")
+              }
+          })
       }
     },
 
@@ -90,6 +107,7 @@ export default {
     components: {
         BreezeAuthenticatedLayout,
         MyHeader,
+        myAlert
     }
 }
 </script>

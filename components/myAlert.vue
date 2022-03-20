@@ -5,6 +5,7 @@
       @dismissed="showCount=0" 
       @dismiss-count-down="countDownChanged" 
       dismissible
+      class="myAlert"
     >
       <p>{{text}}</p>
       <b-progress
@@ -40,5 +41,10 @@ export default{
 </script>
 
 <style  scoped>
-
+.myAlert{
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        margin-top: 10px;
+    }
 </style>
