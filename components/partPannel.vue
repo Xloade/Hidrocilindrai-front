@@ -15,7 +15,11 @@
                 </b-form-group>
             </b-form>
             <h2>Part edit</h2>
-            <b-form v-if="part" @submit.prevent="onSubmit">
+            <b-form 
+                v-if="part"
+                @submit.prevent="onSubmit"
+                @click="partForViewport.finnalOffset = part"
+            >
                 <b-form-group label-class="x" label="X offset" label-cols-sm="4">
                     <b-form-input v-model="part.x_offset" type="number"/>
                 </b-form-group>
@@ -55,7 +59,11 @@
                 <b-button variant="success" type="submit">Save changes</b-button>
             </b-form>
             <h2>Needed Connection edit</h2>
-            <part-connection-edit :id="id" :connectionTypes="connectionTypes"/>
+            <part-connection-edit 
+                :id="id" 
+                :connectionTypes="connectionTypes" 
+                @selectedConnection="(selection) => partForViewport.finnalOffset = selection"
+            />
             <connection-form ref="connectionForm" @done="(id) => {getConnectionOptions(); part.connection_id = id}"/>
         </div>
     </div>
