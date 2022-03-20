@@ -40,9 +40,16 @@ export default {
     },
     methods:{
         tabChanged(){
-            if(this.partGroups[this.activeTab] === undefined) return
-            let part = this.partGroups[this.activeTab].find(element => element.hasOwnProperty('selected_cylinder_part_connection'))
-            this.$emit("selectedPart", part)
+            let tab = this.partGroups[this.activeTab]
+            if(tab === undefined || tab.length < 1) return
+            let selectionInfo = {
+                for_connection: tab[0].for_connection,
+                cylinder_part_connection: tab[0].cylinder_part_connection,
+            }
+            // let part = this.partGroups[this.activeTab].find(element => element.hasOwnProperty('selected_cylinder_part_connection'))
+            // this.$emit("selectedPart", part)
+            this.$emit("selectedPart", selectionInfo)
+
         },
         getParts(){
             this.$axios.get("/api/cylinder/"+this.id+"/parts")

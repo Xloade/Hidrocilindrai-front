@@ -166,7 +166,7 @@ export default {
       this.current3dObjects.forEach(element => component.scene.remove(element))
       this.current3dObjects = [];
       this.cylinder.forEach(element => {
-        component.objLoader.load("/partFiles/"+element['part']['id']+".obj", function (object) {
+        component.objLoader.load("/partFiles/"+element['part']['id']+".obj", (object) => {
           component.scene.add(object);
           component.current3dObjects.push(object);
           object.name = element.id;
@@ -181,47 +181,54 @@ export default {
           object.rotateX(element['finnalOffset']['x_angle_offset']*(Math.PI/180));
           object.rotateY(element['finnalOffset']['y_angle_offset']*(Math.PI/180));
           object.rotateZ(element['finnalOffset']['z_angle_offset']*(Math.PI/180));
+          this.makeSelectedTransparent(object)
         });
       });
-      this.selectPart()
     },
     selectPart(){
       // quite uneficiant as it makes copies of material every time. But it would need more digging in three.js for more elegant soliution
-      let component = this;
       this.current3dObjects.forEach((element)=>{
-          element.traverse( function ( child ) {
-            if ( child instanceof THREE.Mesh ) {
-              let materialArray = child.material;
-              // if object has one materials it's object not array
-              if(!Array.isArray(materialArray)){
-                materialArray = [materialArray] 
-              }
-              materialArray.forEach((material, index)=>{
-                materialArray[index] = new THREE.MeshPhongMaterial().copy( material )
-                if(component.selectedPart === undefined || element.name !== component.selectedPart.selected_cylinder_part_connection.id){
-                  materialArray[index].transparent = true;
-                  if(materialArray[index].name === "Rubber_-_Soft")
-                    materialArray[index].opacity =  0.15;
-                  else
-                    materialArray[index].opacity =  0.35;
-                  // materialArray[index].side = THREE.DoubleSide;
-                  materialArray[index].depthWrite = false
-                }
-                else{
-                  materialArray[index].transparent = false;
-                  materialArray[index].opacity =  1;
-                  materialArray[index].depthWrite = true
-                }
-              });
-              if(Array.isArray(child.material)){
-                child.material = materialArray;
-              }
-              else{
-                child.material = materialArray[0];
-              }
-            };
-          } );
+          this.makeSelectedTransparent(element)
         });
+    },
+    makeSelectedTransparent(element){
+      element.traverse( ( child ) => {
+        if ( child instanceof THREE.Mesh ) {
+          let materialArray = child.material;
+          // if object has one materials it's object not array
+          if(!Array.isArray(materialArray)){
+            materialArray = [materialArray] 
+          }
+          materialArray.forEach((material, index)=>{
+            materialArray[index] = new THREE.MeshPhongMaterial().copy( material )
+            let realPart = this.cylinder.find((part)=>part.id == element.name)
+            if(
+              this.selectedPart === undefined 
+              || !(realPart.part_connection_id === this.selectedPart.for_connection.id
+              && realPart.cylinder_part_connection_id === this.selectedPart.cylinder_part_connection.id)
+            ){
+              materialArray[index].transparent = true;
+              if(materialArray[index].name === "Rubber_-_Soft")
+                materialArray[index].opacity =  0.15;
+              else
+                materialArray[index].opacity =  0.35;
+              // materialArray[index].side = THREE.DoubleSide;
+              materialArray[index].depthWrite = false
+            }
+            else{
+              materialArray[index].transparent = false;
+              materialArray[index].opacity =  1;
+              materialArray[index].depthWrite = true
+            }
+          });
+          if(Array.isArray(child.material)){
+            child.material = materialArray;
+          }
+          else{
+            child.material = materialArray[0];
+          }
+        };
+      } );
     }
   },
   mounted() {
