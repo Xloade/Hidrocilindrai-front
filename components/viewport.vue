@@ -204,9 +204,14 @@ export default {
             let realPart = this.cylinder.find((part)=>part.id == element.name)
             if(
               this.selectedPart === undefined 
-              || !(realPart.part_connection_id === this.selectedPart.for_connection.id
+              || (realPart.part_connection_id === this.selectedPart.for_connection.id
               && realPart.cylinder_part_connection_id === this.selectedPart.cylinder_part_connection.id)
             ){
+              materialArray[index].transparent = false;
+              materialArray[index].opacity =  1;
+              materialArray[index].depthWrite = true
+            }
+            else{
               materialArray[index].transparent = true;
               if(materialArray[index].name === "Rubber_-_Soft")
                 materialArray[index].opacity =  0.15;
@@ -214,11 +219,6 @@ export default {
                 materialArray[index].opacity =  0.35;
               // materialArray[index].side = THREE.DoubleSide;
               materialArray[index].depthWrite = false
-            }
-            else{
-              materialArray[index].transparent = false;
-              materialArray[index].opacity =  1;
-              materialArray[index].depthWrite = true
             }
           });
           if(Array.isArray(child.material)){
