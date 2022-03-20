@@ -180,6 +180,8 @@ export default {
     .component{
         min-height: 400px;
     }
+</style>
+<style>
     legend.x{
         background: lightcoral;
     }
