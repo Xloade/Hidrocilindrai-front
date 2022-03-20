@@ -62,7 +62,7 @@ export default {
                 { key: 'actions', label: 'Actions' }
             ],
             partConnections: [],
-            selectedConnection: null
+            selectedConnection: ""
         }
     },
     methods:{
