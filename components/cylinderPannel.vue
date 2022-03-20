@@ -44,8 +44,8 @@ export default {
             let part = this.partGroups[this.activeTab].find(element => element.hasOwnProperty('selected_cylinder_part_connection'))
             this.$emit("selectedPart", part)
         },
-        async getParts(){
-            await this.$axios.get("/api/cylinder/"+this.id+"/parts")
+        getParts(){
+            this.$axios.get("/api/cylinder/"+this.id+"/parts")
             .then(response => this.partGroups = response.data)
         },
         getPartGroupKey(part){
