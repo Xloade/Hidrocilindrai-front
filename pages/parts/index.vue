@@ -11,7 +11,7 @@
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 p-2" v-for="part in parts" :key="part.id">
                 <b-card
                     :title="part.name"
-                    :img-src="'/images/parts/'+part.part_type.id+'.png'"
+                    :img-src="'/images/parts/'+(part.part_type && part.part_type.id)+'.png'"
                     img-top
                     tag="article"
                     style=""

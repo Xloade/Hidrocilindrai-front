@@ -40,6 +40,9 @@
                 </b-form-group>
                 <b-form-group label="Fullfiled connection:" label-cols-sm="4" v-if="connectionTypes">
                     <b-form-select v-model="part.connection_id" required>
+                        <b-form-select-option :value="null">
+                            <div class="">Null</div>
+                        </b-form-select-option>
                         <b-form-select-option v-for="connection in connectionTypes" :key="connection.id" :value="connection.id">
                             <div class="">{{connection.name}}</div>
                         </b-form-select-option>
