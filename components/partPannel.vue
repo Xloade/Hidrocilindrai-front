@@ -50,7 +50,7 @@
                     <div class="my-2">
                         <b-button variant="success"
                             @click="$refs.connectionForm.open(null)"
-                        >Add</b-button>
+                        >Create new</b-button>
                         <b-button variant="info"
                             @click="$refs.connectionForm.open(part.connection_id)"
                         >Edit (Selected)</b-button>
