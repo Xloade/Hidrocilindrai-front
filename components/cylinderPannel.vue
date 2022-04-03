@@ -4,12 +4,27 @@
             <my-alert ref="alert"/>
             <b-tabs content-class="mt-3" v-model="activeTab" @input="tabChanged">
                 <b-tab :title="partGroup[0].connection.part_type.name" :active="index==0" v-for="(partGroup, index) in partGroups" :key="getPartGroupKey(partGroup[0]) + 'tab-control'">
-                    <table class="w-100">
+                    <table class="w-100 table table-hover">
+                        <thead>
+                            <th>id</th>
+                            <th v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions">
+                                {{partTypeDimention.name}}
+                                <b-icon icon="exclamation-circle-fill" variant="info" :id="'tooltip-target-'+partTypeDimention.id" :key="partTypeDimention.id"/>
+                                <b-tooltip :target="'tooltip-target-'+partTypeDimention.id" triggers="hover">
+                                    <img :height="200" :src="'/images/partTypeDimentions/'+partTypeDimention.id+'.png'" alt="No tooltip">
+                                </b-tooltip>
+                            </th>
+                            
+                            <th>action</th>
+                        </thead>
                         <tbody class="table">
                             <tr :class="['part', {'bg-success':part.hasOwnProperty('selected_cylinder_part_connection')}]" v-for="part in partGroup" :key="part.id">
                                 <td>
                                     {{part.id}}
                                 </td>
+                                <th v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions" :key="partTypeDimention.id">
+                                    {{partDimention(part, partTypeDimention).value}}
+                                </th>
                                 <td>
                                     <b-button @click="addPart(part)" v-if="!part.hasOwnProperty('selected_cylinder_part_connection')" variant="success">
                                         Add
@@ -39,6 +54,10 @@ export default {
         }
     },
     methods:{
+        partDimention(part, dimention){
+            let GotDimention = part.dimentions.find(e=>e.part_type_dimention_id === dimention.id)
+            return GotDimention || {}
+        },
         tabChanged(){
             let tab = this.partGroups[this.activeTab]
             if(tab === undefined || tab.length < 1) return
