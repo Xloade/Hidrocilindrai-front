@@ -2,55 +2,15 @@
     <div class="">
         <my-alert class="stickyAlert" ref="alert"/>
         <b-table
-            :items="partDimentions"
+            :items="dimentions"
             :fields="partDimentionFields"
             primary-key="id"
         >
-        <template #cell(actions)="row">
-            <b-row>
-                <b-col :cols="4">
-                    <b-button variant="danger" size="sm" @click="removePartTypeDimention(row.item.pivot.id)">Remove</b-button>
-                </b-col>
-                <b-col :cols="8">
-                    <b-form>
-                        <b-form-file
-                            v-model="row.item.pngFile"
-                            :placeholder="row.item.placeHolder"
-                            drop-placeholder="Drop file here..."
-                            @input="submitFile(row.item)"
-                            accept=".png"
-                            :state="row.item.ImageExcists"
-                            size="sm"
-                        />
-                    </b-form>
-                </b-col>
-            </b-row>
-        </template>
+            <template #cell(value)="row">
+                <b-input v-model="row.item.value"/>
+            </template>
         </b-table>
-        <b-form>
-            <b-form-group label="Dimention to add:" label-cols-sm="4" v-if="dimentions">
-                <b-form-select v-model="selectedDimention">
-                    <b-form-select-option v-for="dimention in dimentions" :key="dimention.id" :value="dimention.id">
-                        <div class="d-flex">
-                            <div class="">{{dimention.name}}</div>
-                        </div>
-                    </b-form-select-option>
-                </b-form-select >
-            </b-form-group>
-            <div class="my-2">
-                <b-button variant="success" @click="addDimention">Add</b-button>
-            </div>
-            <b-button variant="success"
-                @click="$refs.dimentionForm.open(null)"
-            >Create new</b-button>
-            <b-button variant="info"
-                @click="$refs.dimentionForm.open(selectedDimention)"
-            >Edit (Selected)</b-button>
-            <b-button variant="danger"
-                @click="removeDimention(selectedDimention)"
-            >Delete (Selected)</b-button>
-            <dimention-form ref="dimentionForm" @done="(id) => {getDimentions(); selectedDimention = id}"/>
-        </b-form>
+        <b-button variant="success" @click="saveAll()">Save dimentions</b-button>
     </div>
 </template>
 
@@ -58,110 +18,54 @@
 import dimentionForm from "./dimentionForm.vue";
 import myAlert from "./myAlert.vue";
 export default {
-    props:["id"],
+    props:["part"],
     data(){
         return{
             partDimentionFields: [
-                { key: 'name', label: 'Dimention name'},
-                { key: 'actions', label: 'Actions' }
+                { key: 'name', label: 'Name'},
+                { key: 'value', label: 'Value' },
             ],
-            partDimentions: [],
-            dimentions:[],
-            selectedDimention: null,
         }
     },
     methods:{
-        getDimentions(){
-            this.$axios.get("api/dimention")
-            .then(response => {
-                this.dimentions = response.data
-            })
-        },
-        getpartDimentions(){
-            this.$axios.get("/api/partType/"+this.id+"/partTypeDimention")
-            .then(response => {
-                this.partDimentions = response.data
-            })
-        },
-        addDimention(){
-            this.$axios.post("/api/partType/"+this.id+"/partTypeDimention", {dimention_id: this.selectedDimention})
-            .then((message) => {
-                this.$refs.alert.setAlert(message.data.message, "success")
-                this.getpartDimentions()
+        saveAll(){
+            Promise.all(
+                this.dimentions.map(element => {
+                    return this.saveDimention(element)
+                })
+            )
+            .then(() => {
+                this.$parent.$refs.alert.setAlert("All dimentions saved", "success")
             })
             .catch((error) => {
                 if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
+                    this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
                 }
                 else{
-                    this.$refs.alert.setAlert(error.message, "danger")
+                    this.$parent.$refs.alert.setAlert(error.message, "danger")
                 }
             })
         },
-        removePartTypeDimention(dimention_id){
-            this.$axios.delete("/api/partType/"+this.id+"/partTypeDimention/"+dimention_id)
-            .then((message) => {
-                this.$refs.alert.setAlert(message.data.message, "success")
-                this.getpartDimentions()
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        removeDimention(){
-            this.$axios.delete("/api/dimention/"+this.selectedDimention)
-            .then((message) => {
-                this.$refs.alert.setAlert(message.data.message, "success")
-                this.getDimentions()
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        submitFile(partTypeDimention){
-            if(partTypeDimention.pngFile === null) return
-
-            let formData = new FormData();
-            formData.append("pngFile", partTypeDimention.pngFile);
-            this.$axios.post("/api/partType/"+this.id+"/partTypeDimention/"+partTypeDimention.pivot.id+"/pngFile", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then(_ => {
-                partTypeDimention.placeHolder = partTypeDimention.pngFile.name
-                partTypeDimention.pngFile = null
-                partTypeDimention.ImageExcists = true
-            })
-            .catch((error) => {
-                partTypeDimention.placeHolder = partTypeDimention.pngFile.name
-                partTypeDimention.pngFile = null
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
+        saveDimention(dimention){
+            if(!dimention.created && dimention.value==="") return Promise.resolve()
+            return this.$axios.post("/api/part/"+this.part.id+"/partDimention",
+            {part_type_dimention_id:dimention.id, value:dimention.value})
+        }  
     },
-    created(){
-        this.getDimentions();
-        this.getpartDimentions();
-    },
-    components:{
-        dimentionForm,
-        myAlert
+    computed:{
+        dimentions(){
+            let arr = []
+            this.part.possible_dimentions.forEach(element => {
+                let valueElement = this.part.dimentions.find(e=>e.part_type_dimention_id === element.id)
+                arr.push({
+                    id: element.id,
+                    name: element.name,
+                    value: valueElement !== undefined ? valueElement.value : "",
+                    created: valueElement !== undefined,
+                })
+            });
+            return arr
+        }
     }
 }
 </script>

@@ -61,6 +61,8 @@
                 </b-form-group>
                 <b-button variant="success" type="submit">Save changes</b-button>
             </b-form>
+            <h2>Part dimentions</h2>
+            <part-dimention-edit :part="part"/>
             <h2>Needed Connection edit</h2>
             <part-connection-edit 
                 :id="id" 
@@ -76,8 +78,9 @@
 import connectionForm from './connectionForm.vue'
 import myAlert from './myAlert.vue'
 import partConnectionEdit from './partConnectionEdit.vue'
+import partDimentionEdit from './partDimentionEdit.vue'
 export default {
-    components: { myAlert, partConnectionEdit, connectionForm },
+    components: { myAlert, partConnectionEdit, connectionForm, partDimentionEdit },
     props:["id"],
     data(){
         return{

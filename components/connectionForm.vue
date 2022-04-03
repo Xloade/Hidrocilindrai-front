@@ -24,7 +24,7 @@
                         {{partType.name}}
                     </span>
                     dimentions</h2>
-                <part-dimention-edit :id="id"/>
+                <part-type-dimention-edit :id="id"/>
 
             </b-form>
         </b-modal>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import partDimentionEdit from "./partDimentionEdit.vue";
+import partTypeDimentionEdit from "./partTypeDimentionEdit.vue";
 export default {
     data(){
         return{
@@ -98,7 +98,7 @@ export default {
         this.getTypes();
     },
     components:{
-        partDimentionEdit
+        partTypeDimentionEdit
     }
 }
 </script>

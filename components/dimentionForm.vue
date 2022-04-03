@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import partDimentionEdit from "./partDimentionEdit.vue";
 export default {
     data(){
         return{
@@ -71,9 +70,6 @@ export default {
             }
         },
     },
-    components:{
-        partDimentionEdit
-    }
 }
 </script>
 
