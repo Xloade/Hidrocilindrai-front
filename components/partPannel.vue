@@ -1,6 +1,6 @@
 <template>
     <div class="component">
-        <div class="mt-3">
+        <div class="mt-3" v-if="part">
             <my-alert class="stickyAlert" ref="alert"/>
             <h2>Part file upload</h2>
             <b-form>
@@ -11,12 +11,12 @@
                         drop-placeholder="Drop file here..."
                         @input="submitFile"
                         accept=".obj"
+                        :state="part.ObjFileExcists"
                     />
                 </b-form-group>
             </b-form>
             <h2>Part edit</h2>
             <b-form 
-                v-if="part"
                 @submit.prevent="onSubmit"
                 @click="partForViewport.finnalOffset = part"
             >
@@ -121,6 +121,7 @@ export default {
                 this.changed()
                 this.placeHolder = this.objFile.name
                 this.objFile = null
+                this.part.ObjFileExcists = true
             })
             .catch((error) => {
                 this.placeHolder = this.objFile.name

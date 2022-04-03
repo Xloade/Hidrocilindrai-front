@@ -7,7 +7,24 @@
             primary-key="id"
         >
         <template #cell(actions)="row">
-            <b-button variant="danger" size="sm" @click="removePartTypeDimention(row.item.pivot.id)">Remove</b-button>
+            <b-row>
+                <b-col :cols="4">
+                    <b-button variant="danger" size="sm" @click="removePartTypeDimention(row.item.pivot.id)">Remove</b-button>
+                </b-col>
+                <b-col :cols="8">
+                    <b-form>
+                        <b-form-file
+                            v-model="row.item.pngFile"
+                            :placeholder="row.item.placeHolder"
+                            drop-placeholder="Drop file here..."
+                            @input="submitFile(row.item)"
+                            accept=".png"
+                            :state="row.item.ImageExcists"
+                            size="sm"
+                        />
+                    </b-form>
+                </b-col>
+            </b-row>
         </template>
         </b-table>
         <b-form>
@@ -110,7 +127,33 @@ export default {
                     this.$refs.alert.setAlert(error.message, "danger")
                 }
             })
-        }
+        },
+        submitFile(partTypeDimention){
+            if(partTypeDimention.pngFile === null) return
+
+            let formData = new FormData();
+            formData.append("pngFile", partTypeDimention.pngFile);
+            this.$axios.post("/api/partType/"+this.id+"/partTypeDimention/"+partTypeDimention.pivot.id+"/pngFile", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(_ => {
+                partTypeDimention.placeHolder = partTypeDimention.pngFile.name
+                partTypeDimention.pngFile = null
+                partTypeDimention.ImageExcists = true
+            })
+            .catch((error) => {
+                partTypeDimention.placeHolder = partTypeDimention.pngFile.name
+                partTypeDimention.pngFile = null
+                if( error.response.data.message ){
+                    this.$refs.alert.setAlert(error.response.data.message, "danger")
+                }
+                else{
+                    this.$refs.alert.setAlert(error.message, "danger")
+                }
+            })
+        },
     },
     created(){
         this.getDimentions();
