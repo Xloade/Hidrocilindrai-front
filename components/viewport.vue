@@ -33,10 +33,6 @@ export default {
       this.scene.background = new THREE.Color(0x555555);
       //this.scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
 
-      this.cylinderGroup = new THREE.Group();
-      this.scene.add(this.cylinderGroup);
-      this.cylinderGroup.rotation.set(Math.PI/2, Math.PI, 0)
-
       this.renderer = new THREE.WebGLRenderer({ antialias: true });
       this.renderer.setPixelRatio(window.devicePixelRatio); //might be window
       this.renderer.setSize(
@@ -169,13 +165,15 @@ export default {
       this.renderer.render(this.scene, this.camera);
     },
     loadObjects(){
+      this.scene.remove(this.cylinderGroup)
+      this.cylinderGroup = new THREE.Group();
+      this.scene.add(this.cylinderGroup);
+      this.cylinderGroup.rotation.set(Math.PI/2, Math.PI, 0)
+      this.scene.add(this.cylinderGroup)
       // to remove objects if they were here from last time
-      this.current3dObjects.forEach(element => this.cylinderGroup.remove(element))
       this.current3dObjects = [];
       this.cylinder.forEach(element => {
         this.objLoader.load("/partFiles/"+element['part']['id']+".obj", (object) => {
-          // this.scene.add(object);
-          this.cylinderGroup.add(object);
           this.current3dObjects.push(object);
           object.name = element.id;
           this.makeSelectedTransparent(object)
@@ -195,6 +193,9 @@ export default {
         if (childrenData.parent) {
           let parentObject = this.current3dObjects.find((object)=>object.name == childrenData.parent.id)
           parentObject.add(pivot)
+        }
+        else{
+          this.cylinderGroup.add(childrenObject);
         }
         childrenObject.position.x += (childrenData['part']['x_offset']);
         childrenObject.position.y += (childrenData['part']['y_offset']);
