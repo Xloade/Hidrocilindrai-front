@@ -24,7 +24,7 @@
                         {{partType.name}}
                     </span>
                     dimentions</h2>
-                <part-type-dimention-edit :id="id"/>
+                <part-type-dimention-edit :id="connection.part_type_id"/>
 
             </b-form>
         </b-modal>

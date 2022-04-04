@@ -75,6 +75,7 @@ export default {
             })
         },
         getpartDimentions(){
+            if (this.id === "") return
             this.$axios.get("/api/partType/"+this.id+"/partTypeDimention")
             .then(response => {
                 this.partDimentions = response.data
@@ -154,7 +155,11 @@ export default {
     },
     created(){
         this.getDimentions();
-        this.getpartDimentions();
+    },
+    watch:{
+        id(){
+            this.getpartDimentions();
+        }
     },
     components:{
         dimentionForm,
