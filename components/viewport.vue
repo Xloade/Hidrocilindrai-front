@@ -189,9 +189,12 @@ export default {
     afterLoad(){
       this.current3dObjects.forEach((childrenObject)=>{
         let childrenData = this.cylinder.find((part)=>part.id == childrenObject.name)
+        let pivot = new THREE.Group();
+        this.cylinderGroup.add(pivot)
+        pivot.add(childrenObject)
         if (childrenData.parent) {
           let parentObject = this.current3dObjects.find((object)=>object.name == childrenData.parent.id)
-          parentObject.add(childrenObject)
+          parentObject.add(pivot)
         }
         childrenObject.position.x += (childrenData['part']['x_offset']);
         childrenObject.position.y += (childrenData['part']['y_offset']);
@@ -199,13 +202,14 @@ export default {
         childrenObject.rotation.x += (childrenData['part']['x_angle_offset']*(Math.PI/180));
         childrenObject.rotation.y += (childrenData['part']['y_angle_offset']*(Math.PI/180));
         childrenObject.rotation.z += (childrenData['part']['z_angle_offset']*(Math.PI/180));
-        
-        childrenObject.rotation.x -= (childrenData['part_connection']['x_angle_offset']*(Math.PI/180));
-        childrenObject.rotation.y -= (childrenData['part_connection']['y_angle_offset']*(Math.PI/180));
-        childrenObject.rotation.z -= (childrenData['part_connection']['z_angle_offset']*(Math.PI/180));
-        childrenObject.position.x -= (childrenData['part_connection']['x_offset']);
-        childrenObject.position.y -= (childrenData['part_connection']['y_offset']);
-        childrenObject.position.z -= (childrenData['part_connection']['z_offset']);
+
+
+        pivot.rotation.x -= (childrenData['part_connection']['x_angle_offset']*(Math.PI/180));
+        pivot.rotation.y -= (childrenData['part_connection']['y_angle_offset']*(Math.PI/180));
+        pivot.rotation.z -= (childrenData['part_connection']['z_angle_offset']*(Math.PI/180));
+        pivot.position.x -= (childrenData['part_connection']['x_offset']);
+        pivot.position.y -= (childrenData['part_connection']['y_offset']);
+        pivot.position.z -= (childrenData['part_connection']['z_offset']);
       })
     },
     selectPart(){
