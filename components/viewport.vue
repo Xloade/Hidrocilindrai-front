@@ -14,6 +14,7 @@ export default {
       camera: null,
       controls: null,
       scene: null,
+      cylinderGroup: null,
       renderer: null,
       element: null,
       textureLoader: null,
@@ -27,9 +28,14 @@ export default {
       this.textureLoader = new THREE.TextureLoader();
       this.objLoader = new THREE.OBJLoader();
       this.mtlLoader = new THREE.MTLLoader();
+      
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(0x555555);
       //this.scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
+
+      this.cylinderGroup = new THREE.Group();
+      this.scene.add(this.cylinderGroup);
+      this.cylinderGroup.rotation.set(Math.PI/2, Math.PI, 0)
 
       this.renderer = new THREE.WebGLRenderer({ antialias: true });
       this.renderer.setPixelRatio(window.devicePixelRatio); //might be window
@@ -46,7 +52,9 @@ export default {
       //   1000
       // );
       this.camera = new THREE.OrthographicCamera(-this.element.clientWidth/2,this.element.clientWidth/2,this.element.clientHeight/2,-this.element.clientHeight/2,0.01,1000)
-      this.camera.position.set(200, 150, 0);
+      this.camera.position.set(500, 150, 0);
+      // this.camera.rotation.x = Math.PI/2
+      // this.camera.rotation.y = Math.PI
       this.camera.zoom = this.element.clientWidth / 1000 * 1.5
       this.camera.updateProjectionMatrix();
 
@@ -70,12 +78,12 @@ export default {
 
       //this.controls.maxPolarAngle = Math.PI / 2;
       // world
-      let component = this;
 
 
-      this.mtlLoader.load("/partFiles/textures/materials.mtl", function(material){
+
+      this.mtlLoader.load("/partFiles/textures/materials.mtl", (material)=>{
         material.preload();
-        component.objLoader.setMaterials(material);
+        this.objLoader.setMaterials(material);
       });
 
       // lights
@@ -161,29 +169,44 @@ export default {
       this.renderer.render(this.scene, this.camera);
     },
     loadObjects(){
-      let component = this;
       // to remove objects if they were here from last time
-      this.current3dObjects.forEach(element => component.scene.remove(element))
+      this.current3dObjects.forEach(element => this.cylinderGroup.remove(element))
       this.current3dObjects = [];
       this.cylinder.forEach(element => {
-        component.objLoader.load("/partFiles/"+element['part']['id']+".obj", (object) => {
-          component.scene.add(object);
-          component.current3dObjects.push(object);
+        this.objLoader.load("/partFiles/"+element['part']['id']+".obj", (object) => {
+          // this.scene.add(object);
+          this.cylinderGroup.add(object);
+          this.current3dObjects.push(object);
           object.name = element.id;
-
-          object.rotateX(Math.PI/2);
-          object.rotateY(Math.PI);
-          // object.rotateZ(Math.PI/2);
-
-          object.translateX(element['finnalOffset']['x_offset']);
-          object.translateY(element['finnalOffset']['y_offset']);
-          object.translateZ(element['finnalOffset']['z_offset']);
-          object.rotateX(element['finnalOffset']['x_angle_offset']*(Math.PI/180));
-          object.rotateY(element['finnalOffset']['y_angle_offset']*(Math.PI/180));
-          object.rotateZ(element['finnalOffset']['z_angle_offset']*(Math.PI/180));
           this.makeSelectedTransparent(object)
+          if(this.checkIfLoadFinished()) this.afterLoad()
         });
       });
+    },
+    checkIfLoadFinished(){
+      return this.current3dObjects.length === this.cylinder.length
+    },
+    afterLoad(){
+      this.current3dObjects.forEach((childrenObject)=>{
+        let childrenData = this.cylinder.find((part)=>part.id == childrenObject.name)
+        if (childrenData.parent) {
+          let parentObject = this.current3dObjects.find((object)=>object.name == childrenData.parent.id)
+          parentObject.add(childrenObject)
+        }
+        childrenObject.position.x += (childrenData['part']['x_offset']);
+        childrenObject.position.y += (childrenData['part']['y_offset']);
+        childrenObject.position.z += (childrenData['part']['z_offset']);
+        childrenObject.rotation.x += (childrenData['part']['x_angle_offset']*(Math.PI/180));
+        childrenObject.rotation.y += (childrenData['part']['y_angle_offset']*(Math.PI/180));
+        childrenObject.rotation.z += (childrenData['part']['z_angle_offset']*(Math.PI/180));
+        
+        childrenObject.rotation.x -= (childrenData['part_connection']['x_angle_offset']*(Math.PI/180));
+        childrenObject.rotation.y -= (childrenData['part_connection']['y_angle_offset']*(Math.PI/180));
+        childrenObject.rotation.z -= (childrenData['part_connection']['z_angle_offset']*(Math.PI/180));
+        childrenObject.position.x -= (childrenData['part_connection']['x_offset']);
+        childrenObject.position.y -= (childrenData['part_connection']['y_offset']);
+        childrenObject.position.z -= (childrenData['part_connection']['z_offset']);
+      })
     },
     selectPart(){
       // quite uneficiant as it makes copies of material every time. But it would need more digging in three.js for more elegant soliution

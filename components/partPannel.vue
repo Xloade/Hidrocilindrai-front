@@ -21,25 +21,25 @@
                 @click="partForViewport.finnalOffset = part"
             >
                 <b-form-group label-class="x" label="X offset" label-cols-sm="4">
-                    <b-form-input v-model="part.x_offset" type="number"/>
+                    <b-form-input v-model="part.x_offset" type="number" step="0.1"/>
                 </b-form-group>
                 <b-form-group label-class="y" label="Y offset" label-cols-sm="4">
-                    <b-form-input v-model="part.y_offset" type="number"/>
+                    <b-form-input v-model="part.y_offset" type="number" step="0.1"/>
                 </b-form-group>
                 <b-form-group label-class="z" label="Z offset" label-cols-sm="4">
-                    <b-form-input v-model="part.z_offset" type="number"/>
+                    <b-form-input v-model="part.z_offset" type="number" step="0.1"/>
                 </b-form-group>
                 <b-form-group label-class="x" label="X angle offset" label-cols-sm="4">
-                    <b-form-input v-model="part.x_angle_offset" type="number"/>
+                    <b-form-input v-model="part.x_angle_offset" type="number" step="0.1"/>
                 </b-form-group>
                 <b-form-group label-class="y" label="Y angle offset" label-cols-sm="4">
-                    <b-form-input v-model="part.y_angle_offset" type="number"/>
+                    <b-form-input v-model="part.y_angle_offset" type="number" step="0.1"/>
                 </b-form-group>
                 <b-form-group label-class="z" label="Z angle offset" label-cols-sm="4">
-                    <b-form-input v-model="part.z_angle_offset" type="number"/>
+                    <b-form-input v-model="part.z_angle_offset" type="number" step="0.1"/>
                 </b-form-group>
                 <b-form-group label="Fullfiled connection:" label-cols-sm="4" v-if="connectionTypes">
-                    <b-form-select v-model="part.connection_id" required>
+                    <b-form-select v-model="part.connection_id">
                         <b-form-select-option :value="null">
                             <div class="">Null</div>
                         </b-form-select-option>
