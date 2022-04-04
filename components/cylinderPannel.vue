@@ -9,9 +9,9 @@
                             <th>id</th>
                             <th v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions">
                                 {{partTypeDimention.name}}
-                                <b-icon icon="exclamation-circle-fill" variant="info" :id="'tooltip-target-'+partTypeDimention.id" :key="partTypeDimention.id"/>
-                                <b-tooltip :target="'tooltip-target-'+partTypeDimention.id" triggers="hover">
-                                    <img :height="200" :src="'/images/partTypeDimentions/'+partTypeDimention.id+'.png'" alt="No tooltip">
+                                <b-icon icon="exclamation-circle-fill" variant="info" :id="'tooltip-target-'+partTypeDimention.pivot.id+'-'+index" :key="partTypeDimention.id"/>
+                                <b-tooltip custom-class="myToolTip" variant="secondary" :target="'tooltip-target-'+partTypeDimention.pivot.id+'-'+index" triggers="hover click">
+                                    <img :height="200" :src="'/images/partTypeDimentions/'+partTypeDimention.pivot.id+'.png'" alt="No tooltip">
                                 </b-tooltip>
                             </th>
                             
@@ -126,5 +126,11 @@ export default {
     }
     .component{
         min-height: 400px;
+    }
+</style>
+
+<style>
+    .tooltip-inner{
+        max-width: none;
     }
 </style>
