@@ -3,7 +3,7 @@
         <b-table
             :items="partConnections"
             :fields="partConnectionFields"
-            primary-key="id"
+            primary-key="pivot.id"
         >
 
             <template #cell(actions)="row">
