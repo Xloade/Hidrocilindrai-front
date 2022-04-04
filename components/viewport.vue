@@ -220,7 +220,7 @@ export default {
         });
     },
     makeSelectedTransparent(element){
-      element.traverse( ( child ) => {
+      element.children.forEach( ( child ) => {
         if ( child instanceof THREE.Mesh ) {
           let materialArray = child.material;
           // if object has one materials it's object not array
