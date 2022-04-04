@@ -18,7 +18,7 @@
             <h2>Part edit</h2>
             <b-form 
                 @submit.prevent="onSubmit"
-                @click="partForViewport.finnalOffset = part"
+                @click="partForViewport.part_connection = zeroSelection;"
             >
                 <b-form-group label-class="x" label="X offset" label-cols-sm="4">
                     <b-form-input v-model="part.x_offset" type="number" step="0.1"/>
@@ -67,7 +67,7 @@
             <part-connection-edit 
                 :id="id" 
                 :connectionTypes="connectionTypes" 
-                @selectedConnection="(selection) => partForViewport.finnalOffset = selection"
+                @selectedConnection="(selection) => partForViewport.part_connection = selection"
             />
             <connection-form ref="connectionForm" @done="(id) => {getConnectionOptions(); part.connection_id = id}"/>
         </div>
@@ -89,7 +89,16 @@ export default {
             objFile: null,
             placeHolder: "Choose a file or drop it here...",
             connectionTypes: null,
-            connectionEditId: null
+            connectionEditId: null,
+            zeroSelection:{
+                x_angle_offset: 0,
+                y_angle_offset: 0,
+                z_angle_offset: 0,
+                x_offset: 0,
+                y_offset: 0,
+                z_offset: 0,
+                editing: false
+            }
         }
     },
     methods:{
@@ -97,7 +106,7 @@ export default {
             this.$axios.get("/api/part/"+this.id)
             .then(response => {
                 this.part = response.data
-                this.partForViewport = {...this.part, finnalOffset:this.part, part:this.part }
+                this.partForViewport = {...this.part, part:this.part, part_connection: this.zeroSelection, isPartSetup:true}
             })
 
         },

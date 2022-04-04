@@ -188,29 +188,39 @@ export default {
       this.current3dObjects.forEach((childrenObject)=>{
         let childrenData = this.cylinder.find((part)=>part.id == childrenObject.name)
         let pivot = new THREE.Group();
-        this.cylinderGroup.add(pivot)
         pivot.add(childrenObject)
         if (childrenData.parent) {
           let parentObject = this.current3dObjects.find((object)=>object.name == childrenData.parent.id)
           parentObject.add(pivot)
         }
         else{
-          this.cylinderGroup.add(childrenObject);
+          this.cylinderGroup.add(pivot);
         }
-        childrenObject.position.x += (childrenData['part']['x_offset']);
-        childrenObject.position.y += (childrenData['part']['y_offset']);
-        childrenObject.position.z += (childrenData['part']['z_offset']);
-        childrenObject.rotation.x += (childrenData['part']['x_angle_offset']*(Math.PI/180));
-        childrenObject.rotation.y += (childrenData['part']['y_angle_offset']*(Math.PI/180));
-        childrenObject.rotation.z += (childrenData['part']['z_angle_offset']*(Math.PI/180));
+        if (!(childrenData.isPartSetup && childrenData.part_connection.editing !== false)) {
+          childrenObject.position.x = Number(childrenData['part']['x_offset']);
+          childrenObject.position.y = Number(childrenData['part']['y_offset']);
+          childrenObject.position.z = Number(childrenData['part']['z_offset']);
+          childrenObject.rotation.x = Number(childrenData['part']['x_angle_offset']*(Math.PI/180));
+          childrenObject.rotation.y = Number(childrenData['part']['y_angle_offset']*(Math.PI/180));
+          childrenObject.rotation.z = Number(childrenData['part']['z_angle_offset']*(Math.PI/180));
+        }
 
-
-        pivot.rotation.x -= (childrenData['part_connection']['x_angle_offset']*(Math.PI/180));
-        pivot.rotation.y -= (childrenData['part_connection']['y_angle_offset']*(Math.PI/180));
-        pivot.rotation.z -= (childrenData['part_connection']['z_angle_offset']*(Math.PI/180));
-        pivot.position.x -= (childrenData['part_connection']['x_offset']);
-        pivot.position.y -= (childrenData['part_connection']['y_offset']);
-        pivot.position.z -= (childrenData['part_connection']['z_offset']);
+        if(childrenData.isPartSetup){
+          childrenObject.position.x += Number(childrenData['part_connection']['x_offset']);
+          childrenObject.position.y += Number(childrenData['part_connection']['y_offset']);
+          childrenObject.position.z += Number(childrenData['part_connection']['z_offset']);
+          pivot.rotation.x = Number(childrenData['part_connection']['x_angle_offset']*(Math.PI/180));
+          pivot.rotation.y = Number(childrenData['part_connection']['y_angle_offset']*(Math.PI/180));
+          pivot.rotation.z = Number(childrenData['part_connection']['z_angle_offset']*(Math.PI/180));
+        }
+        else{
+          pivot.position.x = -(childrenData['part_connection']['x_offset']);
+          pivot.position.y = -(childrenData['part_connection']['y_offset']);
+          pivot.position.z = -(childrenData['part_connection']['z_offset']);
+          pivot.rotation.x = -(childrenData['part_connection']['x_angle_offset']*(Math.PI/180));
+          pivot.rotation.y = -(childrenData['part_connection']['y_angle_offset']*(Math.PI/180));
+          pivot.rotation.z = -(childrenData['part_connection']['z_angle_offset']*(Math.PI/180));
+        }
       })
     },
     selectPart(){
