@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <b-navbar toggleable="lg" type="dark" variant="success">
+            <b-navbar toggleable="lg" type="dark" variant="success" v-if="$auth.user">
                 <b-navbar-brand to="/dashboard">
                     X Cylinder's
                 </b-navbar-brand>
@@ -11,8 +11,24 @@
                 <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
                     <b-nav-item to="/dashboard">Dashboard</b-nav-item>
-                    <b-nav-item to="/cylinders">My Cylinders</b-nav-item>
-                    <b-nav-item to="/parts">Parts</b-nav-item>
+                    <div
+                      v-if="hasPermision('edit_cylinders')"
+                      class="user"
+                    >
+                      <b-nav-item to="/cylinders">My Cylinders</b-nav-item>
+                    </div>
+                    <div
+                      v-if="hasPermision('edit_parts')"
+                      class="specialist"
+                    >
+                      <b-nav-item to="/parts">Parts</b-nav-item>
+                    </div>
+                    <div
+                      v-if="hasPermision('edit_users')"
+                      class="admin"
+                    >
+                      <b-nav-item to="/users">Users</b-nav-item>
+                    </div>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
@@ -27,7 +43,7 @@
                     </b-navbar-nav>
                 </b-collapse>
             </b-navbar>
-        </div>    
+        </div>
 
         <!-- Page Heading -->
         <div class="bg-secondary p-2" v-if="$slots.header">
@@ -47,6 +63,10 @@ export default {
     methods: {
         logout() {
             this.$auth.logout()
+        },
+        hasPermision(permision){
+          console.log(this.$auth.user);
+          return this.$auth.user.myPermissions.find(e=>e.name===permision)!==undefined
         }
     },
     components:{
