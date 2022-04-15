@@ -1,55 +1,125 @@
 <template>
-    <div class="">
-        <b-table
-            :items="partConnections"
-            :fields="partConnectionFields"
-            primary-key="pivot.id"
+  <div class="">
+    <b-table
+      :items="partConnections"
+      :fields="partConnectionFields"
+      primary-key="pivot.id"
+    >
+      <template #cell(actions)="row">
+        <b-button
+          size="sm"
+          @click="row.toggleDetails"
         >
+          {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+        </b-button>
+        <b-button
+          variant="danger"
+          size="sm"
+          @click="removeConnection(row.item.pivot.id)"
+        >
+          Remove
+        </b-button>
+      </template>
 
-            <template #cell(actions)="row">
-                <b-button size="sm" @click="row.toggleDetails">
-                    {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-                </b-button>
-                <b-button variant="danger" size="sm" @click="removeConnection(row.item.pivot.id)">Remove</b-button>
-            </template>
-
-            <template #row-details="row">
-                <b-form @click="$emit('selectedConnection', row.item.pivot)">
-                    <b-form-group label-class="x" label="X offset" label-cols-sm="4">
-                        <b-form-input v-model="row.item.pivot.x_offset" type="number"/>
-                    </b-form-group>
-                    <b-form-group label-class="y" label="Y offset" label-cols-sm="4">
-                        <b-form-input v-model="row.item.pivot.y_offset" type="number"/>
-                    </b-form-group>
-                    <b-form-group label-class="z" label="Z offset" label-cols-sm="4">
-                        <b-form-input v-model="row.item.pivot.z_offset" type="number"/>
-                    </b-form-group>
-                    <b-form-group label-class="x" label="X angle offset" label-cols-sm="4">
-                        <b-form-input v-model="row.item.pivot.x_angle_offset" type="number"/>
-                    </b-form-group>
-                    <b-form-group label-class="y" label="Y angle offset" label-cols-sm="4">
-                        <b-form-input v-model="row.item.pivot.y_angle_offset" type="number"/>
-                    </b-form-group>
-                    <b-form-group label-class="z" label="Z angle offset" label-cols-sm="4">
-                        <b-form-input v-model="row.item.pivot.z_angle_offset" type="number"/>
-                    </b-form-group>
-                    <b-button variant="success" @click="onSubmit(row.item.pivot)">Save changes</b-button>
-                </b-form>
-            </template>
-        </b-table>
-        <b-form-group label="Connection to add:" label-cols-sm="4" v-if="connectionTypes">
-            <b-form-select v-model="selectedConnection">
-                <b-form-select-option v-for="connection in connectionTypes" :key="connection.id" :value="connection.id">
-                    <div class="d-flex">
-                        <div class="">{{connection.name}}</div>
-                    </div>
-                </b-form-select-option>
-            </b-form-select >
-            <div class="my-2">
-                <b-button variant="success" @click="addConnection">Add</b-button>
+      <template #row-details="row">
+        <b-form @click="$emit('selectedConnection', row.item.pivot)">
+          <b-form-group
+            label-class="x"
+            label="X offset"
+            label-cols-sm="4"
+          >
+            <b-form-input
+              v-model="row.item.pivot.x_offset"
+              type="number"
+            />
+          </b-form-group>
+          <b-form-group
+            label-class="y"
+            label="Y offset"
+            label-cols-sm="4"
+          >
+            <b-form-input
+              v-model="row.item.pivot.y_offset"
+              type="number"
+            />
+          </b-form-group>
+          <b-form-group
+            label-class="z"
+            label="Z offset"
+            label-cols-sm="4"
+          >
+            <b-form-input
+              v-model="row.item.pivot.z_offset"
+              type="number"
+            />
+          </b-form-group>
+          <b-form-group
+            label-class="x"
+            label="X angle offset"
+            label-cols-sm="4"
+          >
+            <b-form-input
+              v-model="row.item.pivot.x_angle_offset"
+              type="number"
+            />
+          </b-form-group>
+          <b-form-group
+            label-class="y"
+            label="Y angle offset"
+            label-cols-sm="4"
+          >
+            <b-form-input
+              v-model="row.item.pivot.y_angle_offset"
+              type="number"
+            />
+          </b-form-group>
+          <b-form-group
+            label-class="z"
+            label="Z angle offset"
+            label-cols-sm="4"
+          >
+            <b-form-input
+              v-model="row.item.pivot.z_angle_offset"
+              type="number"
+            />
+          </b-form-group>
+          <b-button
+            variant="success"
+            @click="onSubmit(row.item.pivot)"
+          >
+            Save changes
+          </b-button>
+        </b-form>
+      </template>
+    </b-table>
+    <b-form-group
+      v-if="connectionTypes"
+      label="Connection to add:"
+      label-cols-sm="4"
+    >
+      <b-form-select v-model="selectedConnection">
+        <b-form-select-option
+          v-for="connection in connectionTypes"
+          :key="connection.id"
+          :value="connection.id"
+        >
+          <div class="d-flex">
+            <div class="">
+              {{ connection.name }}
             </div>
-        </b-form-group>
-    </div>
+          </div>
+        </b-form-select-option>
+      </b-form-select>
+      <div class="my-2">
+        <b-button
+          variant="success"
+          @click="addConnection"
+        >
+          Add
+        </b-button>
+      </div>
+    </b-form-group>
+  </div>
 </template>
 
 <script>
@@ -64,6 +134,9 @@ export default {
             partConnections: [],
             selectedConnection: null
         }
+    },
+    created(){
+        this.getPartConnections();
     },
     methods:{
         getPartConnections(){
@@ -116,9 +189,6 @@ export default {
                 }
             })
         }
-    },
-    created(){
-        this.getPartConnections();
     }
 }
 </script>

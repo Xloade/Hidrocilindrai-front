@@ -1,59 +1,99 @@
 <template>
-    <div class="">
-        <my-alert class="stickyAlert" ref="alert"/>
-        <b-table
-            :items="partDimentions"
-            :fields="partDimentionFields"
-            primary-key="id"
-        >
-        <template #cell(tooltip)="row">
-            <b-form>
-                <b-form-file
-                    v-model="row.item.pngFile"
-                    :placeholder="row.item.placeHolder"
-                    drop-placeholder="Drop file here..."
-                    @input="submitFile(row.item)"
-                    accept=".png"
-                    :state="row.item.ImageExcists"
-                    size="sm"
-                />
-            </b-form>
-        </template>
-        <template #cell(actions)="row">
-            <b-button variant="danger" size="sm" @click="removePartTypeDimention(row.item.pivot.id)">Remove</b-button>
-        </template>
-        </b-table>
+  <div class="">
+    <my-alert
+      ref="alert"
+      class="stickyAlert"
+    />
+    <b-table
+      :items="partDimentions"
+      :fields="partDimentionFields"
+      primary-key="id"
+    >
+      <template #cell(tooltip)="row">
         <b-form>
-            <b-form-group label="Dimention to add:" label-cols-sm="4" v-if="dimentions">
-                <b-form-select v-model="selectedDimention">
-                    <b-form-select-option v-for="dimention in dimentions" :key="dimention.id" :value="dimention.id">
-                        <div class="d-flex">
-                            <div class="">{{dimention.name}}</div>
-                        </div>
-                    </b-form-select-option>
-                </b-form-select >
-            </b-form-group>
-            <div class="my-2">
-                <b-button variant="success" @click="addDimention">Add</b-button>
-            </div>
-            <b-button variant="success"
-                @click="$refs.dimentionForm.open(null)"
-            >Create new</b-button>
-            <b-button variant="info"
-                @click="$refs.dimentionForm.open(selectedDimention)"
-            >Edit (Selected)</b-button>
-            <b-button variant="danger"
-                @click="removeDimention(selectedDimention)"
-            >Delete (Selected)</b-button>
-            <dimention-form ref="dimentionForm" @done="(id) => {getDimentions(); selectedDimention = id}"/>
+          <b-form-file
+            v-model="row.item.pngFile"
+            :placeholder="row.item.placeHolder"
+            drop-placeholder="Drop file here..."
+            accept=".png"
+            :state="row.item.ImageExcists"
+            size="sm"
+            @input="submitFile(row.item)"
+          />
         </b-form>
-    </div>
+      </template>
+      <template #cell(actions)="row">
+        <b-button
+          variant="danger"
+          size="sm"
+          @click="removePartTypeDimention(row.item.pivot.id)"
+        >
+          Remove
+        </b-button>
+      </template>
+    </b-table>
+    <b-form>
+      <b-form-group
+        v-if="dimentions"
+        label="Dimention to add:"
+        label-cols-sm="4"
+      >
+        <b-form-select v-model="selectedDimention">
+          <b-form-select-option
+            v-for="dimention in dimentions"
+            :key="dimention.id"
+            :value="dimention.id"
+          >
+            <div class="d-flex">
+              <div class="">
+                {{ dimention.name }}
+              </div>
+            </div>
+          </b-form-select-option>
+        </b-form-select>
+      </b-form-group>
+      <div class="my-2">
+        <b-button
+          variant="success"
+          @click="addDimention"
+        >
+          Add
+        </b-button>
+      </div>
+      <b-button
+        variant="success"
+        @click="$refs.dimentionForm.open(null)"
+      >
+        Create new
+      </b-button>
+      <b-button
+        variant="info"
+        @click="$refs.dimentionForm.open(selectedDimention)"
+      >
+        Edit (Selected)
+      </b-button>
+      <b-button
+        variant="danger"
+        @click="removeDimention(selectedDimention)"
+      >
+        Delete (Selected)
+      </b-button>
+      <dimention-form
+        ref="dimentionForm"
+        @done="(id) => {getDimentions(); selectedDimention = id}"
+      />
+    </b-form>
+  </div>
 </template>
 
 <script>
 import dimentionForm from "./dimentionForm.vue";
 import myAlert from "./myAlert.vue";
 export default {
+    components:{
+        dimentionForm,
+        myAlert
+    },
     props:["id"],
     data(){
         return{
@@ -66,6 +106,14 @@ export default {
             dimentions:[],
             selectedDimention: null,
         }
+    },
+    watch:{
+        id(){
+            this.getpartDimentions();
+        }
+    },
+    created(){
+        this.getDimentions();
     },
     methods:{
         getDimentions(){
@@ -152,18 +200,6 @@ export default {
                 }
             })
         },
-    },
-    created(){
-        this.getDimentions();
-    },
-    watch:{
-        id(){
-            this.getpartDimentions();
-        }
-    },
-    components:{
-        dimentionForm,
-        myAlert
     }
 }
 </script>

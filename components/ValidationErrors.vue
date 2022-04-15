@@ -1,12 +1,22 @@
 <template>
-    <b-alert show dismissible variant="danger" v-if="errors.length > 0">
-        <h5>
-            Whoops! Something went wrong.
-        </h5>
-        <ul>
-            <li v-for="(error, key) in errors" :key="key">{{ error }}</li>
-        </ul>
-    </b-alert>
+  <b-alert
+    v-if="errors.length > 0"
+    show
+    dismissible
+    variant="danger"
+  >
+    <h5>
+      Whoops! Something went wrong.
+    </h5>
+    <ul>
+      <li
+        v-for="(error, key) in errors"
+        :key="key"
+      >
+        {{ error }}
+      </li>
+    </ul>
+  </b-alert>
 </template>
 
 <script>

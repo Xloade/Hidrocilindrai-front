@@ -1,45 +1,83 @@
 <template>
-    <div class="component">
-        <div class="mt-3">
-            <my-alert ref="alert"/>
-            <b-tabs content-class="mt-3" v-model="activeTab" @input="tabChanged">
-                <b-tab :title="partGroup[0].connection.part_type.name" :active="index==0" v-for="(partGroup, index) in partGroups" :key="getPartGroupKey(partGroup[0]) + 'tab-control'">
-                    <table class="w-100 table table-hover">
-                        <thead>
-                            <th>id</th>
-                            <th v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions">
-                                {{partTypeDimention.name}}
-                                <b-icon icon="exclamation-circle-fill" variant="info" :id="'tooltip-target-'+partTypeDimention.pivot.id+'-'+index" :key="partTypeDimention.id"/>
-                                <b-tooltip custom-class="myToolTip" variant="secondary" :target="'tooltip-target-'+partTypeDimention.pivot.id+'-'+index" triggers="hover click">
-                                    <img :height="200" :src="'/images/partTypeDimentions/'+partTypeDimention.pivot.id+'.png'" alt="No tooltip">
-                                </b-tooltip>
-                            </th>
-                            
-                            <th>action</th>
-                        </thead>
-                        <tbody class="table">
-                            <tr :class="['part', {'bg-success':part.hasOwnProperty('selected_cylinder_part_connection')}]" v-for="part in partGroup" :key="part.id">
-                                <td>
-                                    {{part.id}}
-                                </td>
-                                <th v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions" :key="partTypeDimention.id">
-                                    {{partDimention(part, partTypeDimention).value}}
-                                </th>
-                                <td>
-                                    <b-button @click="addPart(part)" v-if="!part.hasOwnProperty('selected_cylinder_part_connection')" variant="success">
-                                        Add
-                                    </b-button>
-                                    <b-button @click="removePart(part)" v-else variant="danger">
-                                        Remove
-                                    </b-button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </b-tab>
-            </b-tabs>
-        </div>
+  <div class="component">
+    <div class="mt-3">
+      <my-alert ref="alert" />
+      <b-tabs
+        v-model="activeTab"
+        content-class="mt-3"
+        @input="tabChanged"
+      >
+        <b-tab
+          v-for="(partGroup, index) in partGroups"
+          :key="getPartGroupKey(partGroup[0]) + 'tab-control'"
+          :title="partGroup[0].connection.part_type.name"
+          :active="index==0"
+        >
+          <table class="w-100 table table-hover">
+            <thead>
+              <th>id</th>
+              <th v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions">
+                {{ partTypeDimention.name }}
+                <b-icon
+                  :id="'tooltip-target-'+partTypeDimention.pivot.id+'-'+index"
+                  :key="partTypeDimention.id"
+                  icon="exclamation-circle-fill"
+                  variant="info"
+                />
+                <b-tooltip
+                  custom-class="myToolTip"
+                  variant="secondary"
+                  :target="'tooltip-target-'+partTypeDimention.pivot.id+'-'+index"
+                  triggers="hover click"
+                >
+                  <img
+                    :height="200"
+                    :src="'/images/partTypeDimentions/'+partTypeDimention.pivot.id+'.png'"
+                    alt="No tooltip"
+                  >
+                </b-tooltip>
+              </th>
+
+              <th>action</th>
+            </thead>
+            <tbody class="table">
+              <tr
+                v-for="part in partGroup"
+                :key="part.id"
+                :class="['part', {'bg-success':part.hasOwnProperty('selected_cylinder_part_connection')}]"
+              >
+                <td>
+                  {{ part.id }}
+                </td>
+                <th
+                  v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions"
+                  :key="partTypeDimention.id"
+                >
+                  {{ partDimention(part, partTypeDimention).value }}
+                </th>
+                <td>
+                  <b-button
+                    v-if="!part.hasOwnProperty('selected_cylinder_part_connection')"
+                    variant="success"
+                    @click="addPart(part)"
+                  >
+                    Add
+                  </b-button>
+                  <b-button
+                    v-else
+                    variant="danger"
+                    @click="removePart(part)"
+                  >
+                    Remove
+                  </b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </b-tab>
+      </b-tabs>
     </div>
+  </div>
 </template>
 
 <script>
@@ -52,6 +90,9 @@ export default {
             partGroups:[],
             activeTab: 0
         }
+    },
+    created(){
+        this.getParts()
     },
     methods:{
         partDimention(part, dimention){
@@ -113,9 +154,6 @@ export default {
             this.getParts();
             this.$emit("changed")
         }
-    },
-    created(){
-        this.getParts()
     }
 }
 </script>

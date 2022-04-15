@@ -1,77 +1,163 @@
 <template>
-    <div class="component">
-        <div class="mt-3" v-if="part">
-            <my-alert class="stickyAlert" ref="alert"/>
-            <h2>Part file upload</h2>
-            <b-form>
-                <b-form-group label="OBJ file upload:" label-cols-sm="4">
-                    <b-form-file
-                        v-model="objFile"
-                        :placeholder="placeHolder"
-                        drop-placeholder="Drop file here..."
-                        @input="submitFile"
-                        accept=".obj"
-                        :state="part.ObjFileExcists"
-                    />
-                </b-form-group>
-            </b-form>
-            <h2>Part edit</h2>
-            <b-form 
-                @submit.prevent="onSubmit"
-                @click="partForViewport.part_connection = zeroSelection;"
+  <div class="component">
+    <div
+      v-if="part"
+      class="mt-3"
+    >
+      <my-alert
+        ref="alert"
+        class="stickyAlert"
+      />
+      <h2>Part file upload</h2>
+      <b-form>
+        <b-form-group
+          label="OBJ file upload:"
+          label-cols-sm="4"
+        >
+          <b-form-file
+            v-model="objFile"
+            :placeholder="placeHolder"
+            drop-placeholder="Drop file here..."
+            accept=".obj"
+            :state="part.ObjFileExcists"
+            @input="submitFile"
+          />
+        </b-form-group>
+      </b-form>
+      <h2>Part edit</h2>
+      <b-form
+        @submit.prevent="onSubmit"
+        @click="partForViewport.part_connection = zeroSelection;"
+      >
+        <b-form-group
+          label-class="x"
+          label="X offset"
+          label-cols-sm="4"
+        >
+          <b-form-input
+            v-model="part.x_offset"
+            type="number"
+            step="0.1"
+          />
+        </b-form-group>
+        <b-form-group
+          label-class="y"
+          label="Y offset"
+          label-cols-sm="4"
+        >
+          <b-form-input
+            v-model="part.y_offset"
+            type="number"
+            step="0.1"
+          />
+        </b-form-group>
+        <b-form-group
+          label-class="z"
+          label="Z offset"
+          label-cols-sm="4"
+        >
+          <b-form-input
+            v-model="part.z_offset"
+            type="number"
+            step="0.1"
+          />
+        </b-form-group>
+        <b-form-group
+          label-class="x"
+          label="X angle offset"
+          label-cols-sm="4"
+        >
+          <b-form-input
+            v-model="part.x_angle_offset"
+            type="number"
+            step="0.1"
+          />
+        </b-form-group>
+        <b-form-group
+          label-class="y"
+          label="Y angle offset"
+          label-cols-sm="4"
+        >
+          <b-form-input
+            v-model="part.y_angle_offset"
+            type="number"
+            step="0.1"
+          />
+        </b-form-group>
+        <b-form-group
+          label-class="z"
+          label="Z angle offset"
+          label-cols-sm="4"
+        >
+          <b-form-input
+            v-model="part.z_angle_offset"
+            type="number"
+            step="0.1"
+          />
+        </b-form-group>
+        <b-form-group
+          v-if="connectionTypes"
+          label="Fullfiled connection:"
+          label-cols-sm="4"
+        >
+          <b-form-select v-model="part.connection_id">
+            <b-form-select-option :value="null">
+              <div class="">
+                Null
+              </div>
+            </b-form-select-option>
+            <b-form-select-option
+              v-for="connection in connectionTypes"
+              :key="connection.id"
+              :value="connection.id"
             >
-                <b-form-group label-class="x" label="X offset" label-cols-sm="4">
-                    <b-form-input v-model="part.x_offset" type="number" step="0.1"/>
-                </b-form-group>
-                <b-form-group label-class="y" label="Y offset" label-cols-sm="4">
-                    <b-form-input v-model="part.y_offset" type="number" step="0.1"/>
-                </b-form-group>
-                <b-form-group label-class="z" label="Z offset" label-cols-sm="4">
-                    <b-form-input v-model="part.z_offset" type="number" step="0.1"/>
-                </b-form-group>
-                <b-form-group label-class="x" label="X angle offset" label-cols-sm="4">
-                    <b-form-input v-model="part.x_angle_offset" type="number" step="0.1"/>
-                </b-form-group>
-                <b-form-group label-class="y" label="Y angle offset" label-cols-sm="4">
-                    <b-form-input v-model="part.y_angle_offset" type="number" step="0.1"/>
-                </b-form-group>
-                <b-form-group label-class="z" label="Z angle offset" label-cols-sm="4">
-                    <b-form-input v-model="part.z_angle_offset" type="number" step="0.1"/>
-                </b-form-group>
-                <b-form-group label="Fullfiled connection:" label-cols-sm="4" v-if="connectionTypes">
-                    <b-form-select v-model="part.connection_id">
-                        <b-form-select-option :value="null">
-                            <div class="">Null</div>
-                        </b-form-select-option>
-                        <b-form-select-option v-for="connection in connectionTypes" :key="connection.id" :value="connection.id">
-                            <div class="">{{connection.name}}</div>
-                        </b-form-select-option>
-                    </b-form-select >
-                    <div class="my-2">
-                        <b-button variant="success"
-                            @click="$refs.connectionForm.open(null)"
-                        >Create new</b-button>
-                        <b-button variant="info"
-                            @click="$refs.connectionForm.open(part.connection_id)"
-                        >Edit (Selected)</b-button>
-                        <b-button variant="danger"
-                            @click="deleteConnection()"
-                        >Delete (Selected)</b-button>
-                    </div>
-                </b-form-group>
-                <b-button variant="success" type="submit">Save changes</b-button>
-            </b-form>
-            <h2>Part dimentions</h2>
-            <part-dimention-edit :part="part"/>
-            <h2>Needed Connection edit</h2>
-            <part-connection-edit 
-                :id="id" 
-                :connectionTypes="connectionTypes" 
-                @selectedConnection="(selection) => partForViewport.part_connection = selection"
-            />
-            <connection-form ref="connectionForm" @done="(id) => {getConnectionOptions(); part.connection_id = id}"/>
-        </div>
+              <div class="">
+                {{ connection.name }}
+              </div>
+            </b-form-select-option>
+          </b-form-select>
+          <div class="my-2">
+            <b-button
+              variant="success"
+              @click="$refs.connectionForm.open(null)"
+            >
+              Create new
+            </b-button>
+            <b-button
+              variant="info"
+              @click="$refs.connectionForm.open(part.connection_id)"
+            >
+              Edit (Selected)
+            </b-button>
+            <b-button
+              variant="danger"
+              @click="deleteConnection()"
+            >
+              Delete (Selected)
+            </b-button>
+          </div>
+        </b-form-group>
+        <b-button
+          variant="success"
+          type="submit"
+        >
+          Save changes
+        </b-button>
+      </b-form>
+      <h2>Part dimentions</h2>
+      <part-dimention-edit :part="part" />
+      <h2>Needed Connection edit</h2>
+      <part-connection-edit
+        :id="id"
+        :connection-types="connectionTypes"
+        @selectedConnection="(selection) => partForViewport.part_connection = selection"
+      />
+      <connection-form
+        ref="connectionForm"
+        @done="(id) => {getConnectionOptions(); part.connection_id = id}"
+      />
     </div>
+  </div>
 </template>
 
 <script>
@@ -100,6 +186,18 @@ export default {
                 editing: false
             }
         }
+    },
+    watch:{
+        partForViewport: {
+            handler() {
+                this.changed()
+            },
+            deep: true
+        },
+    },
+    created(){
+        this.getConnectionOptions()
+        this.getParts()
     },
     methods:{
         async getParts(){
@@ -164,7 +262,7 @@ export default {
             this.$axios.delete("/api/connection/"+this.part.connection_id)
             .then((message) => {
                 this.$refs.alert.setAlert(message.data.message, "success")
-                this.getConnectionOptions(); 
+                this.getConnectionOptions();
                 this.part.connection_id=null;
             })
             .catch((error) => {
@@ -175,18 +273,6 @@ export default {
                     this.$refs.alert.setAlert(error.message, "danger")
                 }
             })
-        },
-    },
-    created(){
-        this.getConnectionOptions()
-        this.getParts()
-    },
-    watch:{
-        partForViewport: {
-            handler() {
-                this.changed()
-            },
-            deep: true
         },
     }
 }

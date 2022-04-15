@@ -1,29 +1,48 @@
 <template>
   <BreezeAuthenticatedLayout>
     <template #header>
-    <div class="d-flex">
+      <div class="d-flex">
         <MyHeader :name="title" />
-        <b-button variant="success" @click="add">Add</b-button>
-    </div>
+        <b-button
+          variant="success"
+          @click="add"
+        >
+          Add
+        </b-button>
+      </div>
     </template>
-        <my-alert ref="alert"/>
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 p-2" v-for="part in parts" :key="part.id">
-                <b-card
-                    :title="part.name"
-                    :img-src="'/images/parts/'+(part.part_type === null ? 'null' : part.part_type.id)+'.png'"
-                    img-top
-                    tag="article"
-                    style=""
-                >
-                  <p>
-                    ID: {{part.id}}
-                  </p>
-                  <b-link class="btn btn-primary" :to="`/parts/${part.id}`">Edit</b-link>
-                  <b-button variant="danger" @click="removePart(part.id)">Delete</b-button>
-                </b-card>
-            </div>
-        </div>
+    <my-alert ref="alert" />
+    <div class="row">
+      <div
+        v-for="part in parts"
+        :key="part.id"
+        class="col-12 col-sm-6 col-md-4 col-lg-3 p-2"
+      >
+        <b-card
+          :title="part.name"
+          :img-src="'/images/parts/'+(part.part_type === null ? 'null' : part.part_type.id)+'.png'"
+          img-top
+          tag="article"
+          style=""
+        >
+          <p>
+            ID: {{ part.id }}
+          </p>
+          <b-link
+            class="btn btn-primary"
+            :to="`/parts/${part.id}`"
+          >
+            Edit
+          </b-link>
+          <b-button
+            variant="danger"
+            @click="removePart(part.id)"
+          >
+            Delete
+          </b-button>
+        </b-card>
+      </div>
+    </div>
   </BreezeAuthenticatedLayout>
 </template>
 
@@ -32,6 +51,20 @@ import BreezeAuthenticatedLayout from '@/layouts/authenticated.vue'
 import MyHeader from '@/components/header.vue'
 import myAlert from '~/components/myAlert.vue'
 export default {
+
+    components: {
+        BreezeAuthenticatedLayout,
+        MyHeader,
+        myAlert
+    },
+
+    middleware: 'authenticated',
+    asyncData ({ $axios }, callback) {
+        $axios.get('/api/part')
+        .then((res) => {
+            callback(null, { parts: res.data })
+        })
+    },
     data() {
       return {
         title: 'Parts',
@@ -44,12 +77,6 @@ export default {
             name: '',
             nameState: null,
         }
-    },
-    asyncData ({ $axios }, callback) {
-        $axios.get('/api/part')
-        .then((res) => {
-            callback(null, { parts: res.data })
-        })
     },
     methods:{
       add(){
@@ -100,14 +127,6 @@ export default {
               }
           })
       }
-    },
-
-    middleware: 'authenticated',
-
-    components: {
-        BreezeAuthenticatedLayout,
-        MyHeader,
-        myAlert
     }
 }
 </script>

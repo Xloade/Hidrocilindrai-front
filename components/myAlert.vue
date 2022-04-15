@@ -1,20 +1,20 @@
 <template>
-    <b-alert 
-      :variant="variant" 
-      :show="showCount" 
-      @dismissed="showCount=0" 
-      @dismiss-count-down="countDownChanged" 
-      dismissible
-      class="myAlert"
-    >
-      <p>{{text}}</p>
-      <b-progress
-        :variant="variant"
-        :max="dismissSecs"
-        :value="showCount"
-        height="4px"
-      />
-    </b-alert>
+  <b-alert
+    :variant="variant"
+    :show="showCount"
+    dismissible
+    class="myAlert"
+    @dismissed="showCount=0"
+    @dismiss-count-down="countDownChanged"
+  >
+    <p>{{ text }}</p>
+    <b-progress
+      :variant="variant"
+      :max="dismissSecs"
+      :value="showCount"
+      height="4px"
+    />
+  </b-alert>
 </template>
 
 <script>

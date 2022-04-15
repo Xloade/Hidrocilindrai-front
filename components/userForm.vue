@@ -1,37 +1,67 @@
 <template>
-    <div>
-        <b-modal
-            centered
-            id="UserModal"
-            :title="`${isCreating ? 'Creating new':'Updating'} User`"
-            :ok-title="isCreating ? 'Create':'Save'"
-            ok-variant="success"
-            @ok="onSubmit"
+  <div>
+    <b-modal
+      id="UserModal"
+      centered
+      :title="`${isCreating ? 'Creating new':'Updating'} User`"
+      :ok-title="isCreating ? 'Create':'Save'"
+      ok-variant="success"
+      @ok="onSubmit"
+    >
+      <b-form
+        v-if="user"
+        @submit.prevent="onSubmit"
+      >
+        <b-form-group
+          label="Name"
+          label-cols-sm="4"
         >
-            <b-form @submit.prevent="onSubmit" v-if="user">
-                <b-form-group label="Name" label-cols-sm="4">
-                    <b-form-input v-model="user.name" required/>
-                </b-form-group>
-                <b-form-group label="E-mail" label-cols-sm="4">
-                    <b-form-input v-model="user.email" required/>
-                </b-form-group>
-                <b-form-group label="Password" label-cols-sm="4">
-                    <b-form-input v-model="user.password" required/>
-                </b-form-group>
-                <b-form-group label="Role" label-cols-sm="4">
-                    <b-form-select v-model="user.roles" required>
-                        <b-form-select-option v-for="role in roles" :key="role.value" :value="role.value">
-                            {{ role.name }}
-                        </b-form-select-option>
-                    </b-form-select >
-                </b-form-group>
-            </b-form>
-        </b-modal>
-    </div>
+          <b-form-input
+            v-model="user.name"
+            required
+          />
+        </b-form-group>
+        <b-form-group
+          label="E-mail"
+          label-cols-sm="4"
+        >
+          <b-form-input
+            v-model="user.email"
+            required
+          />
+        </b-form-group>
+        <b-form-group
+          label="Password"
+          label-cols-sm="4"
+        >
+          <b-form-input
+            v-model="user.password"
+            required
+          />
+        </b-form-group>
+        <b-form-group
+          label="Role"
+          label-cols-sm="4"
+        >
+          <b-form-select
+            v-model="user.roles"
+            required
+          >
+            <b-form-select-option
+              v-for="role in roles"
+              :key="role.value"
+              :value="role.value"
+            >
+              {{ role.name }}
+            </b-form-select-option>
+          </b-form-select>
+        </b-form-group>
+      </b-form>
+    </b-modal>
+  </div>
 </template>
 
 <script>
-import partTypeDimentionEdit from "./partTypeDimentionEdit.vue";
 export default {
     data(){
         return{

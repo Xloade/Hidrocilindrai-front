@@ -1,6 +1,9 @@
 <template>
   <div class="outter">
-    <div class="viewport" id="viewport"></div>
+    <div
+      id="viewport"
+      class="viewport"
+    />
   </div>
 </template>
 
@@ -23,12 +26,27 @@ export default {
       current3dObjects: []
     };
   },
+  watch:{
+    selectedPart(newVal){
+      this.selectPart();
+    },
+    cylinder(){
+      this.loadObjects();
+    }
+  },
+  mounted() {
+    this.element = document.getElementById("viewport");
+    this.init();
+    this.animate();
+    // needed only for development when window refreshes with old data
+    this.loadObjects();
+  },
   methods: {
     init() {
       this.textureLoader = new THREE.TextureLoader();
       this.objLoader = new THREE.OBJLoader();
       this.mtlLoader = new THREE.MTLLoader();
-      
+
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(0x555555);
       //this.scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
@@ -131,7 +149,7 @@ export default {
             planeMesh.rotateY(270*(Math.PI/180));
             arrow.rotateY(270*(Math.PI/180));
             break;
-        
+
           default:
             break;
         }
@@ -235,13 +253,13 @@ export default {
           let materialArray = child.material;
           // if object has one materials it's object not array
           if(!Array.isArray(materialArray)){
-            materialArray = [materialArray] 
+            materialArray = [materialArray]
           }
           materialArray.forEach((material, index)=>{
             materialArray[index] = new THREE.MeshPhongMaterial().copy( material )
             let realPart = this.cylinder.find((part)=>part.id == element.name)
             if(
-              this.selectedPart === undefined 
+              this.selectedPart === undefined
               || (realPart.part_connection_id === this.selectedPart.for_connection.id
               && realPart.cylinder_part_connection_id === this.selectedPart.cylinder_part_connection.id)
             ){
@@ -265,23 +283,8 @@ export default {
           else{
             child.material = materialArray[0];
           }
-        };
+        }
       } );
-    }
-  },
-  mounted() {
-    this.element = document.getElementById("viewport");
-    this.init();
-    this.animate();
-    // needed only for development when window refreshes with old data
-    this.loadObjects();
-  },
-  watch:{
-    selectedPart(newVal){
-      this.selectPart();
-    },
-    cylinder(){
-      this.loadObjects();
     }
   },
 };

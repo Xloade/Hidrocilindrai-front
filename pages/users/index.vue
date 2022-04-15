@@ -1,41 +1,54 @@
 <template>
   <div>
-
     <BreezeAuthenticatedLayout>
       <template #header>
-      <div class="d-flex">
+        <div class="d-flex">
           <MyHeader :name="title" />
-          <b-button variant="success"
-              @click="$refs.userForm.open(null)"
-          >Add</b-button>
-      </div>
+          <b-button
+            variant="success"
+            @click="$refs.userForm.open(null)"
+          >
+            Add
+          </b-button>
+        </div>
       </template>
-          <div class="">
-            <my-alert ref="alert"/>
-            <div class="row">
-                <b-table
-                  :items="users"
-                  :fields="fields"
-                >
-                  <template #cell(roles)="{ item }">
+      <div class="">
+        <my-alert ref="alert" />
+        <div class="row">
+          <b-table
+            :items="users"
+            :fields="fields"
+          >
+            <template #cell(roles)="{ item }">
+              <template v-if="item.roles[0]">
+                {{ item.roles[0].name }}
+              </template>
+            </template>
 
-                    <template v-if="item.roles[0]">
-                    {{ item.roles[0].name }}
-                    </template>
-                  </template>
-
-                  <template #cell(actions)="{ item }">
-                    <b-button variant="info"
-                        @click="$refs.userForm.open(item.id)"
-                        size="sm"
-                    >Edit</b-button>
-                    <b-button variant="danger" size="sm" @click="remove(item.id)">Remove</b-button>
-                  </template>
-                </b-table>
-            </div>
-          </div>
+            <template #cell(actions)="{ item }">
+              <b-button
+                variant="info"
+                size="sm"
+                @click="$refs.userForm.open(item.id)"
+              >
+                Edit
+              </b-button>
+              <b-button
+                variant="danger"
+                size="sm"
+                @click="remove(item.id)"
+              >
+                Remove
+              </b-button>
+            </template>
+          </b-table>
+        </div>
+      </div>
     </BreezeAuthenticatedLayout>
-    <user-form ref="userForm" @done="this.$nuxt.refresh"/>
+    <user-form
+      ref="userForm"
+      @done="$nuxt.refresh"
+    />
   </div>
 </template>
 
@@ -45,6 +58,21 @@ import MyHeader from '@/components/header.vue'
 import myAlert from '~/components/myAlert.vue'
 import userForm from '@/components/userForm.vue'
 export default {
+
+    components: {
+        BreezeAuthenticatedLayout,
+        MyHeader,
+        myAlert,
+        userForm
+    },
+
+    middleware: 'authenticated',
+    asyncData ({ $axios }, callback) {
+        $axios.get('/api/admin/user')
+        .then((res) => {
+            callback(null, { users: res.data })
+        })
+    },
     data() {
       return {
         title: 'Users',
@@ -74,12 +102,6 @@ export default {
             title: this.title,
         }
     },
-    asyncData ({ $axios }, callback) {
-        $axios.get('/api/admin/user')
-        .then((res) => {
-            callback(null, { users: res.data })
-        })
-    },
     methods:{
       add(){
 
@@ -102,15 +124,6 @@ export default {
               }
           })
       }
-    },
-
-    middleware: 'authenticated',
-
-    components: {
-        BreezeAuthenticatedLayout,
-        MyHeader,
-        myAlert,
-        userForm
     }
 }
 </script>

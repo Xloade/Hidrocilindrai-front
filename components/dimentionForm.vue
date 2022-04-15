@@ -1,21 +1,32 @@
 <template>
-    <div>
-        <b-modal
-            centered 
-            id="DimentionModal" 
-            :title="`${isCreating ? 'Creating new':'Updating'} Dimention`"
-            :ok-title="isCreating ? 'Create':'Save'"
-            ok-variant="success"
-            @ok="onSubmit"
+  <div>
+    <b-modal
+      id="DimentionModal"
+      centered
+      :title="`${isCreating ? 'Creating new':'Updating'} Dimention`"
+      :ok-title="isCreating ? 'Create':'Save'"
+      ok-variant="success"
+      @ok="onSubmit"
+    >
+      <b-form @submit.prevent="onSubmit">
+        <b-form-group
+          label="Name"
+          label-cols-sm="4"
         >
-            <b-form @submit.prevent="onSubmit">
-                <b-form-group label="Name" label-cols-sm="4">
-                    <b-form-input v-model="dimention.name" required/>
-                </b-form-group>
-                <b-button variant="info" @click="dimention.name += 'Ø'">Add "Ø" to name</b-button>
-            </b-form>
-        </b-modal>
-    </div>
+          <b-form-input
+            v-model="dimention.name"
+            required
+          />
+        </b-form-group>
+        <b-button
+          variant="info"
+          @click="dimention.name += 'Ø'"
+        >
+          Add "Ø" to name
+        </b-button>
+      </b-form>
+    </b-modal>
+  </div>
 </template>
 
 <script>

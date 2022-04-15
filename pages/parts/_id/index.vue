@@ -1,17 +1,25 @@
 <template>
   <BreezeAuthenticatedLayout>
     <template #header>
-      <MyHeader :name="title"/>
+      <MyHeader :name="title" />
     </template>
     <div class="h-screen">
-        <div class="row p-3">
-          <div class="col-lg-6 col-12 viewport">
-            <Viewport :id="id" ref="viewport" :cylinder="part" originPlanes/>
-          </div>
-          <div class="col-lg-6 col-12 partPannel">
-            <part-pannel :id="id" @changed="newPart => {part[0]=newPart; $refs.viewport.loadObjects()}"/>
-          </div>
+      <div class="row p-3">
+        <div class="col-lg-6 col-12 viewport">
+          <Viewport
+            :id="id"
+            ref="viewport"
+            :cylinder="part"
+            origin-planes
+          />
         </div>
+        <div class="col-lg-6 col-12 partPannel">
+          <part-pannel
+            :id="id"
+            @changed="newPart => {part[0]=newPart; $refs.viewport.loadObjects()}"
+          />
+        </div>
+      </div>
     </div>
   </BreezeAuthenticatedLayout>
 </template>
@@ -22,6 +30,15 @@ import MyHeader from '@/components/header.vue'
 import Viewport from '@/components/viewport.vue'
 import PartPannel from "@/components/partPannel.vue"
 export default {
+
+    components: {
+        BreezeAuthenticatedLayout,
+        MyHeader,
+        Viewport,
+        PartPannel
+    },
+
+    middleware: 'authenticated',
     data() {
       return {
         part: []
@@ -39,15 +56,6 @@ export default {
       title(){
         return 'Part: '+this.id
       }
-    },
-
-    middleware: 'authenticated',
-
-    components: {
-        BreezeAuthenticatedLayout,
-        MyHeader,
-        Viewport,
-        PartPannel
     }
 }
 </script>
