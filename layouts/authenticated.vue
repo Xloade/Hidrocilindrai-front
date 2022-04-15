@@ -65,7 +65,6 @@ export default {
             this.$auth.logout()
         },
         hasPermision(permision){
-          console.log(this.$auth.user);
           return this.$auth.user.myPermissions.find(e=>e.name===permision)!==undefined
         }
     },
