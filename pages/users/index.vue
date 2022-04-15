@@ -1,39 +1,49 @@
 <template>
-  <BreezeAuthenticatedLayout>
-    <template #header>
-    <div class="d-flex">
-        <MyHeader :name="title" />
-        <b-button variant="success" v-b-modal.modal-prevent-closing>Add</b-button>
-    </div>
-    </template>
-        <div class="">
-          <my-alert ref="alert"/>
-          <div class="row">
-              <b-table
-                :items="users"
-                :fields="fields"
-              >
-                <template #cell(roles)="{ item }">
+  <div>
 
-                  <template v-if="item.roles[0]">
-                   {{ item.roles[0].name }}
+    <BreezeAuthenticatedLayout>
+      <template #header>
+      <div class="d-flex">
+          <MyHeader :name="title" />
+          <b-button variant="success"
+              @click="$refs.userForm.open(null)"
+          >Add</b-button>
+      </div>
+      </template>
+          <div class="">
+            <my-alert ref="alert"/>
+            <div class="row">
+                <b-table
+                  :items="users"
+                  :fields="fields"
+                >
+                  <template #cell(roles)="{ item }">
+
+                    <template v-if="item.roles[0]">
+                    {{ item.roles[0].name }}
+                    </template>
                   </template>
-                </template>
 
-                <template #cell(actions)="{ item }">
-                  <b-button variant="info" size="sm" @click="edit(item.id)">Edit</b-button>
-                  <b-button variant="danger" size="sm" @click="remove(item.id)">Remove</b-button>
-                </template>
-              </b-table>
+                  <template #cell(actions)="{ item }">
+                    <b-button variant="info"
+                        @click="$refs.userForm.open(item.id)"
+                        size="sm"
+                    >Edit</b-button>
+                    <b-button variant="danger" size="sm" @click="remove(item.id)">Remove</b-button>
+                  </template>
+                </b-table>
+            </div>
           </div>
-        </div>
-  </BreezeAuthenticatedLayout>
+    </BreezeAuthenticatedLayout>
+    <user-form ref="userForm" @done="this.$nuxt.refresh"/>
+  </div>
 </template>
 
 <script>
 import BreezeAuthenticatedLayout from '@/layouts/authenticated.vue'
 import MyHeader from '@/components/header.vue'
 import myAlert from '~/components/myAlert.vue'
+import userForm from '@/components/userForm.vue'
 export default {
     data() {
       return {
@@ -99,7 +109,8 @@ export default {
     components: {
         BreezeAuthenticatedLayout,
         MyHeader,
-        myAlert
+        myAlert,
+        userForm
     }
 }
 </script>
