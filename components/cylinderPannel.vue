@@ -89,7 +89,7 @@ export default {
   components: { myAlert },
   props:{
     id: {
-      type: Number,
+      type: [Number, String],
       required: true
     },
   },

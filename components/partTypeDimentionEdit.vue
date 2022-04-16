@@ -96,7 +96,7 @@ export default {
   },
   props:{
     id: {
-      type: Number,
+      type: [Number, String],
       required: true
     },
   },

@@ -13,12 +13,12 @@ import * as THREE from "three-full";
 export default {
   props:{
     id: {
-      type: Number,
+      type: [Number, String],
       required: true
     },
     selectedPart: {
       type: Object,
-      required: true
+      default: undefined
     },
     cylinder: {
       type: Array,
