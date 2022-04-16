@@ -22,7 +22,7 @@
       </template>
 
       <template #row-details="row">
-        <b-form @click="$emit('selectedConnection', row.item.pivot)">
+        <b-form @click="$emit('selected-connection', row.item.pivot)">
           <b-form-group
             label-class="x"
             label="X offset"
@@ -134,7 +134,7 @@ export default {
       required: true
     },
   },
-  emits: ['selectedConnection'],
+  emits: ['selected-connection'],
   data(){
     return{
       partConnectionFields: [

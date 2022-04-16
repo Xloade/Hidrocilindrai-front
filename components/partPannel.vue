@@ -150,7 +150,7 @@
       <part-connection-edit
         :id="id"
         :connection-types="connectionTypes"
-        @selected_connection="(selection) => partForViewport.part_connection = selection"
+        @selected-connection="(selection) => partForViewport.part_connection = selection"
       />
       <connection-form
         ref="connectionForm"
