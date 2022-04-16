@@ -10,6 +10,7 @@
   "rules": {
     // override/add rules settings here, such as:
     // 'vue/no-unused-vars': 'error'
+    "vue/multi-word-component-names": 0
   },
   "ignorePatterns": ["src/**/*.test.ts", "src/frontend/generated/*"]
 }
