@@ -93,7 +93,7 @@ export default {
       required: true
     },
   },
-  emits: ['selectedPart', 'changed'],
+  emits: ['selected-part', 'changed'],
   data(){
     return{
       partGroups:[],
@@ -117,7 +117,7 @@ export default {
       }
       // let part = this.partGroups[this.activeTab].find(element => element.hasOwnProperty('selected_cylinder_part_connection'))
       // this.$emit("selectedPart", part)
-      this.$emit("selectedPart", selectionInfo)
+      this.$emit("selected-part", selectionInfo)
 
     },
     getParts(){
