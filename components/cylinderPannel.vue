@@ -1,6 +1,13 @@
 <template>
   <div class="component">
     <div class="mt-3">
+      <b-alert
+        class="alert"
+        :variant="isFullCylinder ? 'success' : 'warning'"
+        :show="partGroups.length > 0"
+      >
+        {{ isFullCylinder ? "Cylinder is fully created" : "Cylinder has missing parts" }}
+      </b-alert>
       <my-alert ref="alert" />
       <b-tabs
         v-model="activeTab"
@@ -98,6 +105,18 @@ export default {
     return{
       partGroups:[],
       activeTab: 0
+    }
+  },
+  computed:{
+    isFullCylinder(){
+      let isFull = true
+      this.partGroups.forEach(group => {
+        const isFound = group.find(part => Object.prototype.hasOwnProperty.call(part, 'selected_cylinder_part_connection'))
+        if (!isFound) {
+          isFull = false
+        }
+      });
+      return isFull
     }
   },
   created(){

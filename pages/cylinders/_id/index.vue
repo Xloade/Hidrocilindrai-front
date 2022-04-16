@@ -78,4 +78,7 @@ export default {
     height: calc(100vh - 150px);
     overflow-y: auto;
   }
+  .alert{
+    margin: 0 20px;
+  }
 </style>
