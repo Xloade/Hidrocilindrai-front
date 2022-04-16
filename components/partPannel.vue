@@ -166,121 +166,121 @@ import myAlert from './myAlert.vue'
 import partConnectionEdit from './partConnectionEdit.vue'
 import partDimentionEdit from './partDimentionEdit.vue'
 export default {
-    components: { myAlert, partConnectionEdit, connectionForm, partDimentionEdit },
-    props:{
-      id: {
-        type: Number,
-        required: true
-      },
+  components: { myAlert, partConnectionEdit, connectionForm, partDimentionEdit },
+  props:{
+    id: {
+      type: Number,
+      required: true
     },
-    emits: ['changed'],
-    data(){
-        return{
-            part: null,
-            partForViewport: null,
-            objFile: null,
-            placeHolder: "Choose a file or drop it here...",
-            connectionTypes: null,
-            connectionEditId: null,
-            zeroSelection:{
-                x_angle_offset: 0,
-                y_angle_offset: 0,
-                z_angle_offset: 0,
-                x_offset: 0,
-                y_offset: 0,
-                z_offset: 0,
-                editing: false
-            }
-        }
-    },
-    watch:{
-        partForViewport: {
-            handler() {
-                this.changed()
-            },
-            deep: true
-        },
-    },
-    created(){
-        this.getConnectionOptions()
-        this.getParts()
-    },
-    methods:{
-        async getParts(){
-            this.$axios.get("/api/part/"+this.id)
-            .then(response => {
-                this.part = response.data
-                this.partForViewport = {...this.part, part:this.part, part_connection: this.zeroSelection, isPartSetup:true}
-            })
-
-        },
-        getConnectionOptions(){
-            this.$axios.get("/api/connection")
-            .then(response => {
-                this.connectionTypes = response.data
-            })
-        },
-        changed(){
-            this.$emit("changed", this.partForViewport)
-        },
-        submitFile(){
-            if(this.objFile === null) return
-
-            let formData = new FormData();
-            formData.append("objFile", this.objFile);
-            this.$axios.post("/api/part/"+this.id+"/objFile", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then(() => {
-                this.changed()
-                this.placeHolder = this.objFile.name
-                this.objFile = null
-                this.part.ObjFileExcists = true
-            })
-            .catch((error) => {
-                this.placeHolder = this.objFile.name
-                this.objFile = null
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        onSubmit(){
-            this.$axios.put("/api/part/"+this.id, this.part)
-            .then((message) => {
-                this.$refs.alert.setAlert(message.data.message, "success")
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        deleteConnection(){
-            this.$axios.delete("/api/connection/"+this.part.connection_id)
-            .then((message) => {
-                this.$refs.alert.setAlert(message.data.message, "success")
-                this.getConnectionOptions();
-                this.part.connection_id=null;
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
+  },
+  emits: ['changed'],
+  data(){
+    return{
+      part: null,
+      partForViewport: null,
+      objFile: null,
+      placeHolder: "Choose a file or drop it here...",
+      connectionTypes: null,
+      connectionEditId: null,
+      zeroSelection:{
+        x_angle_offset: 0,
+        y_angle_offset: 0,
+        z_angle_offset: 0,
+        x_offset: 0,
+        y_offset: 0,
+        z_offset: 0,
+        editing: false
+      }
     }
+  },
+  watch:{
+    partForViewport: {
+      handler() {
+        this.changed()
+      },
+      deep: true
+    },
+  },
+  created(){
+    this.getConnectionOptions()
+    this.getParts()
+  },
+  methods:{
+    async getParts(){
+      this.$axios.get("/api/part/"+this.id)
+        .then(response => {
+          this.part = response.data
+          this.partForViewport = {...this.part, part:this.part, part_connection: this.zeroSelection, isPartSetup:true}
+        })
+
+    },
+    getConnectionOptions(){
+      this.$axios.get("/api/connection")
+        .then(response => {
+          this.connectionTypes = response.data
+        })
+    },
+    changed(){
+      this.$emit("changed", this.partForViewport)
+    },
+    submitFile(){
+      if(this.objFile === null) return
+
+      let formData = new FormData();
+      formData.append("objFile", this.objFile);
+      this.$axios.post("/api/part/"+this.id+"/objFile", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+        .then(() => {
+          this.changed()
+          this.placeHolder = this.objFile.name
+          this.objFile = null
+          this.part.ObjFileExcists = true
+        })
+        .catch((error) => {
+          this.placeHolder = this.objFile.name
+          this.objFile = null
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    onSubmit(){
+      this.$axios.put("/api/part/"+this.id, this.part)
+        .then((message) => {
+          this.$refs.alert.setAlert(message.data.message, "success")
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    deleteConnection(){
+      this.$axios.delete("/api/connection/"+this.part.connection_id)
+        .then((message) => {
+          this.$refs.alert.setAlert(message.data.message, "success")
+          this.getConnectionOptions();
+          this.part.connection_id=null;
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+  }
 }
 </script>
 

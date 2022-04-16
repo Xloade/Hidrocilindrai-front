@@ -49,34 +49,34 @@
 
 <script>
 export default {
-    layout: 'guest',
-    data() {
-        return {
-            form: {
-                status: '',
-                processing: false
-            }
-        }
-    },
-    head: {
-        title: 'Verify Email',
-    },
+  layout: 'guest',
+  data() {
+    return {
+      form: {
+        status: '',
+        processing: false
+      }
+    }
+  },
+  head: {
+    title: 'Verify Email',
+  },
 
-    computed: {
-        verificationLinkSent() {
-            return this.status === 'verification-link-sent';
-        }
+  computed: {
+    verificationLinkSent() {
+      return this.status === 'verification-link-sent';
+    }
+  },
+
+  methods: {
+    async submit() {
+      this.processing = true
+
+      await this.$axios.post('/auth/email/verification-notification')
+
+      this.status = 'verification-link-sent'
+      this.processing = false
     },
-
-    methods: {
-        async submit() {
-            this.processing = true
-
-            await this.$axios.post('/auth/email/verification-notification')
-
-            this.status = 'verification-link-sent'
-            this.processing = false
-        },
-    },
+  },
 }
 </script>

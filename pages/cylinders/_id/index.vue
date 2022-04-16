@@ -32,41 +32,41 @@ import Viewport from '~/components/3dView.vue'
 import CylinderPannel from "@/components/cylinderPannel.vue"
 export default {
 
-    components: {
-        BreezeAuthenticatedLayout,
-        MyHeader,
-        Viewport,
-        CylinderPannel
-    },
+  components: {
+    BreezeAuthenticatedLayout,
+    MyHeader,
+    Viewport,
+    CylinderPannel
+  },
 
-    middleware: 'authenticated',
-    data() {
-      return {
-        selectedPart: undefined,
-        cylinder: []
-      }
-    },
-    head() {
-        return{
-            title: this.title,
-        }
-    },
-    computed:{
-      id(){
-        return this.$route.params.id
-      },
-      title(){
-        return 'Cylinder: '+this.id
-      }
-    },
-    created(){
-      this.getCylinder();
-    },
-    methods:{
-      async getCylinder(){
-        this.$axios.get("/api/cylinder/"+this.id).then(response => (this.cylinder = response.data));
-      }
+  middleware: 'authenticated',
+  data() {
+    return {
+      selectedPart: undefined,
+      cylinder: []
     }
+  },
+  head() {
+    return{
+      title: this.title,
+    }
+  },
+  computed:{
+    id(){
+      return this.$route.params.id
+    },
+    title(){
+      return 'Cylinder: '+this.id
+    }
+  },
+  created(){
+    this.getCylinder();
+  },
+  methods:{
+    async getCylinder(){
+      this.$axios.get("/api/cylinder/"+this.id).then(response => (this.cylinder = response.data));
+    }
+  }
 }
 </script>
 

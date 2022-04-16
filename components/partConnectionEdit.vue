@@ -124,81 +124,81 @@
 
 <script>
 export default {
-    props:{
-      id: {
-        type: Number,
-        required: true
-      },
-      connectionTypes: {
-        type: Array,
-        required: true
-      },
+  props:{
+    id: {
+      type: Number,
+      required: true
     },
-emits: ['selectedConnection'],
-    data(){
-        return{
-            partConnectionFields: [
-                { key: 'name', label: 'Connection name'},
-                { key: 'actions', label: 'Actions' }
-            ],
-            partConnections: [],
-            selectedConnection: null
-        }
+    connectionTypes: {
+      type: Array,
+      required: true
     },
-    created(){
-        this.getPartConnections();
-    },
-    methods:{
-        getPartConnections(){
-            this.$axios.get("/api/part/"+this.id+"/partConnection")
-            .then(response => {
-                this.partConnections = response.data
-            })
-        },
-        onSubmit(form){
-            this.$axios.put("/api/part/"+this.id+"/partConnection/"+form.id, form)
-            .then((message) => {
-                this.$parent.$refs.alert.setAlert(message.data.message, "success")
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$parent.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        addConnection(){
-            this.$axios.post("/api/part/"+this.id+"/partConnection", {connection_id: this.selectedConnection})
-            .then((message) => {
-                this.$parent.$refs.alert.setAlert(message.data.message, "success")
-                this.getPartConnections()
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$parent.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        removeConnection(connection_id){
-            this.$axios.delete("/api/part/"+this.id+"/partConnection/"+connection_id)
-            .then((message) => {
-                this.$parent.$refs.alert.setAlert(message.data.message, "success")
-                this.getPartConnections()
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$parent.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        }
+  },
+  emits: ['selectedConnection'],
+  data(){
+    return{
+      partConnectionFields: [
+        { key: 'name', label: 'Connection name'},
+        { key: 'actions', label: 'Actions' }
+      ],
+      partConnections: [],
+      selectedConnection: null
     }
+  },
+  created(){
+    this.getPartConnections();
+  },
+  methods:{
+    getPartConnections(){
+      this.$axios.get("/api/part/"+this.id+"/partConnection")
+        .then(response => {
+          this.partConnections = response.data
+        })
+    },
+    onSubmit(form){
+      this.$axios.put("/api/part/"+this.id+"/partConnection/"+form.id, form)
+        .then((message) => {
+          this.$parent.$refs.alert.setAlert(message.data.message, "success")
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$parent.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    addConnection(){
+      this.$axios.post("/api/part/"+this.id+"/partConnection", {connection_id: this.selectedConnection})
+        .then((message) => {
+          this.$parent.$refs.alert.setAlert(message.data.message, "success")
+          this.getPartConnections()
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$parent.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    removeConnection(connection_id){
+      this.$axios.delete("/api/part/"+this.id+"/partConnection/"+connection_id)
+        .then((message) => {
+          this.$parent.$refs.alert.setAlert(message.data.message, "success")
+          this.getPartConnections()
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$parent.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    }
+  }
 }
 </script>

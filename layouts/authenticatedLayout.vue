@@ -80,13 +80,13 @@
 
 <script>
 export default {
-    methods: {
-        logout() {
-            this.$auth.logout()
-        },
-        hasPermision(permision){
-          return this.$auth.user.myPermissions.find(e=>e.name===permision)!==undefined
-        }
+  methods: {
+    logout() {
+      this.$auth.logout()
+    },
+    hasPermision(permision){
+      return this.$auth.user.myPermissions.find(e=>e.name===permision)!==undefined
     }
+  }
 }
 </script>

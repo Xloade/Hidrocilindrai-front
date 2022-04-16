@@ -21,11 +21,11 @@
 
 <script>
 export default {
-    props:{
-      errors: {
-        type: Array,
-        required: true
-      },
+  props:{
+    errors: {
+      type: Array,
+      required: true
     },
+  },
 }
 </script>

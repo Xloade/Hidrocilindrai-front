@@ -31,32 +31,32 @@ import Viewport from '~/components/3dView.vue'
 import PartPannel from "@/components/partPannel.vue"
 export default {
 
-    components: {
-        BreezeAuthenticatedLayout,
-        MyHeader,
-        Viewport,
-        PartPannel
-    },
+  components: {
+    BreezeAuthenticatedLayout,
+    MyHeader,
+    Viewport,
+    PartPannel
+  },
 
-    middleware: 'authenticated',
-    data() {
-      return {
-        part: []
-      }
-    },
-    head() {
-        return{
-            title: this.title,
-        }
-    },
-    computed:{
-      id(){
-        return this.$route.params.id
-      },
-      title(){
-        return 'Part: '+this.id
-      }
+  middleware: 'authenticated',
+  data() {
+    return {
+      part: []
     }
+  },
+  head() {
+    return{
+      title: this.title,
+    }
+  },
+  computed:{
+    id(){
+      return this.$route.params.id
+    },
+    title(){
+      return 'Part: '+this.id
+    }
+  }
 }
 </script>
 

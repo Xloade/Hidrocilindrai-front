@@ -21,21 +21,21 @@ import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 import MyHeader from '@/components/header.vue'
 export default {
 
-    components: {
-        BreezeAuthenticatedLayout,
-        MyHeader
-    },
+  components: {
+    BreezeAuthenticatedLayout,
+    MyHeader
+  },
 
-    middleware: 'authenticated',
-    data() {
-      return {
-        title: 'Dashboard'
-      }
-    },
-    head() {
-        return{
-            title: this.title,
-        }
+  middleware: 'authenticated',
+  data() {
+    return {
+      title: 'Dashboard'
     }
+  },
+  head() {
+    return{
+      title: this.title,
+    }
+  }
 }
 </script>

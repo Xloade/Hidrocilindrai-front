@@ -4,9 +4,9 @@
 
 <script>
 export default {
-    layout: 'guest',
-    head: {
-        title: 'Welcome',
-    },
+  layout: 'guest',
+  head: {
+    title: 'Welcome',
+  },
 }
 </script>

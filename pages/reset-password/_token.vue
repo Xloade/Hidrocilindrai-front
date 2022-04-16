@@ -62,45 +62,45 @@
 import ValidationErrors from '~/components/ValidationErrors.vue'
 export default {
 
-    components: {
-        ValidationErrors,
-    },
+  components: {
+    ValidationErrors,
+  },
 
-    layout: 'guest',
+  layout: 'guest',
 
-    data() {
-        return {
-            form: {
-                token: this.$router.currentRoute.params.token,
-                email: '',
-                password: '',
-                password_confirmation: '',
-                processing: false,
-                errors: []
-            }
-        }
-    },
-    head: {
-        title: 'Reset Password',
-    },
-
-    methods: {
-        async submit() {
-            this.processing = true
-            this.form.errors = []
-
-            try {
-                await this.$axios.post('/auth/reset-password', this.form)
-
-                this.processing = false
-            } catch (e) {
-                Object.keys(e.response.data.errors).forEach(key => {
-                    Object.values(e.response.data.errors[key]).forEach(error => {
-                        this.form.errors.push(error)
-                    })
-                })
-            }
-        }
+  data() {
+    return {
+      form: {
+        token: this.$router.currentRoute.params.token,
+        email: '',
+        password: '',
+        password_confirmation: '',
+        processing: false,
+        errors: []
+      }
     }
+  },
+  head: {
+    title: 'Reset Password',
+  },
+
+  methods: {
+    async submit() {
+      this.processing = true
+      this.form.errors = []
+
+      try {
+        await this.$axios.post('/auth/reset-password', this.form)
+
+        this.processing = false
+      } catch (e) {
+        Object.keys(e.response.data.errors).forEach(key => {
+          Object.values(e.response.data.errors[key]).forEach(error => {
+            this.form.errors.push(error)
+          })
+        })
+      }
+    }
+  }
 }
 </script>

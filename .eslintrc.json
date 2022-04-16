@@ -10,7 +10,13 @@
   "rules": {
     // override/add rules settings here, such as:
     // 'vue/no-unused-vars': 'error'
-    "vue/multi-word-component-names": 0
+    "vue/multi-word-component-names": 0,
+    "indent": [ 2, 2,
+      {
+      "MemberExpression": 1,
+      "ObjectExpression": 1
+      }
+    ]
   },
   "ignorePatterns": ["src/**/*.test.ts", "src/frontend/generated/*"]
 }

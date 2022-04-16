@@ -81,81 +81,81 @@ import MyHeader from '@/components/header.vue'
 import myAlert from '~/components/myAlert.vue'
 export default {
 
-    components: {
-        BreezeAuthenticatedLayout,
-        MyHeader,
-        myAlert
-    },
+  components: {
+    BreezeAuthenticatedLayout,
+    MyHeader,
+    myAlert
+  },
 
-    middleware: 'authenticated',
-    asyncData ({ $axios }, callback) {
-        $axios.get('/api/cylinder')
-        .then((res) => {
-            callback(null, { cylinders: res.data })
-        })
-    },
-    data() {
-      return {
-        title: 'My cylinders',
-        cylinders: [],
-        name: '',
-        nameState: null,
-      }
-    },
-    head() {
-        return{
-            title: this.title,
-        }
-    },
-    methods:{
-        add(name){
-            this.$axios.post('/api/cylinder', {name: name})
-            .then((response) => {
-                this.$router.push("cylinders/"+response.data.id)
-            })
-        },
-        checkFormValidity() {
-        const valid = this.$refs.form.checkValidity()
-        this.nameState = valid
-        return valid
-      },
-      resetModal() {
-        this.name = ''
-        this.nameState = null
-      },
-      handleOk(bvModalEvt) {
-        // Prevent modal from closing
-        bvModalEvt.preventDefault()
-        // Trigger submit handler
-        this.handleSubmit()
-      },
-      handleSubmit() {
-        // Exit when the form isn't valid
-        if (!this.checkFormValidity()) {
-          return
-        }
-        // Push the name to submitted names
-        this.add(this.name)
-        // Hide the modal manually
-        this.$nextTick(() => {
-          this.$bvModal.hide('modal-prevent-closing')
-        })
-      },
-      removeCylinder(cylinder_id){
-          this.$axios.delete("/api/cylinder/"+cylinder_id)
-          .then((message) => {
-              this.$refs.alert.setAlert(message.data.message, "success")
-              this.$nuxt.refresh()
-          })
-          .catch((error) => {
-              if( error.response.data.message ){
-                  this.$refs.alert.setAlert(error.response.data.message, "danger")
-              }
-              else{
-                  this.$refs.alert.setAlert(error.message, "danger")
-              }
-          })
-      }
+  middleware: 'authenticated',
+  asyncData ({ $axios }, callback) {
+    $axios.get('/api/cylinder')
+      .then((res) => {
+        callback(null, { cylinders: res.data })
+      })
+  },
+  data() {
+    return {
+      title: 'My cylinders',
+      cylinders: [],
+      name: '',
+      nameState: null,
     }
+  },
+  head() {
+    return{
+      title: this.title,
+    }
+  },
+  methods:{
+    add(name){
+      this.$axios.post('/api/cylinder', {name: name})
+        .then((response) => {
+          this.$router.push("cylinders/"+response.data.id)
+        })
+    },
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity()
+      this.nameState = valid
+      return valid
+    },
+    resetModal() {
+      this.name = ''
+      this.nameState = null
+    },
+    handleOk(bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
+    },
+    handleSubmit() {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return
+      }
+      // Push the name to submitted names
+      this.add(this.name)
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$bvModal.hide('modal-prevent-closing')
+      })
+    },
+    removeCylinder(cylinder_id){
+      this.$axios.delete("/api/cylinder/"+cylinder_id)
+        .then((message) => {
+          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$nuxt.refresh()
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    }
+  }
 }
 </script>

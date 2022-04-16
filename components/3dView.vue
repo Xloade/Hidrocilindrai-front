@@ -12,23 +12,23 @@ import * as THREE from "three-full";
 
 export default {
   props:{
-      id: {
-        type: Number,
-        required: true
-      },
-      selectedPart: {
-        type: Object,
-        required: true
-      },
-      cylinder: {
-        type: Array,
-        required: true
-      },
-      originPlanes: {
-        type: Boolean,
-        default: undefined
-      },
+    id: {
+      type: Number,
+      required: true
     },
+    selectedPart: {
+      type: Object,
+      required: true
+    },
+    cylinder: {
+      type: Array,
+      required: true
+    },
+    originPlanes: {
+      type: Boolean,
+      default: undefined
+    },
+  },
 
   data() {
     return {
@@ -155,21 +155,21 @@ export default {
           plane.color
         );
         switch (plane.name) {
-          case "x":
-            planeMesh.rotateZ(90*(Math.PI/180));
-            arrow.rotateZ(90*(Math.PI/180));
-            break;
-          case "y":
-            planeMesh.rotateX(90*(Math.PI/180));
-            arrow.rotateX(90*(Math.PI/180));
-            break;
-          case "z":
-            planeMesh.rotateY(270*(Math.PI/180));
-            arrow.rotateY(270*(Math.PI/180));
-            break;
+        case "x":
+          planeMesh.rotateZ(90*(Math.PI/180));
+          arrow.rotateZ(90*(Math.PI/180));
+          break;
+        case "y":
+          planeMesh.rotateX(90*(Math.PI/180));
+          arrow.rotateX(90*(Math.PI/180));
+          break;
+        case "z":
+          planeMesh.rotateY(270*(Math.PI/180));
+          arrow.rotateY(270*(Math.PI/180));
+          break;
 
-          default:
-            break;
+        default:
+          break;
         }
         this.scene.add(planeMesh);
         this.scene.add(arrow);
@@ -262,8 +262,8 @@ export default {
     selectPart(){
       // quite uneficiant as it makes copies of material every time. But it would need more digging in three.js for more elegant soliution
       this.current3dObjects.forEach((element)=>{
-          this.makeSelectedTransparent(element)
-        });
+        this.makeSelectedTransparent(element)
+      });
     },
     makeSelectedTransparent(element){
       element.children.forEach( ( child ) => {

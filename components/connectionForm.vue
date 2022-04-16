@@ -56,73 +56,73 @@
 <script>
 import partTypeDimentionEdit from "./partTypeDimentionEdit.vue";
 export default {
-    components:{
-        partTypeDimentionEdit
-    },
-    emits: ['done'],
-    data(){
-        return{
-            id: null,
-            connection:{
-                name:"",
-                part_type_id:""
-            },
-            partTypes: []
-        }
-    },
-    computed:{
-        isCreating(){
-            return this.id === null
-        },
-        connectionPartType(){
-            return this.partTypes.find(e => e.id===this.connection.part_type_id)
-        }
-    },
-    created(){
-        this.getTypes();
-    },
-    methods:{
-        onSubmit(){
-            this.$axios({
-                method: this.isCreating ? 'post':'put',
-                url: "/api/connection/"+(this.isCreating ? '':this.id),
-                data: this.connection
-            })
-            .then((message) => {
-                if(this.isCreating) this.$emit("done", message.data.id)
-                else this.$emit("done", this.id)
-                this.$parent.$refs.alert.setAlert(message.data.message, "success")
-                this.$bvModal.hide('ConnectionModal')
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$parent.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        getConnection(){
-            this.$axios.get("/api/connection/"+this.id)
-            .then(response => {
-                this.connection = response.data
-            })
-        },
-        getTypes(){
-            this.$axios.get("/api/parttype")
-            .then(response => {
-                this.partTypes = response.data
-            })
-        },
-        open(id){
-            this.id = id
-            this.$bvModal.show('ConnectionModal')
-            if(!this.isCreating){
-                this.getConnection()
-            }
-        },
+  components:{
+    partTypeDimentionEdit
+  },
+  emits: ['done'],
+  data(){
+    return{
+      id: null,
+      connection:{
+        name:"",
+        part_type_id:""
+      },
+      partTypes: []
     }
+  },
+  computed:{
+    isCreating(){
+      return this.id === null
+    },
+    connectionPartType(){
+      return this.partTypes.find(e => e.id===this.connection.part_type_id)
+    }
+  },
+  created(){
+    this.getTypes();
+  },
+  methods:{
+    onSubmit(){
+      this.$axios({
+        method: this.isCreating ? 'post':'put',
+        url: "/api/connection/"+(this.isCreating ? '':this.id),
+        data: this.connection
+      })
+        .then((message) => {
+          if(this.isCreating) this.$emit("done", message.data.id)
+          else this.$emit("done", this.id)
+          this.$parent.$refs.alert.setAlert(message.data.message, "success")
+          this.$bvModal.hide('ConnectionModal')
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$parent.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    getConnection(){
+      this.$axios.get("/api/connection/"+this.id)
+        .then(response => {
+          this.connection = response.data
+        })
+    },
+    getTypes(){
+      this.$axios.get("/api/parttype")
+        .then(response => {
+          this.partTypes = response.data
+        })
+    },
+    open(id){
+      this.id = id
+      this.$bvModal.show('ConnectionModal')
+      if(!this.isCreating){
+        this.getConnection()
+      }
+    },
+  }
 }
 </script>
 

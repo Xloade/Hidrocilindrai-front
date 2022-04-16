@@ -90,121 +90,121 @@
 import dimentionForm from "./dimentionForm.vue";
 import myAlert from "./myAlert.vue";
 export default {
-    components:{
-        dimentionForm,
-        myAlert
+  components:{
+    dimentionForm,
+    myAlert
+  },
+  props:{
+    id: {
+      type: Number,
+      required: true
     },
-    props:{
-      id: {
-        type: Number,
-        required: true
-      },
-    },
-    data(){
-        return{
-            partDimentionFields: [
-                { key: 'name', label: 'Name'},
-                { key: 'tooltip', label: 'Tooltip Image' },
-                { key: 'actions', label: 'Actions' }
-            ],
-            partDimentions: [],
-            dimentions:[],
-            selectedDimention: null,
-        }
-    },
-    watch:{
-        id(){
-            this.getpartDimentions();
-        }
-    },
-    created(){
-        this.getDimentions();
-    },
-    methods:{
-        getDimentions(){
-            this.$axios.get("api/dimention")
-            .then(response => {
-                this.dimentions = response.data
-            })
-        },
-        getpartDimentions(){
-            if (this.id === "") return
-            this.$axios.get("/api/partType/"+this.id+"/partTypeDimention")
-            .then(response => {
-                this.partDimentions = response.data
-            })
-        },
-        addDimention(){
-            this.$axios.post("/api/partType/"+this.id+"/partTypeDimention", {dimention_id: this.selectedDimention})
-            .then((message) => {
-                this.$refs.alert.setAlert(message.data.message, "success")
-                this.getpartDimentions()
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        removePartTypeDimention(dimention_id){
-            this.$axios.delete("/api/partType/"+this.id+"/partTypeDimention/"+dimention_id)
-            .then((message) => {
-                this.$refs.alert.setAlert(message.data.message, "success")
-                this.getpartDimentions()
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        removeDimention(){
-            this.$axios.delete("/api/dimention/"+this.selectedDimention)
-            .then((message) => {
-                this.$refs.alert.setAlert(message.data.message, "success")
-                this.getDimentions()
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        submitFile(partTypeDimention){
-            if(partTypeDimention.pngFile === null) return
-
-            let formData = new FormData();
-            formData.append("pngFile", partTypeDimention.pngFile);
-            this.$axios.post("/api/partType/"+this.id+"/partTypeDimention/"+partTypeDimention.pivot.id+"/pngFile", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then(() => {
-                partTypeDimention.placeHolder = partTypeDimention.pngFile.name
-                partTypeDimention.pngFile = null
-                partTypeDimention.ImageExcists = true
-            })
-            .catch((error) => {
-                partTypeDimention.placeHolder = partTypeDimention.pngFile.name
-                partTypeDimention.pngFile = null
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
+  },
+  data(){
+    return{
+      partDimentionFields: [
+        { key: 'name', label: 'Name'},
+        { key: 'tooltip', label: 'Tooltip Image' },
+        { key: 'actions', label: 'Actions' }
+      ],
+      partDimentions: [],
+      dimentions:[],
+      selectedDimention: null,
     }
+  },
+  watch:{
+    id(){
+      this.getpartDimentions();
+    }
+  },
+  created(){
+    this.getDimentions();
+  },
+  methods:{
+    getDimentions(){
+      this.$axios.get("api/dimention")
+        .then(response => {
+          this.dimentions = response.data
+        })
+    },
+    getpartDimentions(){
+      if (this.id === "") return
+      this.$axios.get("/api/partType/"+this.id+"/partTypeDimention")
+        .then(response => {
+          this.partDimentions = response.data
+        })
+    },
+    addDimention(){
+      this.$axios.post("/api/partType/"+this.id+"/partTypeDimention", {dimention_id: this.selectedDimention})
+        .then((message) => {
+          this.$refs.alert.setAlert(message.data.message, "success")
+          this.getpartDimentions()
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    removePartTypeDimention(dimention_id){
+      this.$axios.delete("/api/partType/"+this.id+"/partTypeDimention/"+dimention_id)
+        .then((message) => {
+          this.$refs.alert.setAlert(message.data.message, "success")
+          this.getpartDimentions()
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    removeDimention(){
+      this.$axios.delete("/api/dimention/"+this.selectedDimention)
+        .then((message) => {
+          this.$refs.alert.setAlert(message.data.message, "success")
+          this.getDimentions()
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    submitFile(partTypeDimention){
+      if(partTypeDimention.pngFile === null) return
+
+      let formData = new FormData();
+      formData.append("pngFile", partTypeDimention.pngFile);
+      this.$axios.post("/api/partType/"+this.id+"/partTypeDimention/"+partTypeDimention.pivot.id+"/pngFile", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+        .then(() => {
+          partTypeDimention.placeHolder = partTypeDimention.pngFile.name
+          partTypeDimention.pngFile = null
+          partTypeDimention.ImageExcists = true
+        })
+        .catch((error) => {
+          partTypeDimention.placeHolder = partTypeDimention.pngFile.name
+          partTypeDimention.pngFile = null
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+  }
 }
 </script>

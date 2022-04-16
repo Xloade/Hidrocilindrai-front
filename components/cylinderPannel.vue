@@ -86,84 +86,84 @@
 <script>
 import myAlert from './myAlert.vue'
 export default {
-    components: { myAlert },
-    props:{
-      id: {
-        type: Number,
-        required: true
-      },
+  components: { myAlert },
+  props:{
+    id: {
+      type: Number,
+      required: true
     },
-emits: ['selectedPart', 'changed'],
-    data(){
-        return{
-            partGroups:[],
-            activeTab: 0
-        }
-    },
-    created(){
-        this.getParts()
-    },
-    methods:{
-        partDimention(part, dimention){
-            let GotDimention = part.dimentions.find(e=>e.part_type_dimention_id === dimention.id)
-            return GotDimention || {}
-        },
-        tabChanged(){
-            let tab = this.partGroups[this.activeTab]
-            if(tab === undefined || tab.length < 1) return
-            let selectionInfo = {
-                for_connection: tab[0].for_connection,
-                cylinder_part_connection: tab[0].cylinder_part_connection,
-            }
-            // let part = this.partGroups[this.activeTab].find(element => element.hasOwnProperty('selected_cylinder_part_connection'))
-            // this.$emit("selectedPart", part)
-            this.$emit("selectedPart", selectionInfo)
-
-        },
-        getParts(){
-            this.$axios.get("/api/cylinder/"+this.id+"/parts")
-            .then(response => this.partGroups = response.data)
-        },
-        getPartGroupKey(part){
-            return part.for_connection.id + '-' + part.cylinder_part_connection.id
-        },
-        async removePart(part){
-            await this.$axios.delete("/api/cylinder/"+this.id+"/parts/"+part.selected_cylinder_part_connection.id)
-            .then(() => {
-                this.changed()
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        async addPart(part){
-            await this.$axios.post("/api/cylinder/"+this.id+"/parts", {
-                part_connection_id: part.for_connection.id,
-                part_id: part.id,
-                cylinder_part_connection_id: part.cylinder_part_connection.id
-            })
-            .then(() => {
-                this.changed()
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        changed(){
-            this.getParts();
-            this.$emit("changed")
-        }
+  },
+  emits: ['selectedPart', 'changed'],
+  data(){
+    return{
+      partGroups:[],
+      activeTab: 0
     }
+  },
+  created(){
+    this.getParts()
+  },
+  methods:{
+    partDimention(part, dimention){
+      let GotDimention = part.dimentions.find(e=>e.part_type_dimention_id === dimention.id)
+      return GotDimention || {}
+    },
+    tabChanged(){
+      let tab = this.partGroups[this.activeTab]
+      if(tab === undefined || tab.length < 1) return
+      let selectionInfo = {
+        for_connection: tab[0].for_connection,
+        cylinder_part_connection: tab[0].cylinder_part_connection,
+      }
+      // let part = this.partGroups[this.activeTab].find(element => element.hasOwnProperty('selected_cylinder_part_connection'))
+      // this.$emit("selectedPart", part)
+      this.$emit("selectedPart", selectionInfo)
+
+    },
+    getParts(){
+      this.$axios.get("/api/cylinder/"+this.id+"/parts")
+        .then(response => this.partGroups = response.data)
+    },
+    getPartGroupKey(part){
+      return part.for_connection.id + '-' + part.cylinder_part_connection.id
+    },
+    async removePart(part){
+      await this.$axios.delete("/api/cylinder/"+this.id+"/parts/"+part.selected_cylinder_part_connection.id)
+        .then(() => {
+          this.changed()
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    async addPart(part){
+      await this.$axios.post("/api/cylinder/"+this.id+"/parts", {
+        part_connection_id: part.for_connection.id,
+        part_id: part.id,
+        cylinder_part_connection_id: part.cylinder_part_connection.id
+      })
+        .then(() => {
+          this.changed()
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    changed(){
+      this.getParts();
+      this.$emit("changed")
+    }
+  }
 }
 </script>
 

@@ -32,9 +32,9 @@ export default{
       this.showCount = dismissCountDown
     },
     setAlert(text, variant){
-        this.showCount = this.dismissSecs
-        this.text = text
-        this.variant = variant
+      this.showCount = this.dismissSecs
+      this.text = text
+      this.variant = variant
     },
   }
 }

@@ -63,81 +63,81 @@
 
 <script>
 export default {
-emits: ['done'],
-    data(){
-        return{
-            id: null,
-            user: null,
-            emptyUser: {
-              name: '',
-              email: '',
-              password: '',
-              rules: 'User'
-            },
-            roles:[
-              {
-                name: "User",
-                value: "User"
-              },
-              {
-                name: "Specialist",
-                value: "Specialist"
-              },
-              {
-                name: "Admin",
-                value: "Admin"
-              }
-            ]
+  emits: ['done'],
+  data(){
+    return{
+      id: null,
+      user: null,
+      emptyUser: {
+        name: '',
+        email: '',
+        password: '',
+        rules: 'User'
+      },
+      roles:[
+        {
+          name: "User",
+          value: "User"
+        },
+        {
+          name: "Specialist",
+          value: "Specialist"
+        },
+        {
+          name: "Admin",
+          value: "Admin"
+        }
+      ]
 
-        }
-    },
-    computed:{
-        isCreating(){
-            return this.id === null
-        }
-    },
-    methods:{
-        onSubmit(){
-            this.$axios({
-                method: this.isCreating ? 'post':'put',
-                url: "/api/admin/user/"+(this.isCreating ? '':this.id),
-                data: this.user
-            })
-            .then((message) => {
-                if(this.isCreating) this.$emit("done", message.data.id)
-                else this.$emit("done", this.id)
-                this.$parent.$refs.alert.setAlert(message.data.message, "success")
-                this.$bvModal.hide('UserModal')
-            })
-            .catch((error) => {
-                if( error.response.data.message ){
-                    this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
-                }
-                else{
-                    this.$parent.$refs.alert.setAlert(error.message, "danger")
-                }
-            })
-        },
-        open(id){
-            this.id = id
-            this.$bvModal.show('UserModal')
-            if(!this.isCreating){
-                this.getUser()
-            }
-            else{
-              this.user = this.emptyUser
-            }
-        },
-        getUser(){
-          this.$axios.get("/api/admin/user/"+this.id)
-            .then((element)=>{
-              this.user = element.data
-              if (this.user.roles.length > 0) {
-                this.user.roles = this.user.roles[0].name
-              }
-            })
-        }
     }
+  },
+  computed:{
+    isCreating(){
+      return this.id === null
+    }
+  },
+  methods:{
+    onSubmit(){
+      this.$axios({
+        method: this.isCreating ? 'post':'put',
+        url: "/api/admin/user/"+(this.isCreating ? '':this.id),
+        data: this.user
+      })
+        .then((message) => {
+          if(this.isCreating) this.$emit("done", message.data.id)
+          else this.$emit("done", this.id)
+          this.$parent.$refs.alert.setAlert(message.data.message, "success")
+          this.$bvModal.hide('UserModal')
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$parent.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    },
+    open(id){
+      this.id = id
+      this.$bvModal.show('UserModal')
+      if(!this.isCreating){
+        this.getUser()
+      }
+      else{
+        this.user = this.emptyUser
+      }
+    },
+    getUser(){
+      this.$axios.get("/api/admin/user/"+this.id)
+        .then((element)=>{
+          this.user = element.data
+          if (this.user.roles.length > 0) {
+            this.user.roles = this.user.roles[0].name
+          }
+        })
+    }
+  }
 }
 </script>
 

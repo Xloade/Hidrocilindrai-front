@@ -62,42 +62,42 @@
 <script>
 import ValidationErrors from '~/components/ValidationErrors.vue'
 export default {
-    components: {
-        ValidationErrors
-    },
-    layout: 'guest',
-    data() {
-        return {
-            form: {
-                email: '',
-                password: '',
-                remember: false,
-                processing: false,
-                errors: []
-            }
-        }
-    },
-    head: {
-        title: 'Login',
-    },
-
-    methods: {
-        async submit() {
-            this.processing = true
-            this.form.errors = []
-
-            try {
-                await this.$auth.loginWith('laravelSanctum', { data: this.form })
-
-                this.processing = false
-            } catch (e) {
-                Object.keys(e.response.data.errors).forEach(key => {
-                    Object.values(e.response.data.errors[key]).forEach(error => {
-                        this.form.errors.push(error)
-                    })
-                })
-            }
-        }
+  components: {
+    ValidationErrors
+  },
+  layout: 'guest',
+  data() {
+    return {
+      form: {
+        email: '',
+        password: '',
+        remember: false,
+        processing: false,
+        errors: []
+      }
     }
+  },
+  head: {
+    title: 'Login',
+  },
+
+  methods: {
+    async submit() {
+      this.processing = true
+      this.form.errors = []
+
+      try {
+        await this.$auth.loginWith('laravelSanctum', { data: this.form })
+
+        this.processing = false
+      } catch (e) {
+        Object.keys(e.response.data.errors).forEach(key => {
+          Object.values(e.response.data.errors[key]).forEach(error => {
+            this.form.errors.push(error)
+          })
+        })
+      }
+    }
+  }
 }
 </script>

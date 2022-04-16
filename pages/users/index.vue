@@ -59,65 +59,65 @@ import myAlert from '~/components/myAlert.vue'
 import userForm from '@/components/userForm.vue'
 export default {
 
-    components: {
-        BreezeAuthenticatedLayout,
-        MyHeader,
-        myAlert,
-        userForm
-    },
+  components: {
+    BreezeAuthenticatedLayout,
+    MyHeader,
+    myAlert,
+    userForm
+  },
 
-    middleware: 'authenticated',
-    asyncData ({ $axios }, callback) {
-        $axios.get('/api/admin/user')
-        .then((res) => {
-            callback(null, { users: res.data })
-        })
-    },
-    data() {
-      return {
-        title: 'Users',
-        users: [],
-        fields: [
-          {
-            key: 'name',
-            label: 'Name',
-          },
-          {
-            key: 'email',
-            label: 'E-mail',
-          },
-          {
-            key: 'roles',
-            label: 'Role',
-          },
-          {
-            key: 'actions',
-            label: 'Actions'
-          }
-        ],
-      }
-    },
-    head() {
-        return{
-            title: this.title,
+  middleware: 'authenticated',
+  asyncData ({ $axios }, callback) {
+    $axios.get('/api/admin/user')
+      .then((res) => {
+        callback(null, { users: res.data })
+      })
+  },
+  data() {
+    return {
+      title: 'Users',
+      users: [],
+      fields: [
+        {
+          key: 'name',
+          label: 'Name',
+        },
+        {
+          key: 'email',
+          label: 'E-mail',
+        },
+        {
+          key: 'roles',
+          label: 'Role',
+        },
+        {
+          key: 'actions',
+          label: 'Actions'
         }
-    },
-    methods:{
-      remove(id){
-          this.$axios.delete("/api/admin/user/"+id)
-          .then((message) => {
-              this.$refs.alert.setAlert(message.data.message, "success")
-              this.$nuxt.refresh()
-          })
-          .catch((error) => {
-              if( error.response.data.message ){
-                  this.$refs.alert.setAlert(error.response.data.message, "danger")
-              }
-              else{
-                  this.$refs.alert.setAlert(error.message, "danger")
-              }
-          })
-      }
+      ],
     }
+  },
+  head() {
+    return{
+      title: this.title,
+    }
+  },
+  methods:{
+    remove(id){
+      this.$axios.delete("/api/admin/user/"+id)
+        .then((message) => {
+          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$nuxt.refresh()
+        })
+        .catch((error) => {
+          if( error.response.data.message ){
+            this.$refs.alert.setAlert(error.response.data.message, "danger")
+          }
+          else{
+            this.$refs.alert.setAlert(error.message, "danger")
+          }
+        })
+    }
+  }
 }
 </script>
