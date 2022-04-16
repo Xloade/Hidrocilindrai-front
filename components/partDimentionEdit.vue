@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import dimentionForm from "./dimentionForm.vue";
 import myAlert from "./myAlert.vue";
 export default {
 

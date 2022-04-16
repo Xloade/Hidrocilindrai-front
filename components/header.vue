@@ -9,7 +9,10 @@ export default {
   name: "MyHeader",
 
   props: {
-    name: String,
+    name: {
+      type: String,
+      required: true
+    }
   },
 };
 </script>

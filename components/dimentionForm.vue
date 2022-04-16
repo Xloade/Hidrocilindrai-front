@@ -31,6 +31,7 @@
 
 <script>
 export default {
+emits: ['done'],
     data(){
         return{
             id: null,

@@ -124,7 +124,17 @@
 
 <script>
 export default {
-    props:["id", "connectionTypes"],
+    props:{
+      id: {
+        type: Number,
+        required: true
+      },
+      connectionTypes: {
+        type: Array,
+        required: true
+      },
+    },
+emits: ['selectedConnection'],
     data(){
         return{
             partConnectionFields: [

@@ -103,12 +103,6 @@ export default {
         }
     },
     methods:{
-      add(){
-
-      },
-      edit(id){
-
-      },
       remove(id){
           this.$axios.delete("/api/admin/user/"+id)
           .then((message) => {

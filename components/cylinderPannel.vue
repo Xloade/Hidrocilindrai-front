@@ -93,6 +93,7 @@ export default {
         required: true
       },
     },
+emits: ['selectedPart', 'changed'],
     data(){
         return{
             partGroups:[],

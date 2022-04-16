@@ -17,7 +17,7 @@
           <CylinderPannel
             :id="id"
             @changed="getCylinder()"
-            @selectedPart="(part) => selectedPart = part"
+            @selected-part="(part) => selectedPart = part"
           />
         </div>
       </div>
