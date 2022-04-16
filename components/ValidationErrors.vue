@@ -21,6 +21,11 @@
 
 <script>
 export default {
-    props: ['errors'],
+    props:{
+      errors: {
+        type: Array,
+        required: true
+      },
+    },
 }
 </script>

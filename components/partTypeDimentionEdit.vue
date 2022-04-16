@@ -94,7 +94,12 @@ export default {
         dimentionForm,
         myAlert
     },
-    props:["id"],
+    props:{
+      id: {
+        type: Number,
+        required: true
+      },
+    },
     data(){
         return{
             partDimentionFields: [
@@ -184,7 +189,7 @@ export default {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            .then(_ => {
+            .then(() => {
                 partTypeDimention.placeHolder = partTypeDimention.pngFile.name
                 partTypeDimention.pngFile = null
                 partTypeDimention.ImageExcists = true

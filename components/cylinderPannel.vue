@@ -16,7 +16,10 @@
           <table class="w-100 table table-hover">
             <thead>
               <th>id</th>
-              <th v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions">
+              <th
+                v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions"
+                :key="partTypeDimention.id"
+              >
                 {{ partTypeDimention.name }}
                 <b-icon
                   :id="'tooltip-target-'+partTypeDimention.pivot.id+'-'+index"
@@ -84,7 +87,12 @@
 import myAlert from './myAlert.vue'
 export default {
     components: { myAlert },
-    props:["id"],
+    props:{
+      id: {
+        type: Number,
+        required: true
+      },
+    },
     data(){
         return{
             partGroups:[],

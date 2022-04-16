@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import BreezeAuthenticatedLayout from '@/layouts/authenticated.vue'
+import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 import MyHeader from '@/components/header.vue'
-import Viewport from '@/components/viewport.vue'
+import Viewport from '~/components/3dView.vue'
 import CylinderPannel from "@/components/cylinderPannel.vue"
 export default {
 

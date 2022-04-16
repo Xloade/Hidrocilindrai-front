@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import BreezeAuthenticatedLayout from '@/layouts/authenticated.vue'
+import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 import MyHeader from '@/components/header.vue'
 export default {
 

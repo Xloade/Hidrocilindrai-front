@@ -79,11 +79,7 @@
 </template>
 
 <script>
-import BreezeApplicationLogo from '@/components/application-logo.vue'
 export default {
-    components:{
-        BreezeApplicationLogo
-    },
     methods: {
         logout() {
             this.$auth.logout()

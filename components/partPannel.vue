@@ -150,7 +150,7 @@
       <part-connection-edit
         :id="id"
         :connection-types="connectionTypes"
-        @selectedConnection="(selection) => partForViewport.part_connection = selection"
+        @selected_connection="(selection) => partForViewport.part_connection = selection"
       />
       <connection-form
         ref="connectionForm"
@@ -167,7 +167,13 @@ import partConnectionEdit from './partConnectionEdit.vue'
 import partDimentionEdit from './partDimentionEdit.vue'
 export default {
     components: { myAlert, partConnectionEdit, connectionForm, partDimentionEdit },
-    props:["id"],
+    props:{
+      id: {
+        type: Number,
+        required: true
+      },
+    },
+    emits: ['changed'],
     data(){
         return{
             part: null,
@@ -227,7 +233,7 @@ export default {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            .then(_ => {
+            .then(() => {
                 this.changed()
                 this.placeHolder = this.objFile.name
                 this.objFile = null

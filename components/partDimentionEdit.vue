@@ -26,7 +26,16 @@
 import dimentionForm from "./dimentionForm.vue";
 import myAlert from "./myAlert.vue";
 export default {
-    props:["part"],
+
+    components:{
+      myAlert
+    },
+    props:{
+      part:{
+        type:Object,
+        required: true
+      }
+    },
     data(){
         return{
             partDimentionFields: [

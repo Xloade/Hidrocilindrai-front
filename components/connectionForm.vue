@@ -40,10 +40,10 @@
         </b-form-group>
         <h2>
           <span
-            v-if="partType"
+            v-if="connectionPartType"
             class="part-dimention-title-name"
           >
-            {{ partType.name }}
+            {{ connectionPartType.name }}
           </span>
           dimentions
         </h2>
@@ -59,6 +59,7 @@ export default {
     components:{
         partTypeDimentionEdit
     },
+    emits: ['done'],
     data(){
         return{
             id: null,
@@ -73,7 +74,7 @@ export default {
         isCreating(){
             return this.id === null
         },
-        partType(){
+        connectionPartType(){
             return this.partTypes.find(e => e.id===this.connection.part_type_id)
         }
     },

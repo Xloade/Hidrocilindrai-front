@@ -11,7 +11,25 @@
 import * as THREE from "three-full";
 
 export default {
-  props:["id", "selectedPart", "cylinder", "originPlanes"],
+  props:{
+      id: {
+        type: Number,
+        required: true
+      },
+      selectedPart: {
+        type: Object,
+        required: true
+      },
+      cylinder: {
+        type: Array,
+        required: true
+      },
+      originPlanes: {
+        type: Boolean,
+        default: undefined
+      },
+    },
+
   data() {
     return {
       camera: null,
@@ -27,7 +45,7 @@ export default {
     };
   },
   watch:{
-    selectedPart(newVal){
+    selectedPart(){
       this.selectPart();
     },
     cylinder(){
@@ -116,7 +134,7 @@ export default {
       //
 
       window.addEventListener("resize", this.onWindowResize);
-      if(this.originPlanes !== undefined)
+      if(this.originPlanes !== undefined || this.originPlanes === true)
         this.addOridingPlanes();
     },
     addOridingPlanes(){
