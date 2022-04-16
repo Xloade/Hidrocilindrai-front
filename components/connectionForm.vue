@@ -8,7 +8,10 @@
       ok-variant="success"
       @ok="onSubmit"
     >
-      <b-form @submit.prevent="onSubmit">
+      <b-form
+        v-if="connection"
+        @submit.prevent="onSubmit"
+      >
         <b-form-group
           label="Name"
           label-cols-sm="4"
@@ -63,7 +66,8 @@ export default {
   data(){
     return{
       id: null,
-      connection:{
+      connection: null,
+      emptyConnection:{
         name:"",
         part_type_id:""
       },
@@ -120,6 +124,9 @@ export default {
       this.$bvModal.show('ConnectionModal')
       if(!this.isCreating){
         this.getConnection()
+      }
+      else{
+        this.connection = this.emptyConnection
       }
     },
   }
