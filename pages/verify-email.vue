@@ -49,7 +49,7 @@
 
 <script>
 export default {
-  layout: 'guest',
+  layout: 'guestLayout',
   data() {
     return {
       form: {

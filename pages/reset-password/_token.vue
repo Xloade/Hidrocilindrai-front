@@ -66,7 +66,7 @@ export default {
     ValidationErrors,
   },
 
-  layout: 'guest',
+  layout: 'guestLayout',
 
   data() {
     return {

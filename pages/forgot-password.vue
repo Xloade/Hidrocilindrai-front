@@ -41,7 +41,7 @@ export default {
   components: {
     ValidationErrors
   },
-  layout: 'guest',
+  layout: 'guestLayout',
   data() {
     return {
       form: {
