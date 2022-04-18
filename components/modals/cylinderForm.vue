@@ -15,6 +15,7 @@
           label-cols-sm="4"
         >
           <b-form-input
+            id="name"
             v-model="cylinder.name"
             required
           />
@@ -53,8 +54,11 @@ export default {
         data: this.cylinder
       })
         .then((message) => {
-          this.$parent.$refs.alert.parseSuccess(message)
-          if(this.isCreating) this.$emit("done", message.data.id)
+          if(this.isCreating){
+            this.$emit("done", message.data.id)
+          } else {
+            this.$parent.$parent.$refs.alert.parseSuccess(message)
+          }
           this.$bvModal.hide('CylinderModal')
         })
         .catch((error) => {
