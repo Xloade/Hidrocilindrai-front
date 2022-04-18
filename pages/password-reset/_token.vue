@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import myAlert from '~/components/myAlert.vue'
+import myAlert from '~/components/myComponents/myAlert.vue'
 export default {
   components: {
     myAlert

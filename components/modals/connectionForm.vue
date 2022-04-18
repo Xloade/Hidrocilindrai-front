@@ -58,7 +58,10 @@
 </template>
 
 <script>
+import partTypeDimentionEdit from '../edit/partTypeDimentionEdit.vue'
 export default {
+  name: "ConnectionForm",
+  components: { partTypeDimentionEdit },
   emits: ['done'],
   data(){
     return{

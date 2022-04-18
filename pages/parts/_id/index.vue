@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import CylinderDisplay from '~/components/cylinderDisplay.vue'
-import PartPannel from "@/components/partPannel.vue"
-import MyHeader from '~/components/myHeader.vue'
+import CylinderDisplay from '~/components/myComponents/cylinderDisplay.vue'
+import PartPannel from "~/components/pannels/partPannel.vue"
+import MyHeader from '~/components/myComponents/myHeader.vue'
 import AuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 export default {
   components: {

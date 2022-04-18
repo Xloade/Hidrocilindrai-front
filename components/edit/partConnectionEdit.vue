@@ -124,6 +124,7 @@
 
 <script>
 export default {
+  name: "PartConnectionEdit",
   props:{
     id: {
       type: [Number, String],

@@ -26,6 +26,7 @@
 
 <script>
 export default {
+  name: "CylinderForm",
   emits: ['done'],
   data(){
     return{

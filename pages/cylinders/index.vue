@@ -59,8 +59,8 @@
 </template>
 
 <script>
-import myAlert from '~/components/myAlert.vue'
-import MyHeader from '~/components/myHeader.vue'
+import myAlert from '~/components/myComponents/myAlert.vue'
+import MyHeader from '~/components/myComponents/myHeader.vue'
 import CylinderForm from '~/components/modals/cylinderForm.vue'
 import AuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 export default {

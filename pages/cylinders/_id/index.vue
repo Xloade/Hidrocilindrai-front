@@ -26,12 +26,11 @@
 </template>
 
 <script>
-import cylinderDisplay from '~/components/cylinderDisplay.vue'
-import CylinderPannel from '~/components/cylinderPannel.vue'
-import MyHeader from '~/components/myHeader.vue'
+import cylinderDisplay from '~/components/myComponents/cylinderDisplay.vue'
+import CylinderPannel from '~/components/pannels/cylinderPannel.vue'
 import authenticatedLayout from '~/layouts/authenticatedLayout.vue'
 export default {
-  components: { authenticatedLayout, MyHeader, CylinderPannel, cylinderDisplay },
+  components: { authenticatedLayout, CylinderPannel, cylinderDisplay },
   middleware: 'authenticated',
   data() {
     return {

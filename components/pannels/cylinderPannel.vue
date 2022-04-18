@@ -92,6 +92,7 @@
 
 <script>
 export default {
+  name: "CylinderPannel",
   props:{
     id: {
       type: [Number, String],

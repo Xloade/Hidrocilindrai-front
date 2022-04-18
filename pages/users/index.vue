@@ -54,9 +54,9 @@
 
 <script>
 import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
-import myAlert from '~/components/myAlert.vue'
-import userForm from '@/components/userForm.vue'
-import MyHeader from '~/components/myHeader.vue'
+import myAlert from '~/components/myComponents/myAlert.vue'
+import userForm from '~/components/modals/userForm.vue'
+import MyHeader from '~/components/myComponents/myHeader.vue'
 export default {
 
   components: {

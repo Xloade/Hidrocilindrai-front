@@ -87,7 +87,10 @@
 </template>
 
 <script>
+import dimentionForm from '../modals/dimentionForm.vue';
 export default {
+  name: "PartTypeDimentionEdit",
+  components: { dimentionForm },
   props:{
     id: {
       type: [Number, String],

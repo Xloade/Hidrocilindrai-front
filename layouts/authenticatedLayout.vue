@@ -80,6 +80,7 @@
 
 <script>
 export default {
+  name: "AuthenticatedLayout",
   methods: {
     logout() {
       this.$auth.logout()

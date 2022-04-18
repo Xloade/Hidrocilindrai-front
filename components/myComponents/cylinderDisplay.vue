@@ -11,6 +11,7 @@
 import * as THREE from "three-full";
 
 export default {
+  name: "CylinderDisplay",
   props:{
     id: {
       type: [Number, String],

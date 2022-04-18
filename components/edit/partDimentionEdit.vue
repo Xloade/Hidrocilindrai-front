@@ -24,6 +24,7 @@
 
 <script>
 export default {
+  name: "PartDimentionEdit",
   props:{
     part:{
       type:Object,

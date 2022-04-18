@@ -34,6 +34,7 @@
 
 <script>
 export default{
+  name: "MyAlert",
   data(){
     return{
       text:'',

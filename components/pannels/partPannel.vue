@@ -170,9 +170,12 @@
 </template>
 
 <script>
-import connectionForm from './modals/connectionForm.vue'
+import PartConnectionEdit from '../edit/partConnectionEdit.vue'
+import partDimentionEdit from '../edit/partDimentionEdit.vue'
+import ConnectionForm from '../modals/connectionForm.vue'
 export default {
-  components: { connectionForm },
+  name: "PartPannel",
+  components: { partDimentionEdit, PartConnectionEdit, ConnectionForm },
   props:{
     id: {
       type: [Number, String],

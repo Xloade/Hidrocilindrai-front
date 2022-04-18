@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import MyHeader from '~/components/myHeader.vue'
+import MyHeader from '~/components/myComponents/myHeader.vue'
 import AuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 export default {
 
