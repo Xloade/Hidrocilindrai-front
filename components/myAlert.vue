@@ -8,9 +8,9 @@
     @dismiss-count-down="countDownChanged"
   >
     <template v-if="typeof(text) === 'object'">
-      <h5>
+      <p>
         {{ text.message }}
-      </h5>
+      </p>
       <ul>
         <li
           v-for="(error, key) in text.errors"
