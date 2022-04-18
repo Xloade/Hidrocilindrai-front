@@ -1,20 +1,14 @@
 <template>
   <div>
-    <!-- Validation Errors -->
-    <ValidationErrors
-      :errors="form.errors"
-      class="mb-4"
-    />
-
+    <my-alert ref="alert" />
     <b-form @submit.prevent="submit">
       <b-form-group
         id="input-group-1"
         label="Email address:"
-        label-for="input-1"
         description="We'll never share your email with anyone else."
       >
         <b-form-input
-          id="input-1"
+          id="email"
           v-model="form.email"
           type="email"
           placeholder="Enter email"
@@ -25,10 +19,9 @@
       <b-form-group
         id="input-group-2"
         label="Your Name:"
-        label-for="input-2"
       >
         <b-form-input
-          id="input-2"
+          id="password"
           v-model="form.password"
           type="password"
           placeholder="Enter password"
@@ -60,10 +53,10 @@
 </template>
 
 <script>
-import ValidationErrors from '~/components/ValidationErrors.vue'
+import myAlert from '~/components/myAlert.vue'
 export default {
   components: {
-    ValidationErrors
+    myAlert
   },
   layout: 'guestLayout',
   data() {
@@ -73,7 +66,6 @@ export default {
         password: '',
         remember: false,
         processing: false,
-        errors: []
       }
     }
   },
@@ -84,18 +76,13 @@ export default {
   methods: {
     async submit() {
       this.processing = true
-      this.form.errors = []
 
       try {
         await this.$auth.loginWith('laravelSanctum', { data: this.form })
 
         this.processing = false
       } catch (e) {
-        Object.keys(e.response.data.errors).forEach(key => {
-          Object.values(e.response.data.errors[key]).forEach(error => {
-            this.form.errors.push(error)
-          })
-        })
+        this.$refs.alert.setAlert(e.response.data.errors, "danger")
       }
     }
   }

@@ -1,32 +1,12 @@
 <template>
   <div>
-    <!-- Validation Errors -->
-    <ValidationErrors
-      :errors="form.errors"
-      class="mb-4"
-    />
+    <my-alert ref="alert" />
     <b-form @submit.prevent="submit">
       <b-form-group
-        id="input-group-1"
-        label="Email address:"
-        label-for="input-1"
-      >
-        <b-form-input
-          id="input-1"
-          v-model="form.email"
-          type="email"
-          placeholder="Enter email"
-          required
-        />
-      </b-form-group>
-
-      <b-form-group
-        id="input-group-3"
         label="Your Password:"
-        label-for="input-3"
       >
         <b-form-input
-          id="input-3"
+          id="password"
           v-model="form.password"
           type="password"
           placeholder="Enter password"
@@ -35,12 +15,10 @@
       </b-form-group>
 
       <b-form-group
-        id="input-group-4"
         label="Repeat Password:"
-        label-for="input-4"
       >
         <b-form-input
-          id="input-4"
+          id="passwordRepeat"
           v-model="form.password_confirmation"
           type="password"
           placeholder="Repeat password"
@@ -48,7 +26,7 @@
         />
       </b-form-group>
       <b-button
-        type="reset"
+        type="submit"
         variant="primary"
         :active="form.processing"
       >
@@ -59,11 +37,10 @@
 </template>
 
 <script>
-import ValidationErrors from '~/components/ValidationErrors.vue'
+import myAlert from '~/components/myAlert.vue'
 export default {
-
   components: {
-    ValidationErrors,
+    myAlert
   },
 
   layout: 'guestLayout',
@@ -72,11 +49,10 @@ export default {
     return {
       form: {
         token: this.$router.currentRoute.params.token,
-        email: '',
+        email: this.$router.currentRoute.query.email,
         password: '',
         password_confirmation: '',
         processing: false,
-        errors: []
       }
     }
   },
@@ -87,18 +63,13 @@ export default {
   methods: {
     async submit() {
       this.processing = true
-      this.form.errors = []
-
       try {
-        await this.$axios.post('/auth/reset-password', this.form)
-
+        const results = await this.$axios.post('/auth/reset-password', this.form)
+        this.form.success = results.data.status
+        this.$refs.alert.setAlert(results.data.status, "success")
         this.processing = false
       } catch (e) {
-        Object.keys(e.response.data.errors).forEach(key => {
-          Object.values(e.response.data.errors[key]).forEach(error => {
-            this.form.errors.push(error)
-          })
-        })
+        this.$refs.alert.setAlert(e.response.data.errors, "danger")
       }
     }
   }

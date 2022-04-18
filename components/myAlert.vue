@@ -7,7 +7,22 @@
     @dismissed="showCount=0"
     @dismiss-count-down="countDownChanged"
   >
-    <p>{{ text }}</p>
+    <template v-if="typeof(text) === 'object'">
+      <h5>
+        Whoops! Something went wrong.
+      </h5>
+      <ul>
+        <li
+          v-for="(error, key) in text"
+          :key="key"
+        >
+          {{ error }}
+        </li>
+      </ul>
+    </template>
+    <p v-else>
+      {{ text }}
+    </p>
     <b-progress
       :variant="variant"
       :max="dismissSecs"
@@ -31,9 +46,15 @@ export default{
     countDownChanged(dismissCountDown) {
       this.showCount = dismissCountDown
     },
-    setAlert(text, variant){
-      this.showCount = this.dismissSecs
+    setAlert(text, variant, dismissSecs = this.dismissSecs){
+      this.showCount = dismissSecs
       this.text = text
+      if (typeof(text) === 'object') {
+        const errorArrays = Object.values(text)
+        this.text = [].concat(...errorArrays)
+      } else {
+        this.text = text
+      }
       this.variant = variant
     },
   }
