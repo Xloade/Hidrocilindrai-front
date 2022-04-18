@@ -28,11 +28,13 @@
 import CylinderDisplay from '~/components/cylinderDisplay.vue'
 import PartPannel from "@/components/partPannel.vue"
 import MyHeader from '~/components/myHeader.vue'
+import AuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 export default {
   components: {
     MyHeader,
     CylinderDisplay,
-    PartPannel
+    PartPannel,
+    AuthenticatedLayout
   },
 
   middleware: 'authenticated',
