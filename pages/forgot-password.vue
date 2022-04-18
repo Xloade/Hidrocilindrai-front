@@ -53,7 +53,7 @@ export default {
         this.$refs.alert.setAlert(result.data.status, "success")
         this.processing = false
       } catch (e) {
-        this.$refs.alert.setAlert(e.response.data.errors, "danger")
+        this.$refs.alert.parseError(e)
       }
     }
   }

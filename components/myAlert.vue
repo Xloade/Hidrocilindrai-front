@@ -9,11 +9,11 @@
   >
     <template v-if="typeof(text) === 'object'">
       <h5>
-        Whoops! Something went wrong.
+        {{ text.message }}
       </h5>
       <ul>
         <li
-          v-for="(error, key) in text"
+          v-for="(error, key) in text.errors"
           :key="key"
         >
           {{ error }}
@@ -39,7 +39,7 @@ export default{
       text:'',
       showCount:'0',
       dismissSecs:'10',
-      variant:''
+      variant:'',
     }
   },
   methods: {
@@ -49,14 +49,30 @@ export default{
     setAlert(text, variant, dismissSecs = this.dismissSecs){
       this.showCount = dismissSecs
       this.text = text
-      if (typeof(text) === 'object') {
-        const errorArrays = Object.values(text)
-        this.text = [].concat(...errorArrays)
-      } else {
-        this.text = text
-      }
       this.variant = variant
     },
+    parseError(error){
+      let result = {}
+      if (error.response === undefined) {
+        this.setAlert('Unespected error', 'danger')
+        throw error
+      }
+      if(error.response.data.message){
+        result.message = error.response.data.message
+      } else {
+        result.message = "Whoops! Something went wrong."
+      }
+      if(error.response.data.errors){
+        const errorArrays = Object.values(error.response.data.errors)
+        result.errors = [].concat(...errorArrays)
+      }
+      this.setAlert(result, 'danger')
+    },
+    parseSuccess(success){
+      let message = ''
+      message = success.data.message
+      this.setAlert(message, 'success')
+    }
   }
 }
 </script>

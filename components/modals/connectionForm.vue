@@ -8,6 +8,7 @@
       ok-variant="success"
       @ok="onSubmit"
     >
+      <my-alert ref="alert" />
       <b-form
         v-if="connection"
         @submit.prevent="onSubmit"
@@ -57,11 +58,7 @@
 </template>
 
 <script>
-import partTypeDimentionEdit from "./partTypeDimentionEdit.vue";
 export default {
-  components:{
-    partTypeDimentionEdit
-  },
   emits: ['done'],
   data(){
     return{
@@ -93,18 +90,13 @@ export default {
         data: this.connection
       })
         .then((message) => {
+          this.$parent.$refs.alert.parseSuccess(message)
           if(this.isCreating) this.$emit("done", message.data.id)
           else this.$emit("done", this.id)
-          this.$parent.$refs.alert.setAlert(message.data.message, "success")
           this.$bvModal.hide('ConnectionModal')
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$parent.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$refs.alert.parseError(error)
         })
     },
     getConnection(){

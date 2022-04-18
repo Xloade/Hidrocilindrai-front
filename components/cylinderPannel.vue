@@ -91,9 +91,7 @@
 </template>
 
 <script>
-import myAlert from './myAlert.vue'
 export default {
-  components: { myAlert },
   props:{
     id: {
       type: [Number, String],
@@ -152,12 +150,7 @@ export default {
           this.changed()
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$refs.alert.parseError(error)
         })
     },
     async addPart(part){

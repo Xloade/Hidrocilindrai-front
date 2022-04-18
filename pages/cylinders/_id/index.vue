@@ -1,12 +1,12 @@
 <template>
-  <BreezeAuthenticatedLayout>
+  <authenticated-layout>
     <template #header>
-      <MyHeader :name="title" />
+      <my-header :name="title" />
     </template>
     <div class="h-screen">
       <div class="row p-3">
         <div class="viewport col-lg-6 col-12">
-          <Viewport
+          <cylinder-display
             :id="id"
             ref="viewport"
             :selected-part="selectedPart"
@@ -14,7 +14,7 @@
           />
         </div>
         <div class="cylinderPannel col-lg-6 col-12">
-          <CylinderPannel
+          <cylinder-pannel
             :id="id"
             @changed="getCylinder()"
             @selected-part="(part) => selectedPart = part"
@@ -22,23 +22,16 @@
         </div>
       </div>
     </div>
-  </BreezeAuthenticatedLayout>
+  </authenticated-layout>
 </template>
 
 <script>
-import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
-import MyHeader from '@/components/header.vue'
-import Viewport from '~/components/3dView.vue'
-import CylinderPannel from "@/components/cylinderPannel.vue"
+import cylinderDisplay from '~/components/cylinderDisplay.vue'
+import CylinderPannel from '~/components/cylinderPannel.vue'
+import MyHeader from '~/components/myHeader.vue'
+import authenticatedLayout from '~/layouts/authenticatedLayout.vue'
 export default {
-
-  components: {
-    BreezeAuthenticatedLayout,
-    MyHeader,
-    Viewport,
-    CylinderPannel
-  },
-
+  components: { authenticatedLayout, MyHeader, CylinderPannel, cylinderDisplay },
   middleware: 'authenticated',
   data() {
     return {

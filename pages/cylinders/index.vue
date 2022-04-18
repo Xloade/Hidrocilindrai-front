@@ -1,8 +1,8 @@
 <template>
-  <BreezeAuthenticatedLayout>
+  <authenticated-layout>
     <template #header>
       <div class="d-flex">
-        <MyHeader :name="title" />
+        <my-header :name="title" />
         <b-button
           id="openAdd"
           variant="success"
@@ -55,19 +55,21 @@
         @done="(id) => {$router.push('cylinders/'+id)}"
       />
     </div>
-  </BreezeAuthenticatedLayout>
+  </authenticated-layout>
 </template>
 
 <script>
-import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
-import MyHeader from '@/components/header.vue'
 import myAlert from '~/components/myAlert.vue'
+import MyHeader from '~/components/myHeader.vue'
+import CylinderForm from '~/components/modals/cylinderForm.vue'
+import AuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 export default {
 
   components: {
-    BreezeAuthenticatedLayout,
+    myAlert,
     MyHeader,
-    myAlert
+    CylinderForm,
+    AuthenticatedLayout
   },
 
   middleware: 'authenticated',
@@ -92,16 +94,11 @@ export default {
     removeCylinder(cylinder_id){
       this.$axios.delete("/api/cylinder/"+cylinder_id)
         .then((message) => {
-          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$refs.alert.parseSuccess(message)
           this.$nuxt.refresh()
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$refs.alert.parseError(error)
         })
     }
   }

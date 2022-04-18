@@ -26,7 +26,6 @@
       </b-form>
       <h2>Part edit</h2>
       <b-form
-        @submit.prevent="onSubmit"
         @click="partForViewport.part_connection = zeroSelection;"
       >
         <b-form-group
@@ -149,7 +148,7 @@
         <b-button
           id="submitPart"
           variant="success"
-          type="submit"
+          @click="onSubmit"
         >
           Save changes
         </b-button>
@@ -171,12 +170,9 @@
 </template>
 
 <script>
-import connectionForm from './connectionForm.vue'
-import myAlert from './myAlert.vue'
-import partConnectionEdit from './partConnectionEdit.vue'
-import partDimentionEdit from './partDimentionEdit.vue'
+import connectionForm from './modals/connectionForm.vue'
 export default {
-  components: { myAlert, partConnectionEdit, connectionForm, partDimentionEdit },
+  components: { connectionForm },
   props:{
     id: {
       type: [Number, String],
@@ -190,7 +186,7 @@ export default {
       partForViewport: null,
       objFile: null,
       placeHolder: "Choose a file or drop it here...",
-      connectionTypes: null,
+      connectionTypes: [],
       connectionEditId: null,
       zeroSelection:{
         x_angle_offset: 0,
@@ -248,46 +244,32 @@ export default {
           this.placeHolder = this.objFile.name
           this.objFile = null
           this.part.ObjFileExcists = true
+          this.$parent.$refs.alert.setAlert(".obj file uploaded successfully", "success")
         })
         .catch((error) => {
           this.placeHolder = this.objFile.name
           this.objFile = null
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$refs.alert.parseError(error)
         })
     },
     onSubmit(){
       this.$axios.put("/api/part/"+this.id, this.part)
         .then((message) => {
-          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$refs.alert.parseSuccess(message)
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$refs.alert.parseError(error)
         })
     },
     deleteConnection(){
       this.$axios.delete("/api/connection/"+this.part.connection_id)
         .then((message) => {
-          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$refs.alert.parseSuccess(message)
           this.getConnectionOptions();
           this.part.connection_id=null;
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$refs.alert.parseError(error)
         })
     },
   }

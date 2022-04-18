@@ -3,7 +3,7 @@
     <BreezeAuthenticatedLayout>
       <template #header>
         <div class="d-flex">
-          <MyHeader :name="title" />
+          <my-header :name="title" />
           <b-button
             variant="success"
             @click="$refs.userForm.open(null)"
@@ -54,9 +54,9 @@
 
 <script>
 import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
-import MyHeader from '@/components/header.vue'
 import myAlert from '~/components/myAlert.vue'
 import userForm from '@/components/userForm.vue'
+import MyHeader from '~/components/myHeader.vue'
 export default {
 
   components: {
@@ -106,16 +106,11 @@ export default {
     remove(id){
       this.$axios.delete("/api/admin/user/"+id)
         .then((message) => {
-          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$refs.alert.parseSuccess(message)
           this.$nuxt.refresh()
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$refs.alert.parseError(error)
         })
     }
   }

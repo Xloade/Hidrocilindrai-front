@@ -52,17 +52,12 @@ export default {
         data: this.cylinder
       })
         .then((message) => {
+          this.$parent.$refs.alert.parseSuccess(message)
           if(this.isCreating) this.$emit("done", message.data.id)
-          else this.$parent.$parent.$refs.alert.setAlert(message.data.message, "success")
           this.$bvModal.hide('CylinderModal')
         })
         .catch((error) => {
-          if( error.response ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$refs.alert.parseError(error)
         })
     },
     getCylinder(){

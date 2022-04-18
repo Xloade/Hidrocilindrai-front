@@ -1,8 +1,8 @@
 <template>
-  <BreezeAuthenticatedLayout>
+  <authenticated-layout>
     <template #header>
       <div class="d-flex">
-        <MyHeader :name="title" />
+        <my-header :name="title" />
         <b-button
           variant="success"
           @click="add"
@@ -43,21 +43,19 @@
         </b-card>
       </div>
     </div>
-  </BreezeAuthenticatedLayout>
+  </authenticated-layout>
 </template>
 
 <script>
-import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
-import MyHeader from '@/components/header.vue'
 import myAlert from '~/components/myAlert.vue'
+import MyHeader from '~/components/myHeader.vue'
+import AuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 export default {
-
   components: {
-    BreezeAuthenticatedLayout,
+    myAlert,
     MyHeader,
-    myAlert
+    AuthenticatedLayout
   },
-
   middleware: 'authenticated',
   asyncData ({ $axios }, callback) {
     $axios.get('/api/part')
@@ -115,16 +113,11 @@ export default {
     removePart(part_id){
       this.$axios.delete("/api/part/"+part_id)
         .then((message) => {
-          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$refs.alert.parseSuccess(message)
           this.$nuxt.refresh()
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$refs.alert.parseError(error)
         })
     }
   }

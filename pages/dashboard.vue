@@ -1,7 +1,7 @@
 <template>
-  <BreezeAuthenticatedLayout>
+  <authenticated-layout>
     <template #header>
-      <MyHeader :name="title" />
+      <my-header :name="title" />
     </template>
 
     <div class="py-12">
@@ -13,17 +13,17 @@
         </div>
       </div>
     </div>
-  </BreezeAuthenticatedLayout>
+  </authenticated-layout>
 </template>
 
 <script>
-import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
-import MyHeader from '@/components/header.vue'
+import MyHeader from '~/components/myHeader.vue'
+import AuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
 export default {
 
   components: {
-    BreezeAuthenticatedLayout,
-    MyHeader
+    MyHeader,
+    AuthenticatedLayout
   },
 
   middleware: 'authenticated',

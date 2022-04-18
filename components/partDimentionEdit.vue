@@ -23,12 +23,7 @@
 </template>
 
 <script>
-import myAlert from "./myAlert.vue";
 export default {
-
-  components:{
-    myAlert
-  },
   props:{
     part:{
       type:Object,
@@ -69,12 +64,7 @@ export default {
           this.$parent.$refs.alert.setAlert("All dimentions saved", "success")
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$parent.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$parent.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$parent.$refs.alert.parseError(error)
         })
     },
     saveDimention(dimention){

@@ -87,13 +87,7 @@
 </template>
 
 <script>
-import dimentionForm from "./dimentionForm.vue";
-import myAlert from "./myAlert.vue";
 export default {
-  components:{
-    dimentionForm,
-    myAlert
-  },
   props:{
     id: {
       type: [Number, String],

@@ -96,7 +96,7 @@ export default {
 
         this.processing = false
       } catch (e) {
-        this.$refs.alert.setAlert(e.response.data.errors, "danger")
+        this.$refs.alert.parseError(e)
       }
     }
   }

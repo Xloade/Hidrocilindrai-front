@@ -56,16 +56,11 @@ export default {
         .then((message) => {
           if(this.isCreating) this.$emit("done", message.data.id)
           else this.$emit("done", this.id)
-          this.$parent.$refs.alert.setAlert(message.data.message, "success")
+          this.$parent.$refs.alert.parseSuccess(message)
           this.$bvModal.hide('DimentionModal')
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$parent.$refs.alert.parseError(error)
         })
     },
     getDimention(){

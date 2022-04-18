@@ -1,12 +1,12 @@
 <template>
-  <BreezeAuthenticatedLayout>
+  <authenticated-layout>
     <template #header>
-      <MyHeader :name="title" />
+      <my-header :name="title" />
     </template>
     <div class="h-screen">
       <div class="row p-3">
         <div class="col-lg-6 col-12 viewport">
-          <Viewport
+          <cylinder-display
             :id="id"
             ref="viewport"
             :cylinder="part"
@@ -21,20 +21,17 @@
         </div>
       </div>
     </div>
-  </BreezeAuthenticatedLayout>
+  </authenticated-layout>
 </template>
 
 <script>
-import BreezeAuthenticatedLayout from '~/layouts/authenticatedLayout.vue'
-import MyHeader from '@/components/header.vue'
-import Viewport from '~/components/3dView.vue'
+import CylinderDisplay from '~/components/cylinderDisplay.vue'
 import PartPannel from "@/components/partPannel.vue"
+import MyHeader from '~/components/myHeader.vue'
 export default {
-
   components: {
-    BreezeAuthenticatedLayout,
     MyHeader,
-    Viewport,
+    CylinderDisplay,
     PartPannel
   },
 
