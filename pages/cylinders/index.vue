@@ -26,7 +26,7 @@
             img-alt="Image"
             img-top
             tag="article"
-            style=""
+            class="cylinder-card"
           >
             <b-link
               class="btn btn-primary"
@@ -35,7 +35,6 @@
               Edit
             </b-link>
             <b-button
-              id="openAdd"
               variant="info"
               @click="$refs.cylinderForm.open(cylinder.id)"
             >

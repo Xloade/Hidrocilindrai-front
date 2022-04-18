@@ -1,8 +1,8 @@
 <template>
-  <div class="component">
+  <div class="component cylinder-pannel">
     <div class="mt-3">
       <b-alert
-        class="alert"
+        class="alert cylinder-progress"
         :variant="isFullCylinder ? 'success' : 'warning'"
         :show="partGroups.length > 0"
       >

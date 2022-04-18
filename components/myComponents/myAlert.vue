@@ -3,7 +3,7 @@
     :variant="variant"
     :show="showCount"
     dismissible
-    class="myAlert"
+    class="my-alert"
     @dismissed="showCount=0"
     @dismiss-count-down="countDownChanged"
   >
@@ -79,7 +79,7 @@ export default{
 </script>
 
 <style  scoped>
-.myAlert{
+.my-alert{
         position: sticky;
         top: 0;
         z-index: 1020;
