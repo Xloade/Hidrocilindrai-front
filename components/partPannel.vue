@@ -35,6 +35,7 @@
           label-cols-sm="4"
         >
           <b-form-input
+            id="x_offset"
             v-model="part.x_offset"
             type="number"
             step="0.1"
@@ -46,6 +47,7 @@
           label-cols-sm="4"
         >
           <b-form-input
+            id="y_offset"
             v-model="part.y_offset"
             type="number"
             step="0.1"
@@ -57,6 +59,7 @@
           label-cols-sm="4"
         >
           <b-form-input
+            id="z_offset"
             v-model="part.z_offset"
             type="number"
             step="0.1"
@@ -68,6 +71,7 @@
           label-cols-sm="4"
         >
           <b-form-input
+            id="x_angle_offset"
             v-model="part.x_angle_offset"
             type="number"
             step="0.1"
@@ -79,6 +83,7 @@
           label-cols-sm="4"
         >
           <b-form-input
+            id="y_angle_offset"
             v-model="part.y_angle_offset"
             type="number"
             step="0.1"
@@ -90,6 +95,7 @@
           label-cols-sm="4"
         >
           <b-form-input
+            id="z_angle_offset"
             v-model="part.z_angle_offset"
             type="number"
             step="0.1"
@@ -100,7 +106,10 @@
           label="Fullfiled connection:"
           label-cols-sm="4"
         >
-          <b-form-select v-model="part.connection_id">
+          <b-form-select
+            id="connection"
+            v-model="part.connection_id"
+          >
             <b-form-select-option :value="null">
               <div class="">
                 Null
@@ -138,6 +147,7 @@
           </div>
         </b-form-group>
         <b-button
+          id="submitPart"
           variant="success"
           type="submit"
         >

@@ -140,7 +140,7 @@ export default {
 
     },
     getParts(){
-      this.$axios.get("/api/cylinder/"+this.id+"/parts")
+      this.$axios.get("/api/cylinder/"+this.id+"/possibleParts")
         .then(response => this.partGroups = response.data)
     },
     getPartGroupKey(part){

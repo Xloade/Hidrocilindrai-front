@@ -64,7 +64,7 @@ export default {
   },
   methods:{
     async getCylinder(){
-      this.$axios.get("/api/cylinder/"+this.id).then(response => (this.cylinder = response.data));
+      this.$axios.get("/api/cylinder/"+this.id+"/parts").then(response => (this.cylinder = response.data));
     }
   }
 }

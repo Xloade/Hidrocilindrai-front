@@ -4,8 +4,9 @@
       <div class="d-flex">
         <MyHeader :name="title" />
         <b-button
-          v-b-modal.modal-prevent-closing
+          id="openAdd"
           variant="success"
+          @click="$refs.cylinderForm.open(null)"
         >
           Add
         </b-button>
@@ -34,6 +35,13 @@
               Edit
             </b-link>
             <b-button
+              id="openAdd"
+              variant="info"
+              @click="$refs.cylinderForm.open(cylinder.id)"
+            >
+              Edit info
+            </b-button>
+            <b-button
               variant="danger"
               @click="removeCylinder(cylinder.id)"
             >
@@ -42,35 +50,10 @@
           </b-card>
         </div>
       </div>
-
-      <b-modal
-        id="modal-prevent-closing"
-        ref="modal"
-        title="Create new cylinder"
-        ok-title="Create"
-        @show="resetModal"
-        @hidden="resetModal"
-        @ok="handleOk"
-      >
-        <form
-          ref="form"
-          @submit.stop.prevent="handleSubmit"
-        >
-          <b-form-group
-            label="Name"
-            label-for="name-input"
-            invalid-feedback="Name is required"
-            :state="nameState"
-          >
-            <b-form-input
-              id="name-input"
-              v-model="name"
-              :state="nameState"
-              required
-            />
-          </b-form-group>
-        </form>
-      </b-modal>
+      <cylinder-form
+        ref="cylinderForm"
+        @done="(id) => {$router.push('cylinders/'+id)}"
+      />
     </div>
   </BreezeAuthenticatedLayout>
 </template>
@@ -98,8 +81,6 @@ export default {
     return {
       title: 'My cylinders',
       cylinders: [],
-      name: '',
-      nameState: null,
     }
   },
   head() {
@@ -108,39 +89,6 @@ export default {
     }
   },
   methods:{
-    add(name){
-      this.$axios.post('/api/cylinder', {name: name})
-        .then((response) => {
-          this.$router.push("cylinders/"+response.data.id)
-        })
-    },
-    checkFormValidity() {
-      const valid = this.$refs.form.checkValidity()
-      this.nameState = valid
-      return valid
-    },
-    resetModal() {
-      this.name = ''
-      this.nameState = null
-    },
-    handleOk(bvModalEvt) {
-      // Prevent modal from closing
-      bvModalEvt.preventDefault()
-      // Trigger submit handler
-      this.handleSubmit()
-    },
-    handleSubmit() {
-      // Exit when the form isn't valid
-      if (!this.checkFormValidity()) {
-        return
-      }
-      // Push the name to submitted names
-      this.add(this.name)
-      // Hide the modal manually
-      this.$nextTick(() => {
-        this.$bvModal.hide('modal-prevent-closing')
-      })
-    },
     removeCylinder(cylinder_id){
       this.$axios.delete("/api/cylinder/"+cylinder_id)
         .then((message) => {
