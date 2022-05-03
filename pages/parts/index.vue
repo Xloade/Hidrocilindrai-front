@@ -4,6 +4,7 @@
       <div class="d-flex">
         <my-header :name="title" />
         <b-button
+          id="add"
           variant="success"
           @click="add"
         >
@@ -23,7 +24,7 @@
           :img-src="'/images/parts/'+(part.part_type === null ? 'null' : part.part_type.id)+'.png'"
           img-top
           tag="article"
-          style=""
+          class="part-card"
         >
           <p>
             ID: {{ part.id }}

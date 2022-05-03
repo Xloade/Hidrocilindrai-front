@@ -9,39 +9,40 @@
       @ok="onSubmit"
     >
       <my-alert ref="alert" />
-      <b-form
-        v-if="connection"
-        @submit.prevent="onSubmit"
-      >
-        <b-form-group
-          label="Name"
-          label-cols-sm="4"
+      <template v-if="connection">
+        <b-form
+          @submit.prevent="onSubmit"
         >
-          <b-form-input
-            v-model="connection.name"
-            required
-          />
-        </b-form-group>
-        <b-form-group
-          v-if="partTypes"
-          label="Fullfiling part type"
-          label-cols-sm="4"
-        >
-          <b-form-select
-            v-model="connection.part_type_id"
-            required
+          <b-form-group
+            label="Name"
+            label-cols-sm="4"
           >
-            <b-form-select-option
-              v-for="partType in partTypes"
-              :key="partType.id"
-              :value="partType.id"
+            <b-form-input
+              id="name"
+              v-model="connection.name"
+              required
+            />
+          </b-form-group>
+          <b-form-group
+            v-if="partTypes"
+            label="Fullfiling part type"
+            label-cols-sm="4"
+          >
+            <b-form-select
+              id="partType"
+              v-model="connection.part_type_id"
+              required
             >
-              <div class="">
+              <b-form-select-option
+                v-for="partType in partTypes"
+                :key="partType.id"
+                :value="partType.id"
+              >
                 {{ partType.name }}
-              </div>
-            </b-form-select-option>
-          </b-form-select>
-        </b-form-group>
+              </b-form-select-option>
+            </b-form-select>
+          </b-form-group>
+        </b-form>
         <h2>
           <span
             v-if="connectionPartType"
@@ -52,7 +53,7 @@
           dimentions
         </h2>
         <part-type-dimention-edit :id="connection.part_type_id" />
-      </b-form>
+      </template>
     </b-modal>
   </div>
 </template>
@@ -86,7 +87,8 @@ export default {
     this.getTypes();
   },
   methods:{
-    onSubmit(){
+    onSubmit(e){
+      e.preventDefault()
       this.$axios({
         method: this.isCreating ? 'post':'put',
         url: "/api/connection/"+(this.isCreating ? '':this.id),

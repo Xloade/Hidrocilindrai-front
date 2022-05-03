@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="part-connection-edit">
     <b-table
       :items="partConnections"
       :fields="partConnectionFields"
@@ -22,7 +22,10 @@
       </template>
 
       <template #row-details="row">
-        <b-form @click="$emit('selected-connection', row.item.pivot)">
+        <b-form
+          class="part-connection-offset-edit"
+          @click="$emit('selected-connection', row.item.pivot)"
+        >
           <b-form-group
             label-class="x"
             label="X offset"
@@ -112,6 +115,7 @@
       </b-form-select>
       <div class="my-2">
         <b-button
+          id="add"
           variant="success"
           @click="addConnection"
         >

@@ -1,9 +1,5 @@
 <template>
-  <div class="">
-    <my-alert
-      ref="alert"
-      class="stickyAlert"
-    />
+  <div class="dimention-edit">
     <b-table
       :items="partDimentions"
       :fields="partDimentionFields"
@@ -54,6 +50,7 @@
       </b-form-group>
       <div class="my-2">
         <b-button
+          id="add"
           variant="success"
           @click="addDimention"
         >
@@ -61,18 +58,21 @@
         </b-button>
       </div>
       <b-button
+        id="create"
         variant="success"
         @click="$refs.dimentionForm.open(null)"
       >
         Create new
       </b-button>
       <b-button
+        id="edit"
         variant="info"
         @click="$refs.dimentionForm.open(selectedDimention)"
       >
         Edit (Selected)
       </b-button>
       <b-button
+        id="delete"
         variant="danger"
         @click="removeDimention(selectedDimention)"
       >
@@ -114,8 +114,9 @@ export default {
       this.getpartDimentions();
     }
   },
-  created(){
-    this.getDimentions();
+  created() {
+    this.getpartDimentions()
+    this.getDimentions()
   },
   methods:{
     getDimentions(){
@@ -134,46 +135,32 @@ export default {
     addDimention(){
       this.$axios.post("/api/partType/"+this.id+"/partTypeDimention", {dimention_id: this.selectedDimention})
         .then((message) => {
-          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$parent.$parent.$parent.$refs.alert.parseSuccess(message)
           this.getpartDimentions()
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$parent.$parent.$parent.$refs.alert.parseError(error)
         })
     },
     removePartTypeDimention(dimention_id){
       this.$axios.delete("/api/partType/"+this.id+"/partTypeDimention/"+dimention_id)
         .then((message) => {
-          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$parent.$parent.$parent.$refs.alert.parseSuccess(message)
           this.getpartDimentions()
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          console.log(this.$parent)
+          this.$parent.$parent.$parent.$refs.alert.parseError(error)
         })
     },
     removeDimention(){
       this.$axios.delete("/api/dimention/"+this.selectedDimention)
         .then((message) => {
-          this.$refs.alert.setAlert(message.data.message, "success")
+          this.$parent.$parent.$parent.$refs.alert.parseSuccess(message)
           this.getDimentions()
         })
         .catch((error) => {
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$parent.$parent.$parent.$refs.alert.parseError(error)
         })
     },
     submitFile(partTypeDimention){
@@ -186,20 +173,16 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       })
-        .then(() => {
+        .then((message) => {
           partTypeDimention.placeHolder = partTypeDimention.pngFile.name
           partTypeDimention.pngFile = null
           partTypeDimention.ImageExcists = true
+          this.$parent.$parent.$parent.$refs.alert.parseSuccess(message)
         })
         .catch((error) => {
           partTypeDimention.placeHolder = partTypeDimention.pngFile.name
           partTypeDimention.pngFile = null
-          if( error.response.data.message ){
-            this.$refs.alert.setAlert(error.response.data.message, "danger")
-          }
-          else{
-            this.$refs.alert.setAlert(error.message, "danger")
-          }
+          this.$parent.$parent.$parent.$refs.alert.parseError(error)
         })
     },
   }

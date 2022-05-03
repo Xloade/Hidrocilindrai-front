@@ -1,9 +1,5 @@
 <template>
-  <div class="">
-    <my-alert
-      ref="alert"
-      class="stickyAlert"
-    />
+  <div class="part-dimention-edit">
     <b-table
       :items="dimentions"
       :fields="partDimentionFields"

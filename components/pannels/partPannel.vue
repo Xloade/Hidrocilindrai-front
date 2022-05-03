@@ -26,6 +26,7 @@
       </b-form>
       <h2>Part edit</h2>
       <b-form
+        class="part-edit"
         @click="partForViewport.part_connection = zeroSelection;"
       >
         <b-form-group
