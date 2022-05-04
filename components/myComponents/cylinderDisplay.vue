@@ -8,7 +8,10 @@
 </template>
 
 <script>
-import * as THREE from "three-full";
+import * as THREE from 'three'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export default {
   name: "CylinderDisplay",
@@ -63,12 +66,11 @@ export default {
   methods: {
     init() {
       this.textureLoader = new THREE.TextureLoader();
-      this.objLoader = new THREE.OBJLoader();
-      this.mtlLoader = new THREE.MTLLoader();
+      this.objLoader = new OBJLoader();
+      this.mtlLoader = new MTLLoader();
 
       this.scene = new THREE.Scene();
-      this.scene.background = new THREE.Color(0x555555);
-      //this.scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
+      this.scene.background = new THREE.Color(0x777777);
 
       this.renderer = new THREE.WebGLRenderer({ antialias: true });
       this.renderer.setPixelRatio(window.devicePixelRatio); //might be window
@@ -78,29 +80,17 @@ export default {
       );
       this.element.appendChild(this.renderer.domElement);
 
-      // this.camera = new THREE.PerspectiveCamera(
-      //   60,
-      //   this.element.clientWidth / this.element.clientHeight,
-      //   1,
-      //   1000
-      // );
       this.camera = new THREE.OrthographicCamera(-this.element.clientWidth/2,this.element.clientWidth/2,this.element.clientHeight/2,-this.element.clientHeight/2,0.01,1000)
       this.camera.position.set(500, 150, 0);
-      // this.camera.rotation.x = Math.PI/2
-      // this.camera.rotation.y = Math.PI
       this.camera.zoom = this.element.clientWidth / 1000 * 1.5
       this.camera.updateProjectionMatrix();
 
       // controls
 
-      this.controls = new THREE.OrbitControls(
+      this.controls = new OrbitControls(
         this.camera,
         this.renderer.domElement
       );
-      //this.controls.listenToKeyEvents( window ); // optional
-
-      //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
-
       this.controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
       this.controls.dampingFactor = 0.1;
 
@@ -109,11 +99,6 @@ export default {
       this.controls.minDistance = 100;
       this.controls.maxDistance = 500;
 
-      //this.controls.maxPolarAngle = Math.PI / 2;
-      // world
-
-
-
       this.mtlLoader.load("/partFiles/textures/materials.mtl", (material)=>{
         material.preload();
         this.objLoader.setMaterials(material);
@@ -121,18 +106,18 @@ export default {
 
       // lights
 
-      const dirLight1 = new THREE.DirectionalLight( 0xffffff );
-      dirLight1.position.set( 1, 1, 1 );
+      const dirLight1 = new THREE.DirectionalLight( 0xffffff, 1.25 );
+      dirLight1.position.set( 100, 100, 100 );
       this.scene.add( dirLight1 );
 
-      const dirLight2 = new THREE.DirectionalLight( 0x002288 );
-      dirLight2.position.set( - 1, - 1, - 1 );
+      const dirLight2 = new THREE.DirectionalLight( 0x5577bb, 3 );
+      dirLight2.position.set( -100, 100, 200 );
       this.scene.add( dirLight2 );
 
-      const ambientLight = new THREE.AmbientLight(0xcccccc);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
       this.scene.add(ambientLight);
 
-      //
+      // window resize
 
       window.addEventListener("resize", this.onWindowResize);
       if(this.originPlanes !== undefined || this.originPlanes === true)
@@ -177,7 +162,6 @@ export default {
       });
     },
     onWindowResize() {
-      // this.camera.aspect = this.element.clientWidth / this.element.clientHeight;
       this.camera.left   = this.element.clientWidth / -2
       this.camera.right  = this.element.clientWidth / 2
       this.camera.top    = this.element.clientHeight / 2
