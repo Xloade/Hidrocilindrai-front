@@ -63,7 +63,7 @@
                   v-for="partTypeDimention in partGroup[0].connection.part_type.dimentions"
                   :key="partTypeDimention.id"
                 >
-                  {{ partDimention(part, partTypeDimention).value }}
+                  {{ partDimention(part, partTypeDimention).pivot.value }}
                 </th>
                 <td>
                   <b-button
@@ -123,8 +123,8 @@ export default {
   },
   methods:{
     partDimention(part, dimention){
-      let GotDimention = part.dimentions.find(e=>e.part_type_dimention_id === dimention.id)
-      return GotDimention || {}
+      let GotDimention = part.dimentions.find(e=>e.dimention_id === dimention.id)
+      return GotDimention || {pivot:{}}
     },
     tabChanged(){
       let tab = this.partGroups[this.activeTab]

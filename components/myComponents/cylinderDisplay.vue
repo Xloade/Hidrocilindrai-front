@@ -119,15 +119,15 @@ export default {
       });
     },
     initLights() {
-      const dirLight1 = new THREE.DirectionalLight( 0xffffff, 1.25 );
+      const dirLight1 = new THREE.DirectionalLight( 0xffffff, 1.75 );
       dirLight1.position.set( 100, 100, 100 );
       this.scene.add( dirLight1 );
 
-      const dirLight2 = new THREE.DirectionalLight( 0x5577bb, 2 );
+      const dirLight2 = new THREE.DirectionalLight( 0x5577bb, 2,5 );
       dirLight2.position.set( -100, 100, 200 );
       this.scene.add( dirLight2 );
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1,25);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1,5);
       this.scene.add(ambientLight);
     },
     initWindowRiseze() {
