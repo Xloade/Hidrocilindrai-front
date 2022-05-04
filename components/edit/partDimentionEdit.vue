@@ -39,11 +39,11 @@ export default {
     dimentions(){
       let arr = []
       this.part.possible_dimentions.forEach(element => {
-        let valueElement = this.part.dimentions.find(e=>e.part_type_dimention_id === element.id)
+        let valueElement = this.part.dimentions.find(e=>e.dimention_id === element.id)
         arr.push({
           id: element.part_type_dimention.id,
           name: element.name,
-          value: valueElement !== undefined ? valueElement.value : "",
+          value: valueElement !== undefined && valueElement.pivot !== undefined ? valueElement.pivot.value : "",
           created: valueElement !== undefined,
         })
       });
