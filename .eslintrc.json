@@ -21,7 +21,7 @@
   "ignorePatterns": ["src/**/*.test.ts", "src/frontend/generated/*"],
   "overrides": [
     {
-      "files": ["test/**"],
+      "files": ["tests/**"],
       "plugins": ["jest"],
       "extends": ["plugin:jest/recommended"],
       "rules": { "jest/prefer-expect-assertions": "off" }
