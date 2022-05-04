@@ -149,7 +149,6 @@ export default {
           this.getpartDimentions()
         })
         .catch((error) => {
-          console.log(this.$parent)
           this.$parent.$parent.$parent.$refs.alert.parseError(error)
         })
     },

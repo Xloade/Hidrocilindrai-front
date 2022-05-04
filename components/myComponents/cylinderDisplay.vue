@@ -36,6 +36,9 @@ export default {
 
   data() {
     return {
+      THREE: THREE,
+      mtlLoaderImport: MTLLoader,
+      OrbitControlsImport: OrbitControls,
       camera: null,
       controls: null,
       scene: null,
@@ -57,37 +60,44 @@ export default {
     }
   },
   mounted() {
-    this.element = document.getElementById("viewport");
     this.init();
-    this.animate();
-    // needed only for development when window refreshes with old data
-    this.loadObjects();
   },
   methods: {
     init() {
-      this.textureLoader = new THREE.TextureLoader();
-      this.objLoader = new OBJLoader();
-      this.mtlLoader = new MTLLoader();
-
+      this.element = document.getElementById("viewport");
+      this.initScene()
+      this.initRenderer()
+      this.initCamera()
+      this.initControls()
+      this.initLoaders()
+      this.initLights()
+      this.initWindowRiseze()
+      this.initOriginPlanes()
+      this.animate();
+      // needed only for development when window refreshes with old data
+      this.loadObjects();
+    },
+    initScene() {
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(0x777777);
-
-      this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    },
+    initRenderer() {
+      this.renderer = new this.THREE.WebGLRenderer({ antialias: true });
       this.renderer.setPixelRatio(window.devicePixelRatio); //might be window
       this.renderer.setSize(
         this.element.clientWidth,
         this.element.clientHeight
       );
       this.element.appendChild(this.renderer.domElement);
-
+    },
+    initCamera() {
       this.camera = new THREE.OrthographicCamera(-this.element.clientWidth/2,this.element.clientWidth/2,this.element.clientHeight/2,-this.element.clientHeight/2,0.01,1000)
       this.camera.position.set(500, 150, 0);
       this.camera.zoom = this.element.clientWidth / 1000 * 1.5
       this.camera.updateProjectionMatrix();
-
-      // controls
-
-      this.controls = new OrbitControls(
+    },
+    initControls() {
+      this.controls = new this.OrbitControlsImport(
         this.camera,
         this.renderer.domElement
       );
@@ -98,32 +108,36 @@ export default {
 
       this.controls.minDistance = 100;
       this.controls.maxDistance = 500;
-
+    },
+    initLoaders() {
+      this.textureLoader = new THREE.TextureLoader();
+      this.objLoader = new OBJLoader();
+      this.mtlLoader = new this.mtlLoaderImport();
       this.mtlLoader.load("/partFiles/textures/materials.mtl", (material)=>{
         material.preload();
         this.objLoader.setMaterials(material);
       });
-
-      // lights
-
+    },
+    initLights() {
       const dirLight1 = new THREE.DirectionalLight( 0xffffff, 1.25 );
       dirLight1.position.set( 100, 100, 100 );
       this.scene.add( dirLight1 );
 
-      const dirLight2 = new THREE.DirectionalLight( 0x5577bb, 3 );
+      const dirLight2 = new THREE.DirectionalLight( 0x5577bb, 2 );
       dirLight2.position.set( -100, 100, 200 );
       this.scene.add( dirLight2 );
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1,25);
       this.scene.add(ambientLight);
-
-      // window resize
-
+    },
+    initWindowRiseze() {
       window.addEventListener("resize", this.onWindowResize);
+    },
+    initOriginPlanes() {
       if(this.originPlanes !== undefined || this.originPlanes === true)
         this.addOridingPlanes();
     },
-    addOridingPlanes(){
+    addOridingPlanes() {
       let planes = [{name:"x", color:0xff0000},{name:"y", color:0x00ff00},{name:"z", color:0x0000ff}]
       planes.forEach((plane)=>{
         let geo = new THREE.PlaneBufferGeometry(200, 200, 8, 8);
@@ -177,9 +191,7 @@ export default {
     },
     animate() {
       window.requestAnimationFrame(this.animate);
-
       this.controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
-
       this.render();
     },
     render() {
@@ -188,7 +200,6 @@ export default {
     loadObjects(){
       this.scene.remove(this.cylinderGroup)
       this.cylinderGroup = new THREE.Group();
-      this.scene.add(this.cylinderGroup);
       this.cylinderGroup.rotation.set(Math.PI/2, Math.PI, 0)
       this.scene.add(this.cylinderGroup)
       // to remove objects if they were here from last time

@@ -1,5 +1,9 @@
 // eslint-disable-next-line no-undef
 module.exports = {
   preset: '@vue/cli-plugin-unit-jest/presets/no-babel',
-  transformIgnorePatterns: ['/node_modules/(?!three)']
+  transformIgnorePatterns: ['/node_modules/(?!three)'],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'components/myComponents/**/*.{js,vue}',
+  ],
 }
